@@ -1,150 +1,91 @@
-import React                                       from 'react';
-import { Link, Redirect, useHistory, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch }                from 'react-redux';
-import Input                                       from '@iso/components/uielements/input';
-import Checkbox                                    from '@iso/components/uielements/checkbox';
-import Button                                      from '@iso/components/uielements/button';
-import IntlMessages                                from '@iso/components/utility/intlMessages';
-// import FirebaseLoginForm from '../../FirebaseForm/FirebaseForm';
-import authAction                                  from '@iso/redux/auth/actions';
-import appAction                                   from '@iso/redux/app/actions';
-import AuthHelper                                  from '@iso/lib/helpers/authHelper';
-// import Auth0 from '../../Authentication/Auth0/Auth0';
-// import {
-//   signInWithGoogle,
-//   signInWithFacebook,
-// } from '@iso/lib/firebase/firebase.authentication.util';
-import SignInStyleWrapper                          from './SignIn.styles';
+import React, { Component }           from 'react';
+import { Link, Redirect, withRouter } from 'react-router-dom';
+import { connect }                    from 'react-redux';
+import IntlMessages                   from '@iso/components/utility/intlMessages';
+import SignInStyleWrapper             from './SignIn.styles';
+import SignInForm                     from "./SignInForm";
 
-const { login } = authAction;
-const { clearMenu } = appAction;
+// const { clearMenu } = appAction;
 
-export default function SignIn() {
-  let history = useHistory();
-  let location = useLocation();
-  const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.Auth.idToken);
+class SignIn extends Component {
+  // function handleLogin(e, token = false) {
+  //   e.preventDefault();
+  //   if (token) {
+  //     dispatch(login(token));
+  //   } else {
+  //     dispatch(login());
+  //   }
+  //   dispatch(clearMenu());
+  //   history.push('/dashboard');
+  // }
 
-  const [redirectToReferrer, setRedirectToReferrer] = React.useState(false);
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      setRedirectToReferrer(true);
+  render() {
+    if (this.props.isLoggedIn) {
+      let { from } = this.props.location.state || { from: { pathname: '/dashboard' } };
+      return <Redirect to={ from } />;
     }
-  }, [isLoggedIn]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    const data = {
-      username: e.target.form.username.value,
-      password: e.target.form.password.value,
-    };
-    AuthHelper.login(data)
-      .then(response => dispatch(login(response.token)))
-      .catch(error => console.log(error))
-    // console.log("Result: ", res);
-  }
-
-  function handleLogin(e, token = false) {
-    e.preventDefault();
-    if (token) {
-      dispatch(login(token));
-    } else {
-      dispatch(login());
-    }
-    dispatch(clearMenu());
-    history.push('/dashboard');
-  }
-
-  let { from } = location.state || { from: { pathname: '/dashboard' } };
-
-  if (redirectToReferrer) {
-    return <Redirect to={ from } />;
-  }
-  return (
-    <SignInStyleWrapper className="isoSignInPage">
-      <div className="isoLoginContentWrapper">
-        <div className="isoLoginContent">
-          <div className="isoLogoWrapper">
-            <Link to="/dashboard">
-              <IntlMessages id="page.signInTitle" />
-            </Link>
-          </div>
-          <div className="isoSignInForm">
-            <form>
-              <div className="isoInputWrapper">
-                <Input
-                  name="username"
-                  size="large"
-                  placeholder="Username"
-                  autoComplete="true"
-                />
-              </div>
-
-              <div className="isoInputWrapper">
-                <Input
-                  name="password"
-                  size="large"
-                  type="password"
-                  placeholder="Password"
-                  autoComplete="false"
-                />
-              </div>
-
-              <div className="isoInputWrapper isoLeftRightComponent">
-                <Checkbox>
-                  <IntlMessages id="page.signInRememberMe" />
-                </Checkbox>
-                <Button type="primary" onClick={ handleSubmit }>
-                  <IntlMessages id="page.signInButton" />
-                </Button>
-              </div>
-
-              <p className="isoHelperText">
-                <IntlMessages id="page.signInPreview" />
-              </p>
-            </form>
-            {/*<div className="isoInputWrapper isoOtherLogin">*/ }
-            {/*<Button*/ }
-            {/*  onClick={signInWithFacebook}*/ }
-            {/*  type="primary"*/ }
-            {/*  className="btnFacebook"*/ }
-            {/*>*/ }
-            {/*  <IntlMessages id="page.signInFacebook" />*/ }
-            {/*</Button>*/ }
-            {/*<Button*/ }
-            {/*  onClick={signInWithGoogle}*/ }
-            {/*  type="primary"*/ }
-            {/*  className="btnGooglePlus"*/ }
-            {/*>*/ }
-            {/*  <IntlMessages id="page.signInGooglePlus" />*/ }
-            {/*</Button>*/ }
-
-            {/*<Button*/ }
-            {/*  onClick={() => {*/ }
-            {/*    Auth0.login();*/ }
-            {/*  }}*/ }
-            {/*  type="primary"*/ }
-            {/*  className="btnAuthZero"*/ }
-            {/*>*/ }
-            {/*  <IntlMessages id="page.signInAuth0" />*/ }
-            {/*</Button>*/ }
-
-            {/*<FirebaseLoginForm*/ }
-            {/*  history={history}*/ }
-            {/*  login={token => dispatch(login(token))}*/ }
-            {/*/>*/ }
-            {/*</div>*/ }
-            <div className="isoCenterComponent isoHelperWrapper">
-              <Link to="/forgotpassword" className="isoForgotPass">
-                <IntlMessages id="page.signInForgotPass" />
+    return (
+      <SignInStyleWrapper className="isoSignInPage">
+        <div className="isoLoginContentWrapper">
+          <div className="isoLoginContent">
+            <div className="isoLogoWrapper">
+              <Link to="/dashboard">
+                <IntlMessages id="page.signInTitle" />
               </Link>
-              <Link to="/signup">
-                <IntlMessages id="page.signInCreateAccount" />
-              </Link>
+            </div>
+            <div className="isoSignInForm">
+              <SignInForm />
+              {/*<div className="isoInputWrapper isoOtherLogin">*/ }
+              {/*<Button*/ }
+              {/*  onClick={signInWithFacebook}*/ }
+              {/*  type="primary"*/ }
+              {/*  className="btnFacebook"*/ }
+              {/*>*/ }
+              {/*  <IntlMessages id="page.signInFacebook" />*/ }
+              {/*</Button>*/ }
+              {/*<Button*/ }
+              {/*  onClick={signInWithGoogle}*/ }
+              {/*  type="primary"*/ }
+              {/*  className="btnGooglePlus"*/ }
+              {/*>*/ }
+              {/*  <IntlMessages id="page.signInGooglePlus" />*/ }
+              {/*</Button>*/ }
+
+              {/*<Button*/ }
+              {/*  onClick={() => {*/ }
+              {/*    Auth0.login();*/ }
+              {/*  }}*/ }
+              {/*  type="primary"*/ }
+              {/*  className="btnAuthZero"*/ }
+              {/*>*/ }
+              {/*  <IntlMessages id="page.signInAuth0" />*/ }
+              {/*</Button>*/ }
+
+              {/*<FirebaseLoginForm*/ }
+              {/*  history={history}*/ }
+              {/*  login={token => dispatch(login(token))}*/ }
+              {/*/>*/ }
+              {/*</div>*/ }
+              <div className="isoCenterComponent isoHelperWrapper">
+                <Link to="/forgotpassword" className="isoForgotPass">
+                  <IntlMessages id="page.signInForgotPass" />
+                </Link>
+                <Link to="/signup">
+                  <IntlMessages id="page.signInCreateAccount" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </SignInStyleWrapper>
-  );
+      </SignInStyleWrapper>
+    );
+  }
 }
+
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.Auth.idToken,
+  }
+}
+
+export default connect(mapStateToProps)(withRouter(SignIn));

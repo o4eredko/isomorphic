@@ -7,7 +7,6 @@ class AuthHelper {
       return { error: 'please fill in the input' };
     }
     return await SuperFetch.post('login', userInfo).then(response => {
-      console.log(response);
       return this.checkExpirity(response.access);
     });
   };
@@ -25,7 +24,7 @@ class AuthHelper {
   checkExpirity = token => {
     if (!token) {
       return {
-        error: 'not matched',
+        error: 'Username and password do not match',
       };
     }
     try {
