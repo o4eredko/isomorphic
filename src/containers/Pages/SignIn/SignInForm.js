@@ -12,18 +12,6 @@ import { connect }          from "react-redux";
 const { login } = authAction;
 
 class SignInForm extends Component {
-  state = {
-    username: '',
-    password: '',
-  };
-
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value
-    })
-  };
-
   handleSubmit = e => {
     e.preventDefault();
     const { setFields } = this.props.form;
