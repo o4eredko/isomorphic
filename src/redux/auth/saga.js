@@ -5,7 +5,7 @@ import { getToken, clearToken } from '@iso/lib/helpers/utility';
 import actions from './actions';
 
 const history = createBrowserHistory();
-const fakeApiCall = true; // auth0 or express JWT
+const fakeApiCall = false; // auth0 or express JWT
 
 export function* loginRequest() {
   yield takeEvery('LOGIN_REQUEST', function*({ payload }) {
