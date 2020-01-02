@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Form                 from '@iso/components/uielements/form';
 import authAction           from '@iso/redux/auth/actions';
 import { Input }            from 'antd';
-// import Checkbox             from '@iso/components/uielements/checkbox';
 import Button               from '@iso/components/uielements/button';
 import IntlMessages         from '@iso/components/utility/intlMessages';
 import AuthHelper           from '@iso/lib/helpers/authHelper';
@@ -19,13 +18,10 @@ class SignInForm extends Component {
 
     validateFieldsAndScroll((err, values) => {
         if (err) return;
-
         AuthHelper.login(values).then(response => {
-          if ('token' in response) {
-            console.log(response);
+          if ('token' in response)
             this.props.dispatch(login(response.token));
-
-          } else if ('error' in response)
+          else if ('error' in response)
             setFields({
               password: {
                 value: '',
