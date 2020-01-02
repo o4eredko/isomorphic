@@ -1,20 +1,22 @@
 import jwtConfig from '@iso/config/jwt.config';
 
-const customHeader = () => ({
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-  Authorization: 'Bearer ' + localStorage.getItem('id_token') || undefined,
-});
+const customHeader = () => {
+  const token = localStorage.getItem('id_token');
+  return {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Authorization: token ? `Bearer ${ token }` : '',
+  }
+};
 
 const base = (method, url, data = {}) => {
-  return fetch(`${jwtConfig.fetchUrl}${url}`, {
+  const params = {
     method,
     headers: customHeader(),
-    body: JSON.stringify(data),
-  })
-    .then(response => response.json())
-    .then(res => res)
-    .catch(error => ({ error: 'Server Error' }));
+  };
+  if (method !== 'get') params.body = JSON.stringify(data);
+  return fetch(`${ jwtConfig.fetchUrl }${ url }`, params)
+    .then(async response => ({ data: await response.json(), status: response.status }))
 };
 
 const SuperFetch = {};

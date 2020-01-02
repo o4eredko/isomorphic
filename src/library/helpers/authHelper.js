@@ -1,17 +1,18 @@
-import jwtDecode from 'jwt-decode';
+import jwtDecode  from 'jwt-decode';
 import SuperFetch from './superFetch';
 
 class AuthHelper {
-  login = async userInfo => {
-    if (!userInfo.username|| !userInfo.password) {
+  login = userInfo => {
+    if (!userInfo.username || !userInfo.password) {
       return { error: 'please fill in the input' };
     }
-    return await SuperFetch.post('login', userInfo).then(response => {
-      return this.checkExpirity(response.access);
-    });
+    return SuperFetch.post('login/', userInfo).then(response =>
+      this.checkExpiration(response.data.access)
+    );
   };
+
   async checkDemoPage(token) {
-    if (this.checkExpirity(token).error) {
+    if (this.checkExpiration(token).error) {
       return { error: 'Token expired' };
     }
     return await SuperFetch.get('secret/test', { token })
@@ -21,11 +22,10 @@ class AuthHelper {
       }))
       .catch(error => ({ error: JSON.stringify(error) }));
   }
-  checkExpirity = token => {
+
+  checkExpiration = token => {
     if (!token) {
-      return {
-        error: 'Username and password do not match',
-      };
+      return { error: 'Username and password do not match' };
     }
     try {
       const profile = jwtDecode(token);
@@ -48,4 +48,5 @@ class AuthHelper {
     }
   };
 }
+
 export default new AuthHelper();
