@@ -7,6 +7,7 @@ import Button               from '@iso/components/uielements/button';
 import IntlMessages         from '@iso/components/utility/intlMessages';
 import AuthHelper           from '@iso/lib/helpers/authHelper';
 import { connect }          from "react-redux";
+import Icon                 from "antd/lib/icon";
 
 
 const { login } = authAction;
@@ -14,9 +15,9 @@ const { login } = authAction;
 class SignInForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
-    const { setFields } = this.props.form;
+    const { validateFieldsAndScroll, setFields } = this.props.form;
 
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    validateFieldsAndScroll((err, values) => {
         if (err) return;
 
         AuthHelper.login(values).then(response => {
@@ -44,36 +45,39 @@ class SignInForm extends Component {
         <div className="isoInputWrapper">
           <Form.Item>
             { getFieldDecorator('username', {
-              rules: [
-                { required: true, message: 'Please input your username!' }
-              ]
+              rules: [{ required: true, message: 'Please input your username!' }]
             })(
-              <Input type="text" size="large" placeholder="Username" />
+              <Input
+                prefix={
+                  <Icon type="user" style={ { color: 'rgba(0,0,0,.25)' } } />
+                }
+                type="text"
+                size="large"
+                placeholder="Username"
+              />
             ) }
           </Form.Item>
         </div>
-
         <div className="isoInputWrapper">
           <Form.Item>
             { getFieldDecorator('password', {
-              rules: [
-                { required: true, message: 'Please input your password!' }
-              ]
+              rules: [{ required: true, message: 'Please input your password!' }]
             })(
-              <Input type="password" size="large" placeholder="Password" />
+              <Input.Password
+                prefix={
+                  <Icon type="lock" style={ { color: 'rgba(0,0,0,.25)' } } />
+                }
+                size="large"
+                placeholder="Password"
+              />
             ) }
           </Form.Item>
         </div>
-
         <div className="isoInputWrapper isoLeftRightComponent">
-          {/*<Checkbox>*/ }
-          {/*  <IntlMessages id="page.signInRememberMe" />*/ }
-          {/*</Checkbox>*/ }
           <Button type="primary" htmlType="submit">
             <IntlMessages id="page.signInButton" />
           </Button>
         </div>
-
       </Form>
     );
   }

@@ -140,8 +140,9 @@ const SignInStyleWrapper = styled.div`
             margin-bottom: 0;
           }
         }
-
-        button {
+      }
+      
+      button {
           width: 100%;
           height: 42px;
           border: 0;
@@ -191,7 +192,6 @@ const SignInStyleWrapper = styled.div`
             }
           }
         }
-      }
 
       .isoForgotPass {
         font-size: 12px;

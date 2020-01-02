@@ -37,9 +37,7 @@ const SignIn = (props) => {
 };
 
 function mapStateToProps(state) {
-  return {
-    isLoggedIn: state.Auth.idToken,
-  }
+  return { isLoggedIn: state.Auth.idToken, }
 }
 
 export default connect(mapStateToProps)(withRouter(SignIn));
