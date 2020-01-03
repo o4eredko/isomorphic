@@ -11,32 +11,35 @@ import Notification         from '@iso/components/Notification';
 
 
 class SignUpForm extends Component {
+  successfulRegistration = () => {
+    this.props.history.push('/signin');
+    Notification('success',
+      'Registration is almost completed',
+      'You have to wait until admins confirm your registration.')
+  };
+
+  errorRegistration = (values, errors) => {
+    const { setFields } = this.props.form;
+    const fields = {};
+    for (const [key, value] of Object.entries(errors)) {
+      if (!values.hasOwnProperty(key)) continue;
+      const error = value.map(error => new Error(error));
+      fields[key] = { value: values[key], errors: error }
+    }
+    setFields(fields);
+  };
+
   handleSubmit = e => {
     e.preventDefault();
-    const { validateFieldsAndScroll, setFields } = this.props.form;
-
-    validateFieldsAndScroll((err, values) => {
+    const { validateFieldsAndScroll } = this.props.form;
+    validateFieldsAndScroll(async (err, values) => {
       if (err) return;
-      SuperFetch.post('users/', values).then(result => {
-        const { data, status } = result;
-        if (status === 201) {
-          this.props.history.push('/signin');
-          Notification(
-            'success',
-            'Registration is almost completed',
-            'You have to wait until admins confirm your registration.'
-          );
-        } else if (status === 400) {
-          for (let field in data)
-            data[field] = data[field].map(error => new Error(error));
-          setFields({
-            username: { value: values.username, errors: data.username },
-            email: { value: values.email, errors: data.email },
-            password: { value: values.password, errors: data.password },
-          });
-        }
-      });
-    })
+      const { data, status } = await SuperFetch.post('users/', values);
+      if (status === 201)
+        this.successfulRegistration();
+      else if (status === 400)
+        this.errorRegistration(values, data);
+    });
   };
 
   passwordsEqual = (rule, value, callback) => {
