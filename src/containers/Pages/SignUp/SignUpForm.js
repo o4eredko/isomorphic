@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter }       from 'react-router';
-import { connect }          from 'react-redux';
 import { Input }            from 'antd';
 import SuperFetch           from '@iso/lib/helpers/superFetch';
 import Form                 from '@iso/components/uielements/form';
@@ -125,4 +124,4 @@ class SignUpForm extends Component {
 }
 
 const WrappedSignUpForm = Form.create()(withRouter(SignUpForm));
-export default connect()(WrappedSignUpForm);
+export default WrappedSignUpForm;
