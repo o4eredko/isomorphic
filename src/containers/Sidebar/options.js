@@ -1,5 +1,10 @@
 const options = [
   {
+    key: 'redButton',
+    label: 'sidebar.redButton',
+    leftIcon: 'ion-toggle-filled'
+  },
+  {
     key: 'mailbox',
     label: 'sidebar.email',
     leftIcon: 'ion-android-mail',

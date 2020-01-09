@@ -340,6 +340,10 @@ const routes = [
     path: 'blank_page',
     component: lazy(() => import('@iso/containers/BlankPage')),
   },
+  {
+    path: 'redButton',
+    component: lazy(() => import('@iso/containers/RedButton/RedButton')),
+  },
 ];
 
 export default function AppRouter() {

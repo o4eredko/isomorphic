@@ -1,4 +1,5 @@
 {
+  "sidebar.redButton": "Red Button",
   "sidebar.email": "Email",
   "sidebar.chat": "Chat",
   "sidebar.ecommerce": "Ecommerce",
@@ -87,6 +88,7 @@
   "sidebar.quiz": "Quiz",
   "sidebar.authCheck": "Check Auth Status",
   "sidebar.swiperSlider": "Swiper Slider",
+  "redButton.basicTitle": "Choose Platform",
   "languageSwitcher.label": "Change Language",
   "themeSwitcher": "Theme Switcher",
   "themeSwitcher.Sidebar": "Sidebar",
