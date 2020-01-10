@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import Tabs, { TabPane }    from '@iso/components/uielements/tabs';
 import LayoutContentWrapper from '@iso/components/utility/layoutWrapper';
 import LayoutContent        from '@iso/components/utility/layoutContent';
-import IntlMessages         from '@iso/components/utility/intlMessages';
 import platforms            from './config';
+import PlatformTable        from './PlatformTable';
 
 export default class RedButton extends Component {
   render() {
+    const enabledPlatforms = platforms.filter(platform => !platform.disabled);
+    let firstActivePlatform = null;
+    if (enabledPlatforms.length) firstActivePlatform = platforms.indexOf(enabledPlatforms[0]);
+
     return (
-      <LayoutContentWrapper style={ { height: '100vh' } }>
+      <LayoutContentWrapper>
         <LayoutContent>
-          <Tabs defaultActiveKey="0">
+          <Tabs defaultActiveKey={ firstActivePlatform.toString() }>
             { platforms.map((platform, index) =>
               <TabPane key={ index } tab={ platform.name } disabled={ platform.disabled }>
-                { platform.name }
+                <PlatformTable platform={ platform } />
               </TabPane>
             ) }
           </Tabs>
