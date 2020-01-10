@@ -1,6 +1,6 @@
 const options = [
   {
-    key: 'redButton',
+    key: 'red-button',
     label: 'sidebar.redButton',
     leftIcon: 'ion-toggle-filled'
   },

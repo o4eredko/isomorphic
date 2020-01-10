@@ -341,7 +341,7 @@ const routes = [
     component: lazy(() => import('@iso/containers/BlankPage')),
   },
   {
-    path: 'redButton',
+    path: 'red-button',
     component: lazy(() => import('@iso/containers/RedButton/RedButton')),
   },
 ];
