@@ -22,8 +22,8 @@ export default class PlatformTable extends Component {
       for (const campaign in campaignsSync) {
 
         const record = this.state.dataList[campaign];
-        const loadingInterval = setInterval(() => {
-          if (!this.trackLoading(record)) this.endLoading(record.key, loadingInterval);
+        const loadingInterval = setInterval(async () => {
+          if (!await this.trackLoading(record)) this.endLoading(record.key, loadingInterval);
         }, 2000);
 
       }
@@ -40,31 +40,31 @@ export default class PlatformTable extends Component {
       return { dataList };
     });
 
-    const loadingInterval = setInterval(() => {
-      if (!this.trackLoading(record)) this.endLoading(record.key, loadingInterval);
+    const loadingInterval = setInterval(async () => {
+      if (!(await this.trackLoading(record))) this.endLoading(record.key, loadingInterval);
     }, 2000);
   };
 
   endLoading = (id, interval) => {
+    console.log("Loading was ended");
     const campaignsSync = loadState('red-button-loading');
     delete campaignsSync[id];
-    saveState(campaignsSync);
+    saveState('red-button-loading', campaignsSync);
     clearInterval(interval);
   };
 
-  trackLoading = record => {
-    console.log("Tracked");
+  trackLoading = async record => {
     const { handler } = this.props.platform;
     const campaignsSync = loadState('red-button-loading');
-    if (campaignsSync[record.key] >= 100) return false;
 
-    const currentProgress = handler.getCurrentStatus(record.country).then(response => response);
-    const loaded = (currentProgress / campaignsSync[record.key]) * 100;
+    const currentProgress = await handler.getCurrentStatus(record.country);
+    const completedValue = campaignsSync[record.key];
+    const loaded = ((completedValue - currentProgress) / campaignsSync[record.key]) * 100;
     this.setState(({ dataList }) => {
       dataList[record.key].loaded = loaded;
       return { dataList };
     });
-    return true;
+    return currentProgress > 0;
   };
 
   handleSwitch = async (active, record) => {

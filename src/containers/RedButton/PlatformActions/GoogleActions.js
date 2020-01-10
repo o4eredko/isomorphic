@@ -28,7 +28,7 @@ class GoogleActions {
     // Convert array of resolved promises to object with country: status values
     let statuses = {};
     for (const response of await Promise.all(statusPromises)) {
-      const [country, status] = Object.entries(response)[0];
+      const [[country, status]] = Object.entries(response);
       statuses[country] = status;
     }
     const currentLoading = loadState('red-button-loading') || {};
