@@ -1,13 +1,19 @@
 import actions from './actions';
 
-const initState = { idToken: null };
+const initState = { accessToken: null, refreshToken: null };
 
 export default function authReducer(state = initState, action) {
   switch (action.type) {
     case actions.LOGIN_SUCCESS:
+      console.log("TRY TO SET STATE", {
+        accessToken: action.payload.access,
+        refreshToken: action.payload.refresh,
+      });
       return {
-        idToken: action.token,
+        accessToken: action.payload.access,
+        refreshToken: action.payload.refresh,
       };
+
     case actions.LOGOUT:
       return initState;
     default:

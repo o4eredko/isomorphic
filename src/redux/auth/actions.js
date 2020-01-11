@@ -5,9 +5,9 @@ const actions = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   LOGIN_ERROR: 'LOGIN_ERROR',
   checkAuthorization: () => ({ type: actions.CHECK_AUTHORIZATION }),
-  login: (token = false) => ({
+  login: (access = false, refresh = false) => ({
     type: actions.LOGIN_REQUEST,
-    payload: { token },
+    payload: { access, refresh },
   }),
   logout: () => ({
     type: actions.LOGOUT,

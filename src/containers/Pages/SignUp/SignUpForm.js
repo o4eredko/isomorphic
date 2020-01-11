@@ -7,6 +7,7 @@ import Button               from '@iso/components/uielements/button';
 import Icon                 from 'antd/lib/icon';
 import IntlMessages         from '@iso/components/utility/intlMessages';
 import Notification         from '@iso/components/Notification';
+import jwtConfig            from '@iso/config/jwt.config';
 
 
 class SignUpForm extends Component {
@@ -33,7 +34,7 @@ class SignUpForm extends Component {
     const { validateFieldsAndScroll } = this.props.form;
     validateFieldsAndScroll(async (err, values) => {
       if (err) return;
-      const { data, status } = await SuperFetch.post('users/', values);
+      const { data, status } = await SuperFetch.post(`${ jwtConfig.fetchUrl }/users/`, values);
       if (status === 201)
         this.successfulRegistration();
       else if (status === 400)

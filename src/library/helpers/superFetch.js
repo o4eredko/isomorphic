@@ -1,5 +1,3 @@
-import jwtConfig from '@iso/config/jwt.config';
-
 const customHeader = () => {
   const token = localStorage.getItem('id_token');
   return {
@@ -15,7 +13,7 @@ const base = (method, url, data = {}) => {
     headers: customHeader(),
   };
   if (method !== 'get') params.body = JSON.stringify(data);
-  return fetch(`${ jwtConfig.fetchUrl }${ url }`, params)
+  return fetch(`${ url }`, params)
     .then(async response => ({ data: await response.json(), status: response.status }))
 };
 

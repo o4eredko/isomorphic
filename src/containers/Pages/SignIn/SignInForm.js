@@ -5,8 +5,10 @@ import { Input }            from 'antd';
 import Button               from '@iso/components/uielements/button';
 import IntlMessages         from '@iso/components/utility/intlMessages';
 import AuthHelper           from '@iso/lib/helpers/authHelper';
-import { connect }          from "react-redux";
-import Icon                 from "antd/lib/icon";
+import { connect }          from 'react-redux';
+import Icon                 from 'antd/lib/icon';
+import SuperFetch           from '@iso/lib/helpers/superFetch';
+import jwtConfig            from '@iso/config/jwt.config';
 
 
 const { login } = authAction;
@@ -16,19 +18,19 @@ class SignInForm extends Component {
     e.preventDefault();
     const { validateFieldsAndScroll, setFields } = this.props.form;
 
-    validateFieldsAndScroll((err, values) => {
+    validateFieldsAndScroll(async (err, values) => {
         if (err) return;
-        AuthHelper.login(values).then(response => {
-          if ('token' in response)
-            this.props.dispatch(login(response.token));
-          else if ('error' in response)
-            setFields({
-              password: {
-                value: '',
-                errors: [new Error(response.error)]
-              }
-            });
-        });
+        try {
+          const response = await SuperFetch.post(`${ jwtConfig.fetchUrl }/login/`, values);
+          if (response.status === 401)
+            throw Error('Username and password do not match');
+          AuthHelper.checkExpiration(response.data.access);
+          this.props.dispatch(login(response.data.access, response.data.refresh));
+        } catch (e) {
+          setFields({
+            password: { value: '', errors: [new Error(e.message)] }
+          });
+        }
       }
     )
   };

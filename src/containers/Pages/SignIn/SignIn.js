@@ -6,6 +6,7 @@ import SignInStyleWrapper             from './SignIn.styles';
 import SignInForm                     from "./SignInForm";
 
 const SignIn = (props) => {
+  console.log("Logged ", props.isLoggedIn);
   if (props.isLoggedIn) {
     let { from } = props.location.state || { from: { pathname: '/dashboard' } };
     return <Redirect to={ from } />;
@@ -37,7 +38,7 @@ const SignIn = (props) => {
 };
 
 function mapStateToProps(state) {
-  return { isLoggedIn: state.Auth.idToken, }
+  return { isLoggedIn: state.Auth.accessToken && state.Auth.refreshToken }
 }
 
 export default connect(mapStateToProps)(withRouter(SignIn));

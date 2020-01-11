@@ -4,7 +4,7 @@ import authActions from '@iso/redux/auth/actions';
 const Auth0Callback = () => {
   useEffect(() => {
     Auth0.handleAuthentication();
-    authActions.login();
+    // authActions.login();
   }, []);
 
   return <p>Loading ...</p>;

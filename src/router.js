@@ -58,7 +58,8 @@ const publicRoutes = [
 
 function PrivateRoute({ children, ...rest }) {
   let location = useLocation();
-  const isLoggedIn = useSelector(state => state.Auth.idToken);
+  const isLoggedIn = useSelector(state =>
+    state.Auth.accessToken && state.Auth.refreshToken);
   if (isLoggedIn) return <Route {...rest}>{children}</Route>;
   return (
     <Redirect
