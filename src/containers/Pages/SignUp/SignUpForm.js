@@ -34,7 +34,7 @@ class SignUpForm extends Component {
     const { validateFieldsAndScroll } = this.props.form;
     validateFieldsAndScroll(async (err, values) => {
       if (err) return;
-      const { data, status } = await SuperFetch.post(`${ jwtConfig.fetchUrl }/users/`, values);
+      const { data, status } = await SuperFetch.post(`${ jwtConfig.fetchUrl }/users/`, false, values);
       if (status === 201)
         this.successfulRegistration();
       else if (status === 400)

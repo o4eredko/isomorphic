@@ -11,20 +11,18 @@ export function* loginRequest() {
     const { access, refresh } = payload;
     if (!access || !refresh)
       yield put({ type: actions.LOGIN_ERROR });
+
+    localStorage.setItem('access_token', access);
+    localStorage.setItem('refresh_token', refresh);
     yield put({
       type: actions.LOGIN_SUCCESS,
-      payload: { access, refresh },
       profile: 'Profile',
     });
   });
 }
 
 export function* loginSuccess() {
-  yield takeEvery(actions.LOGIN_SUCCESS, function* ({ payload }) {
-    const { access, refresh } = payload;
-    localStorage.setItem('access_token', access);
-    localStorage.setItem('refresh_token', refresh);
-    yield
+  yield takeEvery(actions.LOGIN_SUCCESS, function* () {
   });
 }
 
@@ -48,7 +46,6 @@ export function* checkAuthorization() {
     if (access && refresh) {
       yield put({
         type: actions.LOGIN_SUCCESS,
-        payload: { access, refresh },
         profile: 'Profile',
       });
     }

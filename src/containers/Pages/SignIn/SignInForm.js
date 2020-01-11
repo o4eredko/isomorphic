@@ -21,7 +21,7 @@ class SignInForm extends Component {
     validateFieldsAndScroll(async (err, values) => {
         if (err) return;
         try {
-          const response = await SuperFetch.post(`${ jwtConfig.fetchUrl }/login/`, values);
+          const response = await SuperFetch.post(`${ jwtConfig.fetchUrl }/login/`, false, values);
           if (response.status === 401)
             throw Error('Username and password do not match');
           AuthHelper.checkExpiration(response.data.access);

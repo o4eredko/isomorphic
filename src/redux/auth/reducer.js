@@ -1,15 +1,11 @@
 import actions from './actions';
 
-const initState = { accessToken: null, refreshToken: null };
+const initState = { isLoggedIn: false };
 
 export default function authReducer(state = initState, action) {
   switch (action.type) {
     case actions.LOGIN_SUCCESS:
-      return {
-        accessToken: action.payload.access,
-        refreshToken: action.payload.refresh,
-      };
-
+      return { isLoggedIn: true };
     case actions.LOGOUT:
       return initState;
     default:

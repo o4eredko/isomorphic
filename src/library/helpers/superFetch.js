@@ -1,16 +1,28 @@
-const customHeader = () => {
-  const token = localStorage.getItem('id_token');
+import authHelper from './authHelper';
+
+const customHeader = authorization => {
+  const access = localStorage.getItem('access_token');
   return {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: token ? `Bearer ${ token }` : '',
+    Authorization: authorization ? `Bearer ${ access }` : '',
   }
 };
 
-const base = (method, url, data = {}) => {
+const checkToken = () => {
+  const access = localStorage.getItem('access_token');
+  try {
+    authHelper.checkExpiration(access);
+  } catch {
+    return authHelper.refreshToken();
+  }
+};
+
+const base = async (method, url, authorization=false, data = {}) => {
+  if (authorization) await checkToken();
   const params = {
     method,
-    headers: customHeader(),
+    headers: customHeader(authorization),
   };
   if (method !== 'get') params.body = JSON.stringify(data);
   return fetch(`${ url }`, params)

@@ -1,4 +1,5 @@
 import { loadState } from '@iso/lib/helpers/localStorage';
+import SuperFetch    from "../../../library/helpers/superFetch";
 
 const fetchHeaders = {
   'Content-Type': 'application/json',
@@ -8,21 +9,22 @@ const fetchHeaders = {
 class GoogleActions {
   apiUrl = 'http://localhost:8000/api';
 
-  getDataList = () => {
+  getDataList = async () => {
     const fetchUrl = `${ this.apiUrl }/${ 'countries/' }`;
-    const fetchConfig = { method: 'GET', headers: fetchHeaders };
-
-    return fetch(fetchUrl, fetchConfig).then(async response => {
-      if (response.status !== 200) throw Error('HEL`P ME');
-      return this.convertDataList(await response.json());
-    }).catch(() => []);
+    try {
+      const response = await SuperFetch.get(fetchUrl, true);
+      if (response.status !== 200) throw Error();
+      return this.convertDataList(response.data);
+    } catch (e) {
+      console.log(e);
+      return [{key: 0, country: 'SS'}];
+    }
   };
 
   convertDataList = async countries => {
     // Create requests to get status for every country
-    const fetchConfig = { method: 'GET', headers: fetchHeaders };
     let statusPromises = countries.map(country =>
-      fetch(`${ this.apiUrl }/campaigns/${ country }/status/`, fetchConfig)
+      SuperFetch.get(`${ this.apiUrl }/campaigns/${ country }/status/`, true)
         .then(response => response.json())
     );
     // Convert array of resolved promises to object with country: status values
@@ -42,17 +44,14 @@ class GoogleActions {
 
   switchCampaign = async (active, record) => {
     const fetchUrl = `${ this.apiUrl }/campaigns/${ record.country }/`;
-    const body = JSON.stringify({ enable: active });
-    const fetchConfig = { method: 'PUT', headers: fetchHeaders, body };
-    const response = await fetch(fetchUrl, fetchConfig);
+    const response = await SuperFetch.put(fetchUrl, true, { enable: active });
     if (!response.ok) throw Error(await response.text());
   };
 
   getCurrentStatus = country => {
     const fetchUrl = `${ this.apiUrl }/campaigns/${ country }/`;
     const fetchConfig = { method: 'GET', headers: fetchHeaders };
-    return fetch(fetchUrl, fetchConfig)
-      .then(async response => (await response.json()).result);
+    return SuperFetch.get(fetchUrl, fetchConfig).then(res => res.data.result);
   };
 }
 

@@ -19,6 +19,7 @@ export const signInWithFacebook = () =>
     .signInWithPopup(facebookProvider)
     .then(function(result) {
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      //!!! WON't WORK, access token stored in localStorage!!
       var token = result.credential.accessToken;
       // The signed-in user info.
       var user = result.user;
