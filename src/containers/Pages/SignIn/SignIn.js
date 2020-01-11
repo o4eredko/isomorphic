@@ -6,7 +6,6 @@ import SignInStyleWrapper             from './SignIn.styles';
 import SignInForm                     from "./SignInForm";
 
 const SignIn = (props) => {
-  console.log("Logged ", props.isLoggedIn);
   if (props.isLoggedIn) {
     let { from } = props.location.state || { from: { pathname: '/dashboard' } };
     return <Redirect to={ from } />;
