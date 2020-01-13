@@ -1,7 +1,7 @@
-import jwtDecode       from 'jwt-decode';
-import jwtConfig       from '@iso/config/jwt.config.js';
-import SuperFetch      from './superFetch';
-import { useSelector } from 'react-redux';
+import jwtDecode    from 'jwt-decode';
+import jwtConfig    from '@iso/config/jwt.config.js';
+import SuperFetch   from './superFetch';
+import Notification from '@iso/components/Notification';
 
 class AuthHelper {
   // login = userInfo => {
@@ -23,17 +23,17 @@ class AuthHelper {
   // }
 
   refreshToken = async () => {
-    const fetchParams = {
-      fetchUrl: `${ jwtConfig.fetchUrl }/refresh/`,
-      authorization: false,
-      fetchData: { refresh: localStorage.getItem('refresh_token') },
-    };
-    const response = await SuperFetch.post(...fetchParams);
+    const fetchUrl = `${ jwtConfig.fetchUrl }/refresh/`;
+    const authorization = false;
+    const fetchData = { refresh: localStorage.getItem('refresh_token') };
+    const response = await SuperFetch.post(fetchUrl, authorization, fetchData);
     if (response.status !== 200) {
+      Notification('warning', 'You have to log in once again');
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+    } else {
+      localStorage.setItem('access_token', response.data.access);
     }
-    localStorage.setItem('access_token', response.access);
   };
 
   checkExpiration = token => {
