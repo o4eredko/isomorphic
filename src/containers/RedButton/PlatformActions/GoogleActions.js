@@ -1,19 +1,17 @@
-import { loadState } from '@iso/lib/helpers/localStorage';
-import SuperFetch    from '@iso/lib/helpers/superFetch';
+import SuperFetch from '@iso/lib/helpers/superFetch';
 
 class GoogleActions {
   apiUrl = 'http://localhost:8000/api';
 
   getDataList = async () => {
     const fetchUrl = `${ this.apiUrl }/countries/`;
-    try {
-      const response = await SuperFetch.get(fetchUrl, true);
-      if (response.status !== 200) throw Error();
-      return this.convertDataList(response.data);
-    } catch (e) {
-      console.log(e);
-      return [];
-    }
+    const response = await SuperFetch.get(fetchUrl, true);
+    return this.convertDataList(response.data);
+  };
+
+  getCurrentStatus = country => {
+    const fetchUrl = `${ this.apiUrl }/campaigns/${ country }/`;
+    return SuperFetch.get(fetchUrl, true).then(res => res.data.result);
   };
 
   convertDataList = async countries => {
@@ -34,15 +32,9 @@ class GoogleActions {
     }))
   };
 
-  switchCampaign = async (active, record) => {
-    const fetchUrl = `${ this.apiUrl }/campaigns/${ record.country }/`;
-    const response = await SuperFetch.put(fetchUrl, true, { enable: active });
-    if (response.status !== 200) throw Error(response.data);
-  };
-
-  getCurrentStatus = country => {
+  switchCampaigns = (enable, country) => {
     const fetchUrl = `${ this.apiUrl }/campaigns/${ country }/`;
-    return SuperFetch.get(fetchUrl, true).then(res => res.data.result);
+    return SuperFetch.put(fetchUrl, true, { enable });
   };
 }
 

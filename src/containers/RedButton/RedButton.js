@@ -1,10 +1,9 @@
 import React                from 'react';
-import Tabs, { TabPane }    from '@iso/components/uielements/tabs';
 import LayoutContentWrapper from '@iso/components/utility/layoutWrapper';
 import LayoutContent        from '@iso/components/utility/layoutContent';
-import platforms            from './config';
+import Tabs, { TabPane }    from '@iso/components/uielements/tabs';
 import PlatformTable        from './PlatformTable';
-import Notification         from '@iso/components/Notification';
+import platforms            from './config';
 
 const enabledPlatforms = platforms.filter(platform => !platform.disabled);
 let firstActivePlatform = null;

@@ -23,7 +23,7 @@ import modal                 from '@iso/redux/modal/reducer';
 import profile               from '@iso/redux/profile/reducer';
 import githubSearch          from '@iso/redux/githubSearch/reducers';
 import quiz                  from '@iso/redux/quiz/reducer';
-import signin                from "@iso/redux/signin/reducer";
+import redButton             from '@iso/redux/redButton/reducer';
 
 export default combineReducers({
   Auth,
@@ -50,6 +50,5 @@ export default combineReducers({
   profile,
   githubSearch,
   quiz,
-
-  signin,
+  redButton,
 });
