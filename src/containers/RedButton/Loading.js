@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Progress             from '@iso/components/uielements/progress';
 
 export default class Loading extends Component {
-  state = { loaded: 0, process: null };
+  state = { loaded: 0 };
 
   componentDidMount() {
     if ('maxValue' in this.props && 'country' in this.props && 'updateStatus' in this.props)
@@ -10,17 +10,19 @@ export default class Loading extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props))
-      if ('maxValue' in this.props && 'country' in this.props && 'updateStatus' in this.props)
-        this.startLoading();
+    const loaded = !(prevState.loaded > 0 && prevState.loaded < 100);
+    const unequal = JSON.stringify(prevProps) !== JSON.stringify(this.props);
+    const props = 'maxValue' in this.props && 'country' in this.props && 'updateStatus' in this.props;
+    if (props && loaded && unequal)
+      this.startLoading();
   }
 
   startLoading = async () => {
     await this.trackLoading();
     const process = setInterval(async () => {
       if (this.state.loaded === 100) {
-        clearInterval(process);
         await this.props.callbackSuccess();
+        clearInterval(process);
         return;
       }
       await this.trackLoading();
