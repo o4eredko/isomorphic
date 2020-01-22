@@ -1,4 +1,5 @@
 import GoogleActions from './PlatformActions/GoogleActions';
+import YandexActions from './PlatformActions/YandexActions';
 
 const platforms = [
   {
@@ -8,7 +9,8 @@ const platforms = [
   },
   {
     name: 'Yandex Direct',
-    disabled: true,
+    disabled: false,
+    handler: YandexActions,
   },
   {
     name: 'Bing Ads',

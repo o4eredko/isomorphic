@@ -4,20 +4,25 @@ const redButtonActions = {
   FETCH_PLATFORM_DATA_ERROR: 'FETCH_PLATFORM_DATA_ERROR',
 
   INIT_SYNC_START: 'INIT_SYNC_START',
-  INIT_SYNC: 'INIT_SYNC_SUCCESS',
+  INIT_SYNC: 'INIT_SYNC',
   END_SYNC_START: 'END_SYNC_START',
   END_SYNC: 'END_SYNC',
 
   SWITCH_CAMPAIGNS_START: 'SWITCH_CAMPAIGNS_START',
-  SWITCH_CAMPAIGNS_SUCCESS: 'SWITCH_CAMPAIGNS_SUCCESS',
-  SWITCH_CAMPAIGNS_ERROR: 'SWITCH_CAMPAIGNS_ERROR',
+  SWITCH_CAMPAIGNS_END: 'SWITCH_CAMPAIGNS_END',
 
-  fetchData: strategy => ({ type: redButtonActions.FETCH_PLATFORM_DATA_START, strategy }),
-  initSync: platformName => ({ type: redButtonActions.INIT_SYNC_START, platformName }),
-  endSync: (key, platformName) => ({ type: redButtonActions.END_SYNC_START, key, platformName }),
-  switchCampaigns: (strategy, platformName, record) => ({
+  fetchData: (platformName, strategy) => ({
+    type: redButtonActions.FETCH_PLATFORM_DATA_START, platformName, strategy
+  }),
+  initSync: platformName => ({
+    type: redButtonActions.INIT_SYNC_START, platformName
+  }),
+  endSync: (platformName, key) => ({
+    type: redButtonActions.END_SYNC_START, platformName, key
+  }),
+  switchCampaigns: (platformName, strategy, record) => ({
     type: redButtonActions.SWITCH_CAMPAIGNS_START,
-    strategy, platformName, record
+    platformName, strategy, record
   }),
 };
 

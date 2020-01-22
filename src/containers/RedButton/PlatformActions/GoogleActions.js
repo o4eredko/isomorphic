@@ -9,6 +9,7 @@ class GoogleActions {
     return this.convertDataList(response.data);
   };
 
+  
   getCurrentStatus = country => {
     const fetchUrl = `${ this.apiUrl }/campaigns/${ country }/`;
     return SuperFetch.get(fetchUrl, true).then(res => res.data.result);

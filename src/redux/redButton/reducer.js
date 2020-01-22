@@ -1,29 +1,37 @@
 import actions from './actions';
 
 const initState = {
-  data: [],
+  data: {},
   loading: true,
   sync: {},
 };
 
 export default function redButtonReducer(state = initState, action) {
+  const platform = action.platformName;
+
   switch (action.type) {
     case actions.FETCH_PLATFORM_DATA_SUCCESS:
-      return { ...state, data: action.payload, loading: false };
+      return {
+        ...state,
+        data: { ...state.data, [platform]: action.payload },
+        loading: false,
+      };
     case actions.FETCH_PLATFORM_DATA_ERROR:
-      return { ...state, loading: false };
+      return {
+        ...state,
+        data: { ...state.data, [platform]: [] },
+        loading: false,
+      };
 
     case actions.INIT_SYNC:
       return { ...state, sync: action.payload };
-    case actions.END_SYNC:
-      const sync = { ...state.sync };
-      delete sync[action.payload];
-      return { ...state, sync };
 
-    case actions.SWITCH_CAMPAIGNS_SUCCESS:
-      const data = [...state.data];
-      data[action.record.key] = action.record;
-      return { ...state, data, sync: action.sync };
+    case actions.SWITCH_CAMPAIGNS_END:
+      const { record } = action;
+      const data = { ...state.data };
+      data[platform] = [...data[platform]];
+      data[platform][record.key] = record;
+      return { ...state, data };
 
     default:
       return state;

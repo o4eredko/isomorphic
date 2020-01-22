@@ -13,36 +13,37 @@ const { Column } = Table;
 class PlatformTable extends Component {
   componentDidMount() {
     const { dispatch, platform } = this.props;
-    dispatch(fetchData(platform.handler.getDataList));
+    dispatch(fetchData(platform.name, platform.handler.getDataList));
     dispatch(initSync(platform.name));
   };
 
   renderLoading = record => {
     const { sync, platform, dispatch } = this.props;
     if (record.key in sync)
-      return (
-        <Loading
-          id={ record.key }
-          country={ record.country }
-          maxValue={ sync[record.key] }
-          updateStatus={ platform.handler.getCurrentStatus }
-          callbackSuccess={ () => dispatch(endSync(record.key, platform.name)) }
-        />
-      );
+    return (
+      <Loading
+        id={ record.key }
+        country={ record.country }
+        maxValue={ sync[record.key] }
+        updateStatus={ platform.handler.getCurrentStatus }
+        callbackSuccess={ () => dispatch(endSync(platform.name, record.key)) }
+      />
+    );
     return (
       <Progress
         strokeColor={ { from: '#108ee9', to: '#87d068' } }
         percent={ 100 }
-        statuds='success'
+        showInfo={ true }
+        status="success"
       />
     )
   };
 
   render() {
-    const { dispatch, platform: { handler }, platform } = this.props;
+    const { dispatch, platform: { name, handler } } = this.props;
     return (
       <TableWrapper
-        pagination={{ pageSize: 7 }}
+        pagination={ { pageSize: 20 } }
         loading={ this.props.loading }
         dataSource={ this.props.data }
         className="isoSimpleTable"
@@ -66,7 +67,7 @@ class PlatformTable extends Component {
           render={ (active, record) => (
             <Switch
               checked={ active }
-              onChange={ () => dispatch(switchCampaigns(handler, platform.name, record)) }
+              onChange={ () => dispatch(switchCampaigns(name, handler, record)) }
             />
           ) }
         />
@@ -75,9 +76,9 @@ class PlatformTable extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   const { data, loading, sync } = state.redButton;
-  return { data, loading, sync }
+  return { data: data[props.platform.name], loading, sync: sync[props.platform.name] }
 }
 
 export default connect(mapStateToProps)(PlatformTable)
