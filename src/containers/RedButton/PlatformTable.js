@@ -5,7 +5,10 @@ import Switch               from '@iso/components/uielements/switch';
 import Loading              from './Loading';
 import Progress             from '@iso/components/uielements/progress';
 import { connect }          from 'react-redux';
-import redButtonActions     from '@iso/redux/redButton/actions'
+import redButtonActions     from '@iso/redux/redButton/actions';
+import Popconfirm           from '@iso/components/Feedback/Popconfirm';
+import message              from '@iso/components/Feedback/Message';
+
 
 const { fetchData, initSync, endSync, switchCampaigns } = redButtonActions;
 const { Column } = Table;
@@ -20,15 +23,15 @@ class PlatformTable extends Component {
   renderLoading = record => {
     const { sync, platform, dispatch } = this.props;
     if (record.key in sync)
-    return (
-      <Loading
-        id={ record.key }
-        country={ record.country }
-        maxValue={ sync[record.key] }
-        updateStatus={ platform.handler.getCurrentStatus }
-        callbackSuccess={ () => dispatch(endSync(platform.name, record.key)) }
-      />
-    );
+      return (
+        <Loading
+          id={ record.key }
+          country={ record.country }
+          maxValue={ sync[record.key] }
+          updateStatus={ platform.handler.getCurrentStatus }
+          callbackSuccess={ () => dispatch(endSync(platform.name, record.key)) }
+        />
+      );
     return (
       <Progress
         strokeColor={ { from: '#108ee9', to: '#87d068' } }
@@ -65,10 +68,16 @@ class PlatformTable extends Component {
           key="active"
           align="center"
           render={ (active, record) => (
-            <Switch
-              checked={ active }
-              onChange={ () => dispatch(switchCampaigns(name, handler, record)) }
-            />
+            <Popconfirm
+              placement="left"
+              title="Are you sure？"
+              okText="Do it!"
+              cancelText="No"
+              onConfirm={ () => dispatch(switchCampaigns(name, handler, record)) }
+              onCancel={ () => message.warning('Na o4ko upal?') }
+            >
+              <Switch checked={ active } />
+            </Popconfirm>
           ) }
         />
       </TableWrapper>

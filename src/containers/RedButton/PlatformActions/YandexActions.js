@@ -6,7 +6,7 @@ class YandexActions {
 
   getDataList = async () => {
     const fetchUrl = `${ this.apiUrl }/countries/`;
-    const response = await SuperFetch.get(fetchUrl, false);
+    const response = await SuperFetch.get(fetchUrl, true);
     return this.convertDataList(response.data);
   };
 
@@ -17,7 +17,7 @@ class YandexActions {
   convertDataList = async countries => {
     // Create requests to get status for every country
     let statusPromises = countries.map(country =>
-      SuperFetch.get(`${ this.apiUrl }/campaigns/${ country }/status/`, false)
+      SuperFetch.get(`${ this.apiUrl }/campaigns/${ country }/status/`, true)
     );
     // Convert array of resolved promises to object with country: status values
     let statuses = {};

@@ -4,35 +4,18 @@ import SuperFetch   from './superFetch';
 import Notification from '@iso/components/Notification';
 
 class AuthHelper {
-  // login = userInfo => {
-  //   return SuperFetch.post(`${ jwtConfig.fetchUrl }/login/`, userInfo).then(response =>
-  //     this.checkExpiration(response.data.access)
-  //   );
-  // };
-
-  // async checkDemoPage(token) {
-  //   if (this.checkExpiration(token).error) {
-  //     return { error: 'Token expired' };
-  //   }
-  //   return await SuperFetch.get('secret/test', { token })
-  //     .then(response => ({
-  //       status: '200',
-  //       message: 'Success',
-  //     }))
-  //     .catch(error => ({ error: JSON.stringify(error) }));
-  // }
-
   refreshToken = async () => {
     const fetchUrl = `${ jwtConfig.fetchUrl }/refresh/`;
     const authorization = false;
     const fetchData = { refresh: localStorage.getItem('refresh_token') };
-    const response = await SuperFetch.post(fetchUrl, authorization, fetchData);
-    if (response.status !== 200) {
+    try {
+      const response = await SuperFetch.post(fetchUrl, authorization, fetchData);
+      if (response.status !== 200) throw Error();
+      localStorage.setItem('access_token', response.data.access);
+    } catch {
       Notification('warning', 'You have to log in once again');
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-    } else {
-      localStorage.setItem('access_token', response.data.access);
     }
   };
 
