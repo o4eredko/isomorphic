@@ -5,6 +5,7 @@ This is the admin panel for different services.
 
 1. This admin dashboard uses JWT Authentication and registration
 from http://gitlab.jooble.com/marketing_tech/jwt_auth.
+You can set the url for authentication in **src/config/jwt.config.js**
 
 ## Available Scripts
 
