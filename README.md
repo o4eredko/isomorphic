@@ -3,44 +3,41 @@ This is the admin panel for different services.
 
 ## Dependencies
 
-1. This admin dashboard uses JWT Authentication and registration
-from http://gitlab.jooble.com/marketing_tech/jwt_auth.
-You can set the url for authentication in **src/config/jwt.config.js**
+* [Critical]: 
+     
+    This admin dashboard uses JWT Authentication and registration
+    from http://gitlab.jooble.com/marketing_tech/jwt_auth.
+    It is impossible to sign in or sign up without this service!
+    You can set the url for authentication in **src/config/jwt.config.js**
 
-2. RedButton depends on 2 services:
-* Google Red Button: http://gitlab.jooble.com/marketing_tech/google_red_button.git
-* Yandex Red Button: http://gitlab.jooble.com/marketing_tech/yandex_red_button.git
-In **src/containers/RedButton/PlatformActions** placed classes to work with each service.
-It is required to set **apiUrl** properly inside them.
+* [Not critical]
+  
+  RedButton depends on 2 services:
+  * **Google Red Button**: http://gitlab.jooble.com/marketing_tech/google_red_button.git
+  * **Yandex Red Button**: http://gitlab.jooble.com/marketing_tech/yandex_red_button.git
+  
+  **Important**: In **isomorphic/src/containers/RedButton/PlatformActions** placed classes to work with each service.
+  It is required to set **apiUrl** properly inside them.
 
 ## Installation and running
 
-In the project directory, you may run:
+* Clone repository:
+  ```
+  git clone http://gitlab.jooble.com/marketing_tech/isomorphic.git
+  ```
+* Proceed to projects directory:
+  ```
+  cd isomorphic
+  ```
+* To run the application use command:
+  ```
+  docker-compose up --build
+  ```
+* To stop the application use command:
+  ```
+  docker-compose down
+  ```
 
-* Runs the app in the development mode.<br />
-  Open [http://localhost:3000](http://localhost:3000) to view it in the browser:
-
-    ```
-    make run
-    ```
-
-* Stop app:
-
-    ```
-    make stop
-    ```
-
-* Down container with app:
-    
-    ```
-    make clean
-    ``` 
-
-* Pass into containers terminal:
-
-    ```
-    make bash
-    ```
 ---
 ### `yarn build`
 
