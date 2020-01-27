@@ -15,17 +15,33 @@ It is required to set **apiUrl** properly inside them.
 
 ## Installation and running
 
-In the project directory, you should run:
+In the project directory, you may run:
 
-### `make run`
+* Runs the app in the development mode.<br />
+  Open [http://localhost:3000](http://localhost:3000) to view it in the browser:
 
-Install dependencies.
+    ```
+    make run
+    ```
 
-### `yarn start`
+* Stop app:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    ```
+    make stop
+    ```
 
+* Down container with app:
+    
+    ```
+    make clean
+    ``` 
+
+* Pass into containers terminal:
+
+    ```
+    make bash
+    ```
+---
 ### `yarn build`
 
 Builds for the production mode.
