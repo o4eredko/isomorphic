@@ -1,17 +1,23 @@
 # Isomorphic - React Redux Admin Dashboard `Version 2.9.6`
 This is the admin panel for different services.
 
-## Important Details
+## Dependencies
 
 1. This admin dashboard uses JWT Authentication and registration
 from http://gitlab.jooble.com/marketing_tech/jwt_auth.
 You can set the url for authentication in **src/config/jwt.config.js**
 
-## Available Scripts
+2. RedButton depends on 2 services:
+* Google Red Button: http://gitlab.jooble.com/marketing_tech/google_red_button.git
+* Yandex Red Button: http://gitlab.jooble.com/marketing_tech/yandex_red_button.git
+In **src/containers/RedButton/PlatformActions** placed classes to work with each service.
+It is required to set **apiUrl** properly inside them.
+
+## Installation and running
 
 In the project directory, you should run:
 
-### `yarn`
+### `make run`
 
 Install dependencies.
 
