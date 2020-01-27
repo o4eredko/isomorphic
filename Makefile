@@ -1,9 +1,6 @@
 bash:
 	@docker exec -it isomorphic /bin/bash
 
-build:
-	@docker-compose build
-
 run:
 	@docker-compose up --build
 
