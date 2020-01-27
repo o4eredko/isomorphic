@@ -8,7 +8,6 @@ class GoogleActions {
     const response = await SuperFetch.get(fetchUrl, true);
     return this.convertDataList(response.data);
   };
-
   
   getCurrentStatus = country => {
     const fetchUrl = `${ this.apiUrl }/campaigns/${ country }/`;

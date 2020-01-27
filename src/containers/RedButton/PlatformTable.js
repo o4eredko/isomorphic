@@ -74,7 +74,6 @@ class PlatformTable extends Component {
               okText="Do it!"
               cancelText="No"
               onConfirm={ () => dispatch(switchCampaigns(name, handler, record)) }
-              onCancel={ () => message.warning('Na o4ko upal?') }
             >
               <Switch checked={ active } />
             </Popconfirm>
