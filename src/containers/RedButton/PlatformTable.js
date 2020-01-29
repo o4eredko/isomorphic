@@ -46,7 +46,7 @@ class PlatformTable extends Component {
     const { dispatch, platform: { name, handler } } = this.props;
     return (
       <TableWrapper
-        pagination={ { pageSize: 20 } }
+        pagination={ false }
         loading={ this.props.loading }
         dataSource={ this.props.data }
         className="isoSimpleTable"
