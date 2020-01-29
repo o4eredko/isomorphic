@@ -51,7 +51,7 @@ class SignInForm extends Component {
                 }
                 type="text"
                 size="large"
-                placeholder="Username"
+                placeholder="Login"
               />
             ) }
           </Form.Item>

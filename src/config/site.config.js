@@ -1,7 +1,7 @@
 export default {
-  siteName: 'ISOMORPHIC',
+  siteName: 'SKYLINE',
   siteIcon: 'ion-flash',
-  footerText: `Isomorphic @ ${new Date().getFullYear()} Created by RedQ, Inc`,
+  footerText: `Skyline @ ${new Date().getFullYear()} Created by Jooble Marketing Tech`,
   enableAnimatedRoute: false,
   apiUrl: 'http://yoursite.com/api/',
   google: {
