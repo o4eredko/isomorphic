@@ -36,8 +36,9 @@ class YandexActions {
     const fetchUrl = `${ this.apiUrl }/campaigns/${ country.toLowerCase() }/`;
     this.status = 100;
     return SuperFetch.put(fetchUrl, true, { enable }).then(response => {
-      if (response.status !== 200)
-        throw Error();
+      if (response.status !== 200) {
+        throw Error('detail' in response.data ? response.data.detail : null);
+      }
       this.status = 0;
     });
   };

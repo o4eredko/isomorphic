@@ -42,7 +42,8 @@ export function* switchCampaigns() {
       message.success(`Platforms in ${ record.country } was successfully ${ !record.active ? 'enabled' : 'disabled' }.`);
 
     } catch (e) {
-      yield message.error('Something went wrong. Try again later.');
+      let msg = e.message || 'Something went wrong. Try again later.';
+      yield message.error(msg);
       yield put({ type: actions.END_SYNC_START, key: record.key, platformName });
       yield put({
         type: actions.SWITCH_CAMPAIGNS_END,
