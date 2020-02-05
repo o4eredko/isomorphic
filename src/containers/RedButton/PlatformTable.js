@@ -1,66 +1,78 @@
 import React, { Component } from 'react';
 import TableWrapper         from '@iso/containers/Tables/AntTables/AntTables.styles.js';
 import Table                from '@iso/components/uielements/table';
-import Switch               from '@iso/components/uielements/switch';
-import Loading              from './Loading';
 import Progress             from '@iso/components/uielements/progress';
-import { connect }          from 'react-redux';
-import redButtonActions     from '@iso/redux/redButton/actions';
-import Popconfirm           from '@iso/components/Feedback/Popconfirm';
-import message              from '@iso/components/Feedback/Message';
+import Switch               from './Switch';
 
-
-const { fetchData, initSync, endSync, switchCampaigns } = redButtonActions;
 const { Column } = Table;
 
 class PlatformTable extends Component {
-  componentDidMount() {
-    const { dispatch, platform } = this.props;
-    dispatch(fetchData(platform.name, platform.handler.getDataList));
-    dispatch(initSync(platform.name));
+  process = null;
+  state = {
+    loading: true,
+    data: [],
+    progress: {},
   };
 
-  renderLoading = record => {
-    const { sync, platform, dispatch } = this.props;
-    if (record.key in sync)
-      return (
-        <Loading
-          id={ record.key }
-          country={ record.country }
-          maxValue={ sync[record.key] }
-          updateStatus={ platform.handler.getCurrentStatus }
-          callbackSuccess={ () => dispatch(endSync(platform.name, record.key)) }
-        />
-      );
-    return (
-      <Progress
-        strokeColor={ { from: '#108ee9', to: '#87d068' } }
-        percent={ 100 }
-        showInfo={ true }
-        status="success"
-      />
-    )
+  componentDidMount() {
+    const { handler } = this.props.platform;
+
+    handler.getDataList()
+      .then(data => this.setState({ data }))
+      .finally(() => this.setState({ loading: false }));
+
+    this.getProgress()
+      .then(() => {
+        this.process = setInterval(this.getProgress, 3000)
+      });
+  };
+
+  componentWillUnmount = () => clearInterval(this.process);
+
+  getProgress = async () => {
+    if (!this.props.isActive) return;
+    const { platform: { handler } } = this.props;
+    const response = await handler.getProgress();
+    const data = [...this.state.data];
+
+    for (let record of data) {
+      if (record.country in response) {
+        record.active = (response[record.country].action === 'resume');
+        record.loaded = response[record.country].progress;
+      } else if (record.loaded !== 100) {
+        record.loaded = 100;
+      }
+    }
+    this.setState({ data });
   };
 
   render() {
-    const { dispatch, platform: { name, handler } } = this.props;
+    const { loading, data } = this.state;
+    const { handler } = this.props.platform;
     return (
       <TableWrapper
         pagination={ false }
-        loading={ this.props.loading }
-        dataSource={ this.props.data }
+        loading={ loading }
+        dataSource={ data }
         className="isoSimpleTable"
       >
         <Column
           title="Country"
           dataIndex="country"
           key="country"
+          render={ countryCode => countryCode.toUpperCase() }
         />
         <Column
           title="Status"
           dataIndex="loaded"
           key="loaded"
-          render={ (loaded, record) => this.renderLoading(record) }
+          render={ loaded => (
+            <Progress
+              percent={ loaded }
+              status={ loaded === 100 ? 'success' : 'active' }
+              strokeColor={ { from: '#108ee9', to: '#87d068' } }
+            />
+          ) }
         />
         <Column
           title="Active"
@@ -68,15 +80,12 @@ class PlatformTable extends Component {
           key="active"
           align="center"
           render={ (active, record) => (
-            <Popconfirm
-              placement="left"
-              title="Are you sure？"
-              okText="Do it!"
-              cancelText="No"
-              onConfirm={ () => dispatch(switchCampaigns(name, handler, record)) }
-            >
-              <Switch checked={ active } />
-            </Popconfirm>
+            <Switch
+              active={ active }
+              country={ record.country }
+              strategy={ handler.switchCampaigns }
+              callback={ () => this.getProgress() }
+            />
           ) }
         />
       </TableWrapper>
@@ -84,9 +93,4 @@ class PlatformTable extends Component {
   }
 }
 
-function mapStateToProps(state, props) {
-  const { data, loading, sync } = state.redButton;
-  return { data: data[props.platform.name], loading, sync: sync[props.platform.name] }
-}
-
-export default connect(mapStateToProps)(PlatformTable)
+export default PlatformTable
