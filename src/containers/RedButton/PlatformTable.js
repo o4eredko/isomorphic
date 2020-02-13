@@ -1,40 +1,50 @@
-import React, { Component } from 'react';
-import TableWrapper         from '@iso/containers/Tables/AntTables/AntTables.styles.js';
-import Table                from '@iso/components/uielements/table';
-import Progress             from '@iso/components/uielements/progress';
-import Switch               from './Switch';
+import React, { Component } from "react";
+import TableWrapper         from "@iso/containers/Tables/AntTables/AntTables.styles.js";
+import Table                from "@iso/components/uielements/table";
+import Progress             from "@iso/components/uielements/progress";
+import PlatformActions      from "./PlatformActions";
+import Switch               from "./Switch";
 
 const { Column } = Table;
 
 class PlatformTable extends Component {
-  process = null;
-  state = {
-    loading: true,
-    data: [],
-    progress: {},
+
+  constructor(props) {
+    super(props);
+    this.shortTimeout = 500;
+    this.longTimeout = 5000;
+    this.state = {
+      loading: true,
+      data: [],
+      progress: {},
+    };
+    this.handler = new PlatformActions(props.apiUrl)
+  }
+
+  initPlatform = async () => {
+    try {
+      await this.handler.initUrlTable();
+      const data = await this.handler.getDataList();
+      this.setState({ data });
+    } finally {
+      this.setState({ loading: false });
+    }
+
+    await this.getProgress(this.timeout);
   };
 
   componentDidMount() {
-    const { handler } = this.props.platform;
-
-    handler.getDataList()
-      .then(data => this.setState({ data }))
-      .finally(() => this.setState({ loading: false }));
-
-    this.getProgress()
-      .then(() => {
-        this.process = setInterval(this.getProgress, 3000)
-      });
+    this.initPlatform()
   };
 
-  componentWillUnmount = () => clearInterval(this.process);
+  getProgress = async (invokeAgain = true) => {
+    if (!this.props.isActive && invokeAgain) {
+      return setTimeout(this.getProgress, this.longTimeout);
+    }
+    const response = await this.handler.getProgress();
+    const timeout = Object.keys(response).length ? this.shortTimeout : this.longTimeout;
 
-  getProgress = async () => {
-    if (!this.props.isActive) return;
-    const { platform: { handler } } = this.props;
-    const response = await handler.getProgress();
     const data = [...this.state.data];
-
     for (let record of data) {
       if (record.country in response) {
         record.active = (response[record.country].action === 'resume');
@@ -44,11 +54,12 @@ class PlatformTable extends Component {
       }
     }
     this.setState({ data });
+    if (invokeAgain)
+      setTimeout(this.getProgress, timeout);
   };
 
   render() {
     const { loading, data } = this.state;
-    const { handler } = this.props.platform;
     return (
       <TableWrapper
         pagination={ false }
@@ -83,8 +94,8 @@ class PlatformTable extends Component {
             <Switch
               active={ active }
               country={ record.country }
-              strategy={ handler.switchCampaigns }
-              callback={ () => this.getProgress() }
+              strategy={ this.handler.switchCampaigns }
+              callback={ () => this.getProgress(false) }
             />
           ) }
         />
