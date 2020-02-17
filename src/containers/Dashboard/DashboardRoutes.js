@@ -344,6 +344,10 @@ const routes = [
     path: 'red-button',
     component: lazy(() => import('@iso/containers/RedButton/RedButton')),
   },
+  {
+    path: "feedmaker",
+    component: lazy(() => import("@iso/containers/FeedMaker/FeedMaker"))
+  }
 ];
 
 export default function AppRouter() {
