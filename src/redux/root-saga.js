@@ -15,7 +15,6 @@ import investors          from '@iso/redux/investors/sagas';
 import scrumBoardSaga     from '@iso/redux/scrumBoard/saga';
 import profileSaga        from '@iso/redux/profile/saga';
 import quizSaga           from '@iso/redux/quiz/saga';
-import redButtonSaga      from '@iso/redux/redButton/saga';
 
 export default function* rootSaga(getState) {
   yield all([
@@ -35,6 +34,5 @@ export default function* rootSaga(getState) {
     scrumBoardSaga(),
     profileSaga(),
     quizSaga(),
-    redButtonSaga(),
   ]);
 }

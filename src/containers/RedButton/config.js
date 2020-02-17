@@ -1,26 +1,23 @@
-import GoogleActions from './PlatformActions/GoogleActions';
-import YandexActions from './PlatformActions/YandexActions';
-import FacebookActions from './PlatformActions/FacebookActions';
-
 const platforms = [
   {
     name: 'Google Ads',
     disabled: false,
-    handler: GoogleActions,
+    apiUrl: 'http://localhost:8000/api/',
   },
   {
     name: 'Yandex Direct',
     disabled: false,
-    handler: YandexActions,
-  },
-  {
-    name: 'Facebook Ads',
-    disabled: false,
-    handler: FacebookActions
+    apiUrl: 'http://localhost:8001/api/',
   },
   {
     name: 'Bing Ads',
     disabled: true,
+    apiUrl: 'http://localhost:8000/api/',
+  },
+  {
+    name: 'Facebook Ads',
+    disabled: false,
+    apiUrl: 'http://localhost:8002/api/',
   },
 ];
 
