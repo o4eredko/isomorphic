@@ -12,10 +12,12 @@ class AuthHelper {
       const response = await SuperFetch.post(fetchUrl, authorization, fetchData);
       if (response.status !== 200) throw Error();
       localStorage.setItem('access_token', response.data.access);
+      return true
     } catch {
       Notification('warning', 'You have to log in once again');
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+      return false
     }
   };
 
