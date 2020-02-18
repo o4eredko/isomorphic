@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from "react";
 import LayoutWrapper                  from "@iso/components/utility/layoutWrapper.js";
 import PageHeader                     from '@iso/components/utility/pageHeader';
-import Select, { SelectOption }       from "@iso/components/uielements/select";
-import Button                         from "@iso/components/uielements/button";
-import SuperFetch                     from "@iso/lib/helpers/superFetch";
-import { Icon }                       from "antd";
-import Form                           from "@iso/components/uielements/form";
 import TableWrapper                   from "@iso/containers/Tables/AntTables/AntTables.styles.js";
 import Table                          from "@iso/components/uielements/table";
 import Progress                       from "@iso/components/uielements/progress";
 import Box                            from "@iso/components/utility/box";
 import Spin                           from "@iso/components/uielements/spin";
 import strCapitalize                  from "@iso/lib/stringCapitalize";
+import SuperFetch                     from "@iso/lib/helpers/superFetch";
 import socketIOClient                 from "socket.io-client";
-
+import GenerationForm                 from "@iso/components/FeedMaker/GenerationForm";
+import config                         from "@iso/config/feedmaker.config";
 
 const { Column } = Table;
 
-const margin = {
-  margin: '8px 8px',
-};
 
 export default () => {
+  const [loading, setLoading] = useState(true);
   const [genTypes, setGenTypes] = useState([]);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const io = socketIOClient('http://localhost:8080');
+    const io = socketIOClient(config.apiUrl);
     io.on("connect", data => console.log(data));
-    SuperFetch.get("http://localhost:8080/gentypes", true)
+    io.on("fetch_completed", data => console.log(data));
+    SuperFetch.get(`${ config.apiUrl }/gentypes`, true)
       .then(response => setGenTypes(response.data));
     setData([
       {
@@ -46,36 +42,17 @@ export default () => {
         uploading: 12,
       },
     ]);
+    setTimeout(setLoading, 1000, false)
   }, []);
-
-  function handleFormSubmit(e) {
-    // setGenerations(e.target)
-  }
 
   return (
     <LayoutWrapper>
       <PageHeader>Feed Maker</PageHeader>
       <Box title="Generate new feed">
-        <Form onSubmit={ handleFormSubmit } style={ { marginBottom: 30 } }>
-          <Select
-            showSearch
-            style={ { width: 320 } }
-            placeholder="Select generation type"
-          >
-            { genTypes.map(value => (
-              <SelectOption key={ value } value={ value }>
-                { strCapitalize(value) }
-              </SelectOption>
-            )) }
-          </Select>
-          <Button type="danger" style={ margin }>
-            <Icon type="plus-circle" theme="filled" />
-            Generate
-          </Button>
-        </Form>
+        <GenerationForm genTypes={ genTypes } />
         <TableWrapper
           pagination={ false }
-          loading={ false }
+          loading={ loading }
           dataSource={ data }
           className="isoSimpleTable"
         >
