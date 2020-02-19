@@ -65,7 +65,7 @@ export default () => {
             align="center"
             render={ fetching => fetching ?
               <img src={ Hamster } alt="#" style={ { width: 40 } } /> :
-              <Progress type="circle" width={ 30 } percent={ 100 } />
+              <Progress type="circle" percent={ 100 } />
             }
           />
           <Column
@@ -81,20 +81,20 @@ export default () => {
             align="center"
             title="Files Uploaded/Created"
             dataIndex="uploading"
-            render={ ({ created, uploaded }) =>
-              <Title level={ 4 } code={ true }>
-                { `${ uploaded }/${ created }` }
-              </Title>
-            }
+            render={ created => <Title level={ 4 } code={ true }>{ created }</Title> }
           />
-          <Column render={ record =>
-            <Icon
-              style={ { fontSize: 20 } }
-              spin={ true }
-              type="delete"
-              onClick={ () => io.emit("delete_generation", { generation_type: record.key }) }
-            />
-          } />
+          <Column
+            align="center"
+            dataIndex="is_done"
+            render={ (is_done, record) => is_done ?
+              <img src={ Hamster } alt="#" width={ 40 } /> :
+              <Icon
+                style={ { fontSize: 20 } }
+                spin={ true }
+                type="delete"
+                onClick={ () => io.emit("delete_generation", { generation_type: record.key }) }
+              /> }
+          />
         </TableWrapper>
       </Box>
     </LayoutWrapper>
