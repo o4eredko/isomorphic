@@ -24,9 +24,9 @@ export default () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const io = socketIOClient(config.apiUrl);
+    const io = socketIOClient(`${config.apiUrl}`);
     io.on("connect", generations => setData(generations), setLoading(false));
-    io.on("update", generations => setData(generations));
+    io.on("update", generations => {console.log("UPDATE:", generations); setData(generations)});
     setIo(io);
 
     SuperFetch.get(`${ config.apiUrl }/gentypes`, true)
@@ -65,7 +65,7 @@ export default () => {
             align="center"
             render={ fetching => fetching ?
               <img src={ Hamster } alt="#" style={ { width: 40 } } /> :
-              <Progress type="circle" percent={ 100 } />
+              <Progress type="circle" percent={ 100 } width={ 40 } />
             }
           />
           <Column
@@ -79,20 +79,20 @@ export default () => {
           />
           <Column
             align="center"
-            title="Files Uploaded/Created"
-            dataIndex="uploading"
-            render={ created => <Title level={ 4 } code={ true }>{ created }</Title> }
+            title="Files Amount"
+            dataIndex="files_created"
+            render={ files_created => <Title level={ 4 } code={ true }>{ files_created }</Title> }
           />
           <Column
             align="center"
             dataIndex="is_done"
-            render={ (is_done, record) => is_done ?
+            render={ (is_done, record) => !is_done ?
               <img src={ Hamster } alt="#" width={ 40 } /> :
               <Icon
                 style={ { fontSize: 20 } }
                 spin={ true }
                 type="delete"
-                onClick={ () => io.emit("delete_generation", { generation_type: record.key }) }
+                onClick={ () => io.emit("delete_generation", record.key) }
               /> }
           />
         </TableWrapper>
