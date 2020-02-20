@@ -8,10 +8,10 @@ import Progress                       from "@iso/components/uielements/progress"
 import Box                            from "@iso/components/utility/box";
 import strCapitalize                  from "@iso/lib/stringCapitalize";
 import Popconfirm                     from '@iso/components/Feedback/Popconfirm';
-import socketIOClient                 from "socket.io-client";
 import GenerationForm                 from "@iso/components/FeedMaker/GenerationForm";
 import config                         from "@iso/config/feedmaker.config";
 import Hamster                        from "@iso/assets/images/hamster.gif"
+import socketConnect                  from "./socketio";
 
 const { Title } = Typography;
 const { Column } = Table;
@@ -24,24 +24,17 @@ export default () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const io = socketIOClient(config.apiUrl, {
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            "Authorization": "Bearer " + localStorage.getItem("access_token")
-          }
-        }
-      }
+    socketConnect(config.apiUrl).then(io => {
+      io.on("connect", data => {
+        if (!data) return;
+        const { gen_types, generations } = data;
+        setGenTypes(gen_types);
+        setData(generations);
+        setLoading(false)
+      });
+      io.on("update", generations => setData(generations));
+      setIo(io);
     });
-    io.on("connect", data => {
-      if (!data) return;
-      const { gen_types, generations } = data;
-      setGenTypes(gen_types);
-      setData(generations);
-      setLoading(false)
-    });
-    io.on("update", generations => setData(generations));
-    setIo(io);
   }, []);
 
   return (
