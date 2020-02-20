@@ -30,9 +30,9 @@ export default function GenerationForm(props) {
         placeholder="Select generation type"
         onChange={ value => setSelectGenType(value) }
       >
-        { genTypes.map(value => (
+        { genTypes.map(value =>
           <SelectOption key={ value } value={ value }>{ strCapitalize(value) }</SelectOption>
-        )) }
+        ) }
       </Select>
       <Button
         type="danger"

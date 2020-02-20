@@ -7,7 +7,7 @@ import Table                          from "@iso/components/uielements/table";
 import Progress                       from "@iso/components/uielements/progress";
 import Box                            from "@iso/components/utility/box";
 import strCapitalize                  from "@iso/lib/stringCapitalize";
-import SuperFetch                     from "@iso/lib/helpers/superFetch";
+import Popconfirm                     from '@iso/components/Feedback/Popconfirm';
 import socketIOClient                 from "socket.io-client";
 import GenerationForm                 from "@iso/components/FeedMaker/GenerationForm";
 import config                         from "@iso/config/feedmaker.config";
@@ -24,14 +24,16 @@ export default () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const io = socketIOClient(`${config.apiUrl}`);
-    io.on("connect", generations => setData(generations), setLoading(false));
-    io.on("update", generations => {console.log("UPDATE:", generations); setData(generations)});
+    const io = socketIOClient(`${ config.apiUrl }`);
+    io.on("connect", data => {
+      if (!data) return;
+      const { gen_types, generations } = data;
+      setGenTypes(gen_types);
+      setData(generations);
+      setLoading(false)
+    });
+    io.on("update", generations => setData(generations));
     setIo(io);
-
-    SuperFetch.get(`${ config.apiUrl }/gentypes`, true)
-      .then(response => setGenTypes(response.data));
-    setTimeout(setLoading, 1000, false)
   }, []);
 
   return (
@@ -86,14 +88,17 @@ export default () => {
           <Column
             align="center"
             dataIndex="is_done"
-            render={ (is_done, record) => !is_done ?
-              <img src={ Hamster } alt="#" width={ 40 } /> :
-              <Icon
-                style={ { fontSize: 20 } }
-                spin={ true }
-                type="delete"
-                onClick={ () => io.emit("delete_generation", record.key) }
-              /> }
+            render={ (is_done, record) => is_done ? (
+              <Popconfirm
+                placement="left"
+                title="Are you sure?"
+                okText="Do it!"
+                cancelText="No"
+                onConfirm={ () => io.emit("delete_generation", record.key) }
+              >
+                <Icon style={ { fontSize: 25 } } type="close-square" />
+              </Popconfirm>
+            ) : <img src={ Hamster } alt="#" width={ 40 } /> }
           />
         </TableWrapper>
       </Box>
