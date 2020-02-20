@@ -17,7 +17,7 @@ export default function GenerationForm(props) {
   async function handleFormSubmit(e) {
     e.preventDefault();
     const url = `${ config.apiUrl }/${ selectGenType }`;
-    const { data, status } = await SuperFetch.post(url);
+    const { data, status } = await SuperFetch.post(url, true);
     if (isErrorStatus(status))
       message.error(data.detail || "Something went wrong.");
   }

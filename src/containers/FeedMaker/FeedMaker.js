@@ -24,7 +24,15 @@ export default () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const io = socketIOClient(`${ config.apiUrl }`);
+    const io = socketIOClient(config.apiUrl, {
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            "Authorization": "Bearer " + localStorage.getItem("access_token")
+          }
+        }
+      }
+    });
     io.on("connect", data => {
       if (!data) return;
       const { gen_types, generations } = data;
