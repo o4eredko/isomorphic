@@ -10,7 +10,7 @@ import strCapitalize                  from "@iso/lib/stringCapitalize";
 import Popconfirm                     from '@iso/components/Feedback/Popconfirm';
 import GenerationForm                 from "@iso/components/FeedMaker/GenerationForm";
 import config                         from "@iso/config/feedmaker.config";
-import Hamster                        from "@iso/assets/images/hamster.gif"
+import Hamster                        from "@iso/assets/images/hamster.gif";
 import socketConnect                  from "./socketio";
 
 const { Title } = Typography;
@@ -26,6 +26,7 @@ export default () => {
   useEffect(() => {
     socketConnect(config.apiUrl).then(io => {
       io.on("connect", data => {
+        console.log("Connected to WS");
         if (!data) return;
         const { gen_types, generations } = data;
         setGenTypes(gen_types);
