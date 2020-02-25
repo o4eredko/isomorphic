@@ -347,6 +347,10 @@ const routes = [
   {
     path: "feedmaker",
     component: lazy(() => import("@iso/containers/FeedMaker/FeedMaker"))
+  },
+  {
+    path: "google-crafter",
+    component: lazy(() => import("@iso/containers/GoogleCrafter/GoogleCrafter"))
   }
 ];
 

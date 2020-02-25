@@ -8,6 +8,11 @@ const options = [
     key: "feedmaker",
     label: "sidebar.feedMaker",
     leftIcon: "ion-ios-paper",
+  },
+  {
+    key: "google-crafter",
+    label: "sidebar.googleCrafter",
+    leftIcon: "ion-arrow-graph-up-right",
   }
 ];
 export default options;
