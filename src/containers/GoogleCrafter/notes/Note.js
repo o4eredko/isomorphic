@@ -10,7 +10,7 @@ import NoteComponentWrapper         from "./Note.styles";
 import { Textarea }                 from "@iso/components/uielements/input";
 
 
-const { changeNote, addNote, editNote, deleteNote, changeColor } = noteActions;
+const { changeNote, addNote, editNote, deleteNote } = noteActions;
 const { Header, Content } = Layout;
 
 export default function Notes() {
@@ -42,11 +42,6 @@ export default function Notes() {
         <Header className="isoHeader">
           { selectedId !== undefined ? (
             <div className="isoColorChooseWrapper">
-              <ColorChoser
-                colors={ colors }
-                changeColor={ v => dispatch(changeColor(v)) }
-                seectedColor={ seectedColor }
-              />{ " " }
               <span>
                 <IntlMessages id="notes.ChoseColor" />
               </span>

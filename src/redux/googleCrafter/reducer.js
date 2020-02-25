@@ -1,12 +1,9 @@
 import notes from './data';
 import actions from './actions';
 
-const colors = ['#7ED321', '#de1b1b', '#511E78', '#ff9009', '#42a5f5'];
 const initState = {
   notes,
-  colors,
   selectedId: notes[0].id,
-  seectedColor: notes[0].color,
 };
 
 export default function noteReducer(state = initState, action) {
@@ -15,7 +12,6 @@ export default function noteReducer(state = initState, action) {
       return {
         ...state,
         selectedId: action.selectedId,
-        seectedColor: action.seectedColor,
       };
     case actions.ADD_NOTE:
       return {
@@ -33,12 +29,6 @@ export default function noteReducer(state = initState, action) {
         ...state,
         notes: action.notes,
         selectedId: action.selectedId,
-      };
-    case actions.CHANGE_COLOR:
-      return {
-        ...state,
-        notes: action.notes,
-        seectedColor: action.seectedColor,
       };
     default:
       return state;

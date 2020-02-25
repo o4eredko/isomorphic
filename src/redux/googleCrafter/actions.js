@@ -1,18 +1,24 @@
-const notesAction = {
-  CHANGE_NOTE: 'CHANGE_NOTE',
-  ADD_NOTE: 'ADD_NOTE',
-  EDIT_NOTE: 'EDIT_NOTE',
-  DELETE_NOTE: 'DELETE_NOTE',
-  CHANGE_COLOR: 'CHANGE_COLOR',
+import SuperFetch from "src/library/helpers/superFetch";
 
-  changeNote: id => {
+
+const notesAction = {
+  LOAD_DATA: "LOAD_DATA",
+  CHANGE_NOTE: "CHANGE_NOTE",
+  ADD_NOTE: "ADD_NOTE",
+  EDIT_NOTE: "EDIT_NOTE",
+  DELETE_NOTE: "DELETE_NOTE",
+
+  loadData: url => {
     return (dispatch, getState) => {
-      const notes = getState().Notes.notes;
-      const seectedColor = notes[notes.findIndex(note => note.id === id)].color;
+      SuperFetch.get(url).then(({ data, status }))
+      dispatch({ type: notesAction.LOAD_DATA })
+    }
+  },
+  changeNote: id => {
+    return (dispatch) => {
       dispatch({
         type: notesAction.CHANGE_NOTE,
         selectedId: id,
-        seectedColor,
       });
     };
   },
@@ -20,7 +26,7 @@ const notesAction = {
     return (dispatch, getState) => {
       const newNote = {
         id: new Date(),
-        note: 'New Note',
+        note: "New Note",
         createTime: new Date(),
         color: getState().Notes.seectedColor,
       };
@@ -71,26 +77,6 @@ const notesAction = {
         type: notesAction.DELETE_NOTE,
         notes,
         selectedId,
-      });
-    };
-  },
-  changeColor: seectedColor => {
-    return (dispatch, getState) => {
-      const oldNotes = getState().Notes.notes;
-      const selectedId = getState().Notes.selectedId;
-      const notes = [];
-      oldNotes.forEach(note => {
-        if (note.id !== selectedId) {
-          notes.push(note);
-        } else {
-          note.color = seectedColor;
-          notes.push(note);
-        }
-      });
-      dispatch({
-        type: notesAction.CHANGE_COLOR,
-        notes,
-        seectedColor,
       });
     };
   },
