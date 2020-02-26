@@ -1,40 +1,45 @@
-import { all, takeEvery, fork } from "redux-saga/effects";
-import actions                  from "./actions";
-import call                     from "redux-saga";
-import SuperFetch               from "src/library/helpers/superFetch";
+import { all, takeEvery, takeLatest, fork, call, put, select } from "redux-saga/effects";
+import actions from "./actions";
+import SuperFetch from "src/library/helpers/superFetch";
+import message from "src/components/uielements/message";
+import isErrorStatus from "src/library/helpers/isErrorStatus";
+import config from "src/config/googleCrafter.config";
 
 
-export function* loadData() {
-  yield takeEvery(actions.LOAD_DATA, function* ({ url }) {
-    yield call(SuperFetch.get(url))
-  })
+const getSettings = (state) => state.googleCrafter.settings;
+
+export function* loadSettings() {
+
+  function* worker() {
+    const url = config.settingsUrl;
+    const { data, status } = yield call(SuperFetch.get, url);
+    if (isErrorStatus(status)) {
+      message.error("Error " + status);
+    } else {
+      yield put({ type: actions.LOAD_SETTINGS_SUCCESS, payload: data })
+    }
+  }
+
+  yield takeLatest(actions.LOAD_SETTINGS, worker);
 }
 
-export function* changeColor() {
-  yield takeEvery(actions.CHANGE_COLOR, function* () {
-  });
-}
+export function* deleteSettingsItem() {
 
-export function* addNote() {
-  yield takeEvery(actions.ADD_NOTE, function* () {
-  });
-}
+  function* worker({ payload }) {
+    let settings = yield select(getSettings);
+    settings = settings.filter(settingsItem => settingsItem.id !== payload);
+    yield put(
+      { type: actions.DELETE_SETTINGS_ITEM_SUCCESS, payload: settings }
+    );
+    // yield call
+  }
 
-export function* editNote() {
-  yield takeEvery(actions.EDIT_NOTE, function* () {
-  });
-}
-
-export function* deleteNote() {
-  yield takeEvery(actions.DELETE_NOTE, function* () {
-  });
+  yield takeEvery(actions.DELETE_SETTINGS_ITEM, worker)
 }
 
 export default function* rootSaga() {
   yield all([
-    fork(changeColor),
-    fork(addNote),
-    fork(editNote),
-    fork(deleteNote),
+    fork(loadSettings),
+    fork(deleteSettingsItem),
   ]);
 }

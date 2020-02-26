@@ -1,35 +1,25 @@
-import notes from './data';
-import actions from './actions';
+import actions from "./actions";
+
 
 const initState = {
-  notes,
-  selectedId: notes[0].id,
+  settings: [],
+  selectedId: null,
 };
 
-export default function noteReducer(state = initState, action) {
+export default function googleCrafterReducer(state = initState, action) {
   switch (action.type) {
-    case actions.CHANGE_NOTE:
+    case actions.CHANGE_SELECTED_ID:
+      return { ...state, selectedId: action.payload };
+
+    case actions.LOAD_SETTINGS_SUCCESS:
+    case actions.DELETE_SETTINGS_ITEM_SUCCESS:
+      const selectedId = action.payload.length ? action.payload[0].id : initState.selectedId;
       return {
         ...state,
-        selectedId: action.selectedId,
+        settings: action.payload,
+        selectedId,
       };
-    case actions.ADD_NOTE:
-      return {
-        ...state,
-        notes: action.notes,
-        selectedId: action.selectedId,
-      };
-    case actions.EDIT_NOTE:
-      return {
-        ...state,
-        notes: action.notes,
-      };
-    case actions.DELETE_NOTE:
-      return {
-        ...state,
-        notes: action.notes,
-        selectedId: action.selectedId,
-      };
+
     default:
       return state;
   }

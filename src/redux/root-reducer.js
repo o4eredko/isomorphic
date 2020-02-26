@@ -1,28 +1,30 @@
-import { combineReducers }   from 'redux';
-import App                   from '@iso/redux/app/reducer';
-import Auth                  from '@iso/redux/auth/reducer';
-import Mails                 from '@iso/redux/mail/reducer';
-import Calendar              from '@iso/redux/calendar/reducer';
-import Box                   from '@iso/redux/box/reducer';
-import Notes                 from '@iso/redux/notes/reducer';
-import Todos                 from '@iso/redux/todos/reducer';
-import Contacts              from '@iso/redux/contacts/reducer';
-import Cards                 from '@iso/redux/card/reducer';
-import Chat                  from '@iso/redux/chat/reducers';
-import DynamicChartComponent from '@iso/redux/dynamicEchart/reducer';
-import Ecommerce             from '@iso/redux/ecommerce/reducer';
-import ThemeSwitcher         from '@iso/redux/themeSwitcher/reducer';
-import Invoices              from '@iso/redux/invoice/reducer';
-import LanguageSwitcher      from '@iso/redux/languageSwitcher/reducer';
-import YoutubeSearch         from '@iso/redux/youtubeSearch/reducers';
-import Articles              from '@iso/redux/articles/reducers';
-import Investors             from '@iso/redux/investors/reducers';
-import scrumBoard            from '@iso/redux/scrumBoard/reducer';
-import drawer                from '@iso/redux/drawer/reducer';
-import modal                 from '@iso/redux/modal/reducer';
-import profile               from '@iso/redux/profile/reducer';
-import githubSearch          from '@iso/redux/githubSearch/reducers';
-import quiz                  from '@iso/redux/quiz/reducer';
+import { combineReducers } from "redux";
+import App from "src/redux/app/reducer";
+import Auth from "src/redux/auth/reducer";
+import Mails from "src/redux/mail/reducer";
+import Calendar from "src/redux/calendar/reducer";
+import Box from "src/redux/box/reducer";
+import Notes from "src/redux/notes/reducer";
+import Todos from "src/redux/todos/reducer";
+import Contacts from "src/redux/contacts/reducer";
+import Cards from "src/redux/card/reducer";
+import Chat from "src/redux/chat/reducers";
+import DynamicChartComponent from "src/redux/dynamicEchart/reducer";
+import Ecommerce from "src/redux/ecommerce/reducer";
+import ThemeSwitcher from "src/redux/themeSwitcher/reducer";
+import Invoices from "src/redux/invoice/reducer";
+import LanguageSwitcher from "src/redux/languageSwitcher/reducer";
+import YoutubeSearch from "src/redux/youtubeSearch/reducers";
+import Articles from "src/redux/articles/reducers";
+import Investors from "src/redux/investors/reducers";
+import scrumBoard from "src/redux/scrumBoard/reducer";
+import drawer from "src/redux/drawer/reducer";
+import modal from "src/redux/modal/reducer";
+import profile from "src/redux/profile/reducer";
+import githubSearch from "src/redux/githubSearch/reducers";
+import quiz from "src/redux/quiz/reducer";
+import googleCrafter from "src/redux/googleCrafter/reducer";
+
 
 export default combineReducers({
   Auth,
@@ -49,4 +51,5 @@ export default combineReducers({
   profile,
   githubSearch,
   quiz,
+  googleCrafter,
 });

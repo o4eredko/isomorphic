@@ -1,21 +1,39 @@
-import React, { useEffect, useState } from "react";
-import SuperFetch from "@iso/lib/helpers/superFetch";
-import config from "@iso/config/googleCrafter.config";
-import Notes from "./notes/Note";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import actions from "src/redux/googleCrafter/actions";
+import { Layout } from "antd";
+import SettingsArea         from "src/containers/GoogleCrafter/SettingsArea";
+import SettingsList from "src/containers/GoogleCrafter/SettingsList";
+import GoogleCrafterWrapper from "src/containers/GoogleCrafter/GoogleCrafter.styles";
 
-export default function GoogleCrafter() {
-  const [settings, setSettings] = useState([]);
+
+const { Header, Content } = Layout;
+
+function GoogleCrafter({ loadSettings }) {
 
   useEffect(() => {
-    async function initData() {
-      // const { data, status } = await SuperFetch.get(config.settingsUrl);
-      // if (status !== 200) {
-      //   return console.warn("NA PIDLOHU BLET RUKI ZA HOLOVY");
-      // }
-      // setSettings(data);
-    }
-    initData();
-  }, []);
-  console.dir(settings);
-  return <Notes />;
+    loadSettings()
+  }, [loadSettings]);
+
+  return (
+    <GoogleCrafterWrapper className="isomorphicNoteComponent">
+      <div style={ { width: "340px" } } className="isoNoteListSidebar">
+        <SettingsList />
+      </div>
+      <Layout className="isoNotepadWrapper">
+        <Header className="isoHeader">
+          Header
+        </Header>
+        <Content className="isoNoteEditingArea">
+          <SettingsArea />
+        </Content>
+      </Layout>
+    </GoogleCrafterWrapper>
+  )
 }
+
+const mapDispatchToProps = dispatch => ({
+  loadSettings: () => dispatch(actions.loadSettings())
+});
+
+export default connect(null, mapDispatchToProps)(GoogleCrafter);
