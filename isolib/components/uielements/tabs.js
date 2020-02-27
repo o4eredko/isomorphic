@@ -1,5 +1,5 @@
 import { Tabs } from 'antd';
-import AntTab from './styles/tab.style';
+import AntTab from './tab.style';
 const TabPane = Tabs.TabPane;
 const isoTabs = AntTab(Tabs);
 

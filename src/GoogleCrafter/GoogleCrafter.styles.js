@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { palette } from "styled-theme";
 import { transition, borderRadius } from "src/lib/helpers/style_utils";
+import React from "react";
 
 
 const GoogleCrafterWrapper = styled.div`
@@ -173,7 +174,7 @@ const GoogleCrafterWrapper = styled.div`
 `;
 
 const SettingsListWrapper = styled.div`
-  width: 100%;
+  width: 340px;
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 160px);
@@ -337,5 +338,10 @@ const SettingsListWrapper = styled.div`
   }
 `;
 
-export default GoogleCrafterWrapper;
+export default props => (
+  <GoogleCrafterWrapper className="googleCrafter" style={ props.style }>
+    { props.children }
+  </GoogleCrafterWrapper>
+);
+
 export { SettingsListWrapper };

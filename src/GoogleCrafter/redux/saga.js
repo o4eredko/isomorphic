@@ -11,6 +11,10 @@ import config from "src/config/googleCrafter.config";
 
 const getSettings = (state) => state.googleCrafter.settings;
 
+async function ff() {
+  return new Promise(resolve => setTimeout(resolve, 3000))
+}
+
 export function* loadSettings() {
 
   function* worker() {
@@ -25,7 +29,7 @@ export function* loadSettings() {
       const sqlData = {};
       for (const { id, value } of sql.data)
         sqlData[id] = value;
-
+      // yield call(ff);
       yield put({ type: actions.LOAD_SETTINGS_SUCCESS, payload: settings.data });
       yield put({ type: actions.LOAD_SQL_SUCCESS, payload: sqlData });
     }

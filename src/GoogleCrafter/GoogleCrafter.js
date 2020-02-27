@@ -18,11 +18,9 @@ function GoogleCrafter(props) {
   }, [loadSettings]);
 
   return (
-    <GoogleCrafterWrapper className="isomorphicNoteComponent">
-      <div style={ { width: "340px" } } className="isoNoteListSidebar">
-        <SettingsList />
-      </div>
-      {/*<SettingsArea />*/}
+    <GoogleCrafterWrapper className="googleCrafter">
+      <SettingsList />
+      <SettingsArea />
     </GoogleCrafterWrapper>
   )
 }

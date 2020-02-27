@@ -1,6 +1,8 @@
 import React from "react";
-import Table from "src/ui/Table";
-import { EditableCell } from "isolib/components/Tables/HelperCells";
+import { Table } from "antd";
+import TableWrapper from "src/ui/Table";
+
+// import EditableCell from "src/ui/Table/EditableCell";
 
 
 const readOnlyValues = [
@@ -19,22 +21,23 @@ const renderValueColumns = (value, record, index) => {
   if (readOnlyValues.includes(record.key)) {
     return value;
   }
-  return (
-    <EditableCell
-      index={ index }
-      columnsKey={ record.key }
-      value={ value }
-      onChange={ () => {
-      } }
-    />
+  return (<div></div>
+    // <EditableCell
+    //   index={ index }
+    //   columnsKey={ record.key }
+    //   value={ value }
+    //   onChange={ () => {
+    //   } }
+    // />
   );
 };
 
 
 const createDataSource = (params) => {
-  return Object.entries(params)
-    .filter(([param, value]) => (!ignoreParams.includes(param)))
-    .map(([param, value]) => ({ "key": param, "value": value }));
+  return [{ key: 1, value: 123 }]
+  // return Object.entries(params)
+  //   .filter(([param, value]) => (!ignoreParams.includes(param)))
+  //   .map(([param, value]) => ({ "key": param, "value": value }));
 };
 
 
@@ -43,9 +46,9 @@ export const SettingsParamsView = (props) => {
   const dataSource = createDataSource(params);
 
   return (
-    <Table
+    <TableWrapper
       pagination={ false }
-      scroll={ { y: "calc(100vh - 290px)" } }
+      // scroll={ { y: "calc(100vh - 290px)" } }
       dataSource={ dataSource }
     >
       <Table.Column
@@ -58,8 +61,8 @@ export const SettingsParamsView = (props) => {
         title="Value"
         dataIndex="value"
         key="paramValues"
-        render={ renderValueColumns }
+        // render={ renderValueColumns }
       />
-    </Table>
+    </TableWrapper>
   );
 };

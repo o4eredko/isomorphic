@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import { Table } from "antd";
 import TableWrapper from "src/ui/Table";
 import Progress from "src/ui/Progress";
 import PlatformActions from "./PlatformActions";
@@ -7,9 +8,9 @@ import PlatformActions from "./PlatformActions";
 import Switch from "./Switch";
 
 
-const { Column } = TableWrapper;
+const { Column } = Table;
 
-class PlatformTable extends Component {
+class PlatformTableWrapper extends Component {
 
   constructor(props) {
     super(props);
@@ -25,14 +26,20 @@ class PlatformTable extends Component {
 
   initPlatform = async () => {
     try {
-      await this.handler.initUrlTable();
-      const data = await this.handler.getDataList();
+      // await this.handler.initUrlTableWrapper();
+      // const data = await this.handler.getDataList();
+      const data = [{
+        country: "ua",
+        key: 1,
+        loaded: 30,
+        active: true,
+      }];
       this.setState({ data });
     } finally {
       this.setState({ loading: false });
     }
 
-    await this.getProgress(this.timeout);
+    // await this.getProgress(this.timeout);
   };
 
   componentDidMount() {
@@ -67,7 +74,7 @@ class PlatformTable extends Component {
         pagination={ false }
         loading={ loading }
         dataSource={ data }
-        className="isoSimpleTable"
+        className="isoSimpleTableWrapper"
       >
         <Column
           title="Country"
@@ -106,4 +113,4 @@ class PlatformTable extends Component {
   }
 }
 
-export default PlatformTable
+export default PlatformTableWrapper

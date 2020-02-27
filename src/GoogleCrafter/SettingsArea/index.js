@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import Tabs, { TabPane } from "isolib/components/uielements/tabs";
-import Button from "isolib/components/uielements/button";
+import Tabs, { TabPane } from "src/ui/Tabs";
+import Button from "src/ui/Button";
 
 import { SettingsParamsView } from "./ParamsTab";
 import QueryTab from "./QueryTab";

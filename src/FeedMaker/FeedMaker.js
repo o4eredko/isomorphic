@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import { Icon, Typography, Popconfirm, Table } from "antd";
 import LayoutWrapper from "src/utility/layoutWrapper";
+import LayoutContent from "src/utility/layoutContent";
 import PageHeader from "src/utility/pageHeader";
 import Progress from "src/ui/Progress";
-import Box from "src/utility/box";
+// import Box from "src/utility/box";
 import strCapitalize from "src/lib/helpers/stringCapitalize";
 import GenerationForm from "src/FeedMaker/GenerationForm";
 import socketConnect from "./socketio";
@@ -25,23 +26,29 @@ export default () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    console.log(PageHeader);
+    let isMounted = true;
     socketConnect(config.apiUrl).then(io => {
       io.on("connect", data => {
         if (!data) return;
         const { gen_types, generations } = data;
-        setGenTypes(gen_types);
-        setData(generations);
-        setLoading(false)
+        if (isMounted) {
+          setGenTypes(gen_types);
+          setData(generations);
+          setLoading(false)
+        }
       });
       io.on("update", generations => setData(generations));
       setIo(io);
     });
+    return () => isMounted = false;
   }, []);
 
   return (
     <LayoutWrapper>
       <PageHeader>Feed Maker</PageHeader>
-      <Box title="Generate new feed">
+      <LayoutContent>
+        Generate new feed
         <GenerationForm genTypes={ genTypes } />
         <TableWrapper
           pagination={ false }
@@ -103,7 +110,7 @@ export default () => {
             ) : <img src={ Hamster } alt="#" width={ 40 } /> }
           />
         </TableWrapper>
-      </Box>
+      </LayoutContent>
     </LayoutWrapper>
   );
 }

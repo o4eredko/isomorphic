@@ -1,8 +1,9 @@
-import React from 'react';
-import Input from '../uielements/input';
-import { Icon } from 'antd';
+import React from "react";
+import Input from "src/ui/Input";
+import { Icon } from "antd";
 
-export default function(props) {
+
+export default function (props) {
   const [state, setState] = React.useState({
     value: props.value,
     editable: false,
@@ -23,17 +24,17 @@ export default function(props) {
   const { value, editable } = state;
   return (
     <div className="isoEditData">
-      {editable ? (
+      { editable ? (
         <div className="isoEditDataWrapper">
-          <Input value={value} onChange={handleChange} onPressEnter={check} />
-          <Icon type="check" className="isoEditIcon" onClick={check} />
+          <Input value={ value } onChange={ handleChange } onPressEnter={ check } />
+          <Icon type="check" className="isoEditIcon" onClick={ check } />
         </div>
       ) : (
         <p className="isoDataWrapper">
-          {value || ' '}
-          <Icon type="edit" className="isoEditIcon" onClick={edit} />
+          { value || " " }
+          <Icon type="edit" className="isoEditIcon" onClick={ edit } />
         </p>
-      )}
+      ) }
     </div>
   );
 }

@@ -32,8 +32,9 @@ export default props => (
   <BoxWrapper
     className={ `${ props.className ? props.className : "" } isoBoxWrapper` }
     style={ props.style }
+    { ...props }
   >
-    <BoxTitleWrapper title={ props.title } subtitle={ props.subtitle } />
+    <BoxTitleWrapper title={ props.title } subtitle={ props.subtitle }{ ...props } />
     { props.children }
   </BoxWrapper>
 );
