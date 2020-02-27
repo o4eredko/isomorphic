@@ -1,5 +1,6 @@
-import { store } from './store';
-import authActions from '@iso/redux/auth/actions';
+import { store } from "./store";
+import authActions from "src/Authorization/redux/actions";
+
 
 export default () =>
   new Promise(() => {

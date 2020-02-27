@@ -1,6 +1,6 @@
 import antdSA from 'antd/lib/locale-provider/fr_FR';
 import appLocaleData from 'react-intl/locale-data/fr';
-import saMessages from '../locales/fr_FR.json';
+import saMessages from 'src/config/translation/locales/fr_FR.json';
 
 const saLang = {
   messages: {

@@ -1,4 +1,4 @@
-import defaultTheme from './default';
+import defaultTheme from 'src/config/theme/default';
 
 export default {
   ...defaultTheme,

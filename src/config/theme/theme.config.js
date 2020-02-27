@@ -1,5 +1,5 @@
-import defaultTheme from './default';
-import customTheme from './custom';
+import defaultTheme from 'src/config/theme/default';
+import customTheme from 'src/config/theme/custom';
 
 const themes = {
   defaultTheme,
