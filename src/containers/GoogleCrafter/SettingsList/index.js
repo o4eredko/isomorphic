@@ -1,18 +1,17 @@
 import React from "react";
-import Scrollbars from "src/components/utility/customScrollBar";
 import { connect } from "react-redux";
+import crafterActions from "src/redux/googleCrafter/actions";
+
+import Scrollbars from "src/components/utility/customScrollBar";
 import { InputSearch } from "src/components/uielements/input";
 import { SettingsListWrapper } from "src/containers/GoogleCrafter/GoogleCrafter.styles";
 import SettingsItem from "src/containers/GoogleCrafter/SettingsList/SettingsItem";
-import actions from "src/redux/googleCrafter/actions";
-import Button from "src/components/uielements/button";
-import Form from "src/components/uielements/form";
 
 
 function SettingsList(
   {
     settings,
-    selectedId,
+    selectedSettingsItem,
     selectSettingsItem,
     deleteSettingsItem,
   }) {
@@ -20,18 +19,12 @@ function SettingsList(
 
   return (
     <SettingsListWrapper className="isoNoteListWrapper">
-      <Form>
-        <InputSearch
-          placeholder="Search Generations"
-          className="isoSearchNotes"
-          value={ search }
-          onChange={ event => setSearch(event.target.value.toLowerCase()) }
-        />
-        <Button block type="primary" icon="plus" onClick={ () => {
-        } }>
-          Add settings item
-        </Button>
-      </Form>
+      <InputSearch
+        placeholder="Search Generations"
+        className="isoSearchNotes"
+        value={ search }
+        onChange={ event => setSearch(event.target.value.toLowerCase()) }
+      />
       <div className="isoNoteList">
         { settings.length ? (
           <Scrollbars style={ { height: "calc(100vh - 70px)" } }>
@@ -40,8 +33,8 @@ function SettingsList(
                 key={ item.id }
                 hidden={ search && !item.name.toLowerCase().includes(search) }
                 { ...item }
-                isActiveItem={ selectedId === item.id }
-                onClick={ () => selectSettingsItem(item.id) }
+                isActiveItem={ selectedSettingsItem === item }
+                onClick={ () => selectSettingsItem(item) }
                 onDelete={ () => deleteSettingsItem(item.id) }
               />
             ) }
@@ -53,17 +46,13 @@ function SettingsList(
 }
 
 const mapStateToProps = state => {
-  let { settings, selectedId } = state.googleCrafter;
-  settings = settings.map(settingsItem => (
-    { id: settingsItem.id, name: settingsItem.name }
-  ));
-  return { settings, selectedId };
+  const { settings, selectedSettingsItem } = state.googleCrafter;
+  return { settings, selectedSettingsItem };
 };
 
 const mapDispatchToProps = dispatch => ({
-    selectSettingsItem: id => dispatch(actions.selectSettingsItem(id)),
-    deleteSettingsItem: id => dispatch(actions.deleteSettingsItem(id)),
-  })
-;
+  selectSettingsItem: item => dispatch(crafterActions.selectSettingsItem(item)),
+  deleteSettingsItem: id => dispatch(crafterActions.deleteSettingsItem(id)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsList);

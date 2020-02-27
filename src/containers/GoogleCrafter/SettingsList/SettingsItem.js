@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "src/components/uielements/button";
-import Popconfirm from "@iso/components/Feedback/Popconfirm";
+import Popconfirm from "src/components/Feedback/Popconfirm";
 
 
 const NOTE_COLORS = ["#511E78", "#ff9009"];

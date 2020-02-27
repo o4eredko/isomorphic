@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import actions from "src/redux/googleCrafter/actions";
-import { Layout } from "antd";
-import SettingsArea         from "src/containers/GoogleCrafter/SettingsArea";
-import SettingsList from "src/containers/GoogleCrafter/SettingsList";
+
 import GoogleCrafterWrapper from "src/containers/GoogleCrafter/GoogleCrafter.styles";
 
+import actions from "src/redux/googleCrafter/actions";
+import SettingsArea from "src/containers/GoogleCrafter/SettingsArea";
+import SettingsList from "src/containers/GoogleCrafter/SettingsList";
 
-const { Header, Content } = Layout;
+import config from "src/config/googleCrafter.config";
 
-function GoogleCrafter({ loadSettings }) {
+
+function GoogleCrafter(props) {
+  const { loadSettings } = props;
 
   useEffect(() => {
-    loadSettings()
+    loadSettings(config.settingsUrl);
   }, [loadSettings]);
 
   return (
@@ -20,20 +22,13 @@ function GoogleCrafter({ loadSettings }) {
       <div style={ { width: "340px" } } className="isoNoteListSidebar">
         <SettingsList />
       </div>
-      <Layout className="isoNotepadWrapper">
-        <Header className="isoHeader">
-          Header
-        </Header>
-        <Content className="isoNoteEditingArea">
-          <SettingsArea />
-        </Content>
-      </Layout>
+      <SettingsArea />
     </GoogleCrafterWrapper>
   )
 }
 
 const mapDispatchToProps = dispatch => ({
-  loadSettings: () => dispatch(actions.loadSettings())
+  loadSettings: url => dispatch(actions.loadSettings(url))
 });
 
 export default connect(null, mapDispatchToProps)(GoogleCrafter);

@@ -11,12 +11,20 @@ const getSettings = (state) => state.googleCrafter.settings;
 export function* loadSettings() {
 
   function* worker() {
-    const url = config.settingsUrl;
-    const { data, status } = yield call(SuperFetch.get, url);
-    if (isErrorStatus(status)) {
-      message.error("Error " + status);
-    } else {
-      yield put({ type: actions.LOAD_SETTINGS_SUCCESS, payload: data })
+    const [settings, sql] = yield all([
+      call(SuperFetch.get, config.settingsUrl),
+      call(SuperFetch.get, config.tipsUrl)
+    ]);
+
+    if (isErrorStatus(settings.status) || isErrorStatus(sql.status))
+      message.error("Error");
+    else {
+      const sqlData = {};
+      for (const { id, value } of sql.data)
+        sqlData[id] = value;
+
+      yield put({ type: actions.LOAD_SETTINGS_SUCCESS, payload: settings.data });
+      yield put({ type: actions.LOAD_SQL_SUCCESS, payload: sqlData });
     }
   }
 
