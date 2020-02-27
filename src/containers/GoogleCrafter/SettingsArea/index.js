@@ -53,6 +53,7 @@ const SettingsArea = (
 
 const mapStateToProps = (state) => {
   const { selectedSettingsItem } = state.googleCrafter;
+  console.log("selectedSettingsItem", selectedSettingsItem)
 
   return {
     params: selectedSettingsItem,

@@ -1,87 +1,109 @@
 import React, { useState, useEffect } from "react";
+import { Icon, Typography }           from "antd";
 import LayoutWrapper                  from "@iso/components/utility/layoutWrapper.js";
 import PageHeader                     from '@iso/components/utility/pageHeader';
-// import LayoutContentWrapper     from "@iso/components/utility/layoutWrapper";
-import LayoutContent                  from "@iso/components/utility/layoutContent";
-import Select, { SelectOption }       from "@iso/components/uielements/select";
-import Button                         from "@iso/components/uielements/button";
-import { direction }                  from "@iso/lib/helpers/rtl";
-import SuperFetch                     from "@iso/lib/helpers/superFetch";
-import { Icon }                       from "antd";
-import Form                           from "@iso/components/uielements/form";
 import TableWrapper                   from "@iso/containers/Tables/AntTables/AntTables.styles.js";
 import Table                          from "@iso/components/uielements/table";
 import Progress                       from "@iso/components/uielements/progress";
+import Box                            from "@iso/components/utility/box";
+import strCapitalize                  from "@iso/lib/stringCapitalize";
+import Popconfirm                     from '@iso/components/Feedback/Popconfirm';
+import GenerationForm                 from "@iso/components/FeedMaker/GenerationForm";
+import config                         from "@iso/config/feedmaker.config";
+import Hamster                        from "@iso/assets/images/hamster.gif";
+import socketConnect                  from "./socketio";
 
+const { Title } = Typography;
 const { Column } = Table;
 
 
 export default () => {
-  const margin = {
-    margin: '8px 8px',
-  };
-
+  const [io, setIo] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [genTypes, setGenTypes] = useState([]);
-  const [generations, setGenarations] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    // SuperFetch.get("http://localhost:8080/gentypes").then(response => setGenTypes(response.data));
+    socketConnect(config.apiUrl).then(io => {
+      io.on("connect", data => {
+        console.log("Connected to WS");
+        if (!data) return;
+        const { gen_types, generations } = data;
+        setGenTypes(gen_types);
+        setData(generations);
+        setLoading(false)
+      });
+      io.on("update", generations => setData(generations));
+      setIo(io);
+    });
   }, []);
-
-  function handleFormSubmit(e) {
-    // setGenerations(e.target)
-  }
 
   return (
     <LayoutWrapper>
       <PageHeader>Feed Maker</PageHeader>
-      <LayoutContent>
-        <Form onSubmit={ handleFormSubmit }>
-          <Select
-            showSearch
-            style={ { width: 320 } }
-            placeholder="Select generation type"
-          >
-            { genTypes.map(value =>
-              <SelectOption value={ value }>{ value.toUpperCase() }</SelectOption>)
-            }
-            <SelectOption value="eggs">Johnn</SelectOption>
-          </Select>
-          <Button type="danger" style={ margin }>
-            <Icon type="plus-circle" theme="filled" />
-            Generate
-          </Button>
-        </Form>
+      <Box title="Generate new feed">
+        <GenerationForm genTypes={ genTypes } />
         <TableWrapper
           pagination={ false }
-          loading={ false }
-          dataSource={ [] }
+          loading={ loading }
+          dataSource={ data }
           className="isoSimpleTable"
         >
           <Column
             title="Generation Type"
-            dataIndex="gentype"
-            key="gentype"
-            render={ () => {
-            } }
+            dataIndex="key"
+            width={ 30 }
+            render={ key => strCapitalize(key) }
           />
           <Column
-            title="Status"
-            dataIndex="loaded"
-            key="loaded"
-            render={ () => {
-            } }
+            title="Generation Date"
+            dataIndex="generation_date"
+            width={ 40 }
+            render={ generation_date =>
+              new Date(generation_date).toLocaleString().replace(',', '')
+            }
           />
           <Column
-            title="Active"
-            dataIndex="active"
-            key="active"
+            title="Fetching from DB"
+            dataIndex="fetching"
             align="center"
-            render={ () => {
-            } }
+            render={ fetching => fetching ?
+              <img src={ Hamster } alt="#" style={ { width: 40 } } /> :
+              <Progress type="circle" percent={ 100 } width={ 40 } />
+            }
+          />
+          <Column
+            title="Processing records"
+            dataIndex="processing"
+            render={ processing =>
+              <Progress
+                status={ processing === 100 ? "success" : "active" }
+                percent={ processing }
+              /> }
+          />
+          <Column
+            align="center"
+            title="Files Amount"
+            dataIndex="files_created"
+            render={ files_created => <Title level={ 4 } code={ true }>{ files_created }</Title> }
+          />
+          <Column
+            align="center"
+            dataIndex="is_done"
+            render={ (is_done, record) => is_done ? (
+              <Popconfirm
+                placement="left"
+                title="Are you sure?"
+                okText="Do it!"
+                cancelText="No"
+                onConfirm={ () => io.emit("delete_generation", record.key) }
+              >
+                <Icon style={ { fontSize: 25 } } type="close-square" />
+              </Popconfirm>
+            ) : <img src={ Hamster } alt="#" width={ 40 } /> }
           />
         </TableWrapper>
-      </LayoutContent>
+      </Box>
     </LayoutWrapper>
   );
 }
