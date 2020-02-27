@@ -7,11 +7,12 @@ import Button from "src/components/uielements/button";
 import { SettingsParamsView } from "./ParamsTab";
 import QueryTab from "./QueryTab";
 import drawerActions from "src/redux/drawer/actions";
+import notesAction from "src/redux/googleCrafter/actions";
 import { Drawer } from "antd";
 
 
 const SettingsArea = (
-  { params, drawerVisibility, toggleDrawer }
+  { params, onChange, drawerVisibility, toggleDrawer }
 ) => {
   const addButton = (
     <Button
@@ -30,7 +31,7 @@ const SettingsArea = (
         tabBarExtraContent={ addButton }
       >
         <TabPane key="params" tab="Parameters">
-          { params && <SettingsParamsView params={ params } /> }
+          { params ? <SettingsParamsView onChange={onChange} params={ params } /> : "Loading..."}
         </TabPane>
         <TabPane key="query" tab="Query">
           <QueryTab />
@@ -53,7 +54,6 @@ const SettingsArea = (
 
 const mapStateToProps = (state) => {
   const { selectedSettingsItem } = state.googleCrafter;
-  console.log("selectedSettingsItem", selectedSettingsItem)
 
   return {
     params: selectedSettingsItem,
@@ -69,7 +69,10 @@ const mapDispatchToProps = (dispatch) => {
     toggleDrawer: show => dispatch(show
       ? drawerActions.openDrawer({ drawerType: DRAWER_TYPE })
       : drawerActions.closeDrawer()
-    )
+    ),
+    onChange: (key, value) => {
+      dispatch(notesAction.updateSelectedItem(key, value))
+    },
   };
 };
 

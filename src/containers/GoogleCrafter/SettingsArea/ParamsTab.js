@@ -1,12 +1,13 @@
 import React from "react";
 import TableWrapper from "./AntTables.styles";
 import Table from "src/components/uielements/table";
-import Tags from "src/components/uielements/tag";
-import TagWrapper from "./Tag.styles";
-import { EditableCell } from "src/components/Tables/HelperCells";
+import Input from "src/components/uielements/input";
+import {Icon} from "antd";
+import Form from "src/components/uielements/form";
 
 
 const readOnlyValues = [
+  "id",
   "updated_at",
   "created_at",
   "sql_id",
@@ -18,16 +19,68 @@ const ignoreParams = [
 ];
 
 
-const renderValueColumns = (value, record, index) => {
+const EditableCell = (props) => {
+  const initialState = {
+    changedValue: props.value,
+    editable: false,
+  };
+  const [state, setState] = React.useState(initialState);
+
+  const handleChangeInput = (event) => {
+    const value = event.target.value;
+    setState({ ...state, changedValue: value });
+  };
+
+  const save = () => {
+    setState({ ...state, editable: false });
+    if (props.onChange) {
+      props.onChange(props.columnsKey, state.changedValue);
+    }
+  };
+
+  const discard = () => {
+    setState(initialState);
+  };
+
+  const edit = () => {
+    setState({ ...state, editable: true });
+  };
+
+  const { changedValue, editable } = state;
+  return (
+    <div className="isoEditData">
+      {editable ? (
+        <div className="isoEditDataWrapper">
+          <Form onSubmit={save} style={ {width: "60%"} }>
+            <Form.Item onBlur={discard}>
+              <Icon type="check" className="isoEditIcon" onMouseDown={save} />
+              {/*<Button icon="check" onClick={save} />*/}
+              <Input value={changedValue} onChange={handleChangeInput} autoFocus/>
+            </Form.Item>
+          </Form>
+        </div>
+      ) : (
+        <p className="isoDataWrapper">
+          <Icon type="edit" className="isoEditIcon" onClick={edit} />
+          {props.value || ' '}
+        </p>
+      )}
+    </div>
+  );
+};
+
+
+const renderValueColumns = (value, record, index, onChange) => {
   if (readOnlyValues.includes(record.key)) {
     return value;
   }
+
   return (
     <EditableCell
       index={index}
       columnsKey={record.key}
       value={value}
-      onChange={() => {}}
+      onChange={onChange}
     />
   );
 };
@@ -41,7 +94,7 @@ const createDataSource = (params) => {
 
 
 export const SettingsParamsView = (props) => {
-  const { params } = props;
+  const { params, onChange } = props;
   const dataSource = createDataSource(params);
 
   return (
@@ -60,7 +113,7 @@ export const SettingsParamsView = (props) => {
         title="Value"
         dataIndex="value"
         key="paramValues"
-        render={renderValueColumns}
+        render={(...args) => renderValueColumns(...args, onChange)}
       />
     </TableWrapper>
   );
