@@ -1,85 +1,57 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from "react";
 import {
   Route,
   Redirect,
   BrowserRouter as Router,
   Switch,
   useLocation,
-} from 'react-router-dom';
-import { useSelector } from 'react-redux';
+} from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import ErrorBoundary from './ErrorBoundary';
-import { PUBLIC_ROUTE } from './route.constants';
-import Loader from '@iso/components/utility/loader';
+import ErrorBoundary from "./ErrorBoundary";
+import { PUBLIC_ROUTE } from "./route.constants";
+import Loader from "src/utility/loader";
 
-const Dashboard = lazy(() => import('./containers/Dashboard/Dashboard'));
+
+const Dashboard = lazy(() => import("./Dashboard/Dashboard"));
 
 const publicRoutes = [
   {
-    path: PUBLIC_ROUTE.LANDING,
-    exact: true,
-    component: lazy(() => import('@iso/containers/Pages/SignIn/SignIn')),
-  },
-  {
-    path: PUBLIC_ROUTE.PAGE_404,
-    component: lazy(() => import('@iso/containers/Pages/404/404')),
-  },
-  {
-    path: PUBLIC_ROUTE.PAGE_500,
-    component: lazy(() => import('@iso/containers/Pages/500/500')),
-  },
-  {
     path: PUBLIC_ROUTE.SIGN_IN,
-    component: lazy(() => import('@iso/containers/Pages/SignIn/SignIn')),
+    exact: true,
+    component: lazy(() => import("src/SignIn/SignIn")),
   },
   {
     path: PUBLIC_ROUTE.SIGN_UP,
-    component: lazy(() => import('@iso/containers/Pages/SignUp/SignUp')),
-  },
-  {
-    path: PUBLIC_ROUTE.FORGET_PASSWORD,
-    component: lazy(() =>
-      import('@iso/containers/Pages/ForgotPassword/ForgotPassword')
-    ),
-  },
-  {
-    path: PUBLIC_ROUTE.RESET_PASSWORD,
-    component: lazy(() =>
-      import('@iso/containers/Pages/ResetPassword/ResetPassword')
-    ),
-  },
-  {
-    path: PUBLIC_ROUTE.AUTH0_CALLBACK,
-    component: lazy(() =>
-      import('@iso/containers/Authentication/Auth0/Auth0Callback')
-    ),
+    component: lazy(() => import("src/SignUp/SignUp")),
   },
 ];
 
 function PrivateRoute({ children, ...rest }) {
   let location = useLocation();
   const isLoggedIn = useSelector(state => state.Auth.isLoggedIn);
-  if (isLoggedIn) return <Route {...rest}>{children}</Route>;
+  if (isLoggedIn) return <Route { ...rest }>{ children }</Route>;
   return (
     <Redirect
-      to={{
-        pathname: '/signin',
+      to={ {
+        pathname: PUBLIC_ROUTE.SIGN_IN,
         state: { from: location },
-      }}
+      } }
     />
   );
 }
+
 export default function Routes() {
   return (
     <ErrorBoundary>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={ <Loader /> }>
         <Router>
           <Switch>
-            {publicRoutes.map((route, index) => (
-              <Route key={index} path={route.path} exact={route.exact}>
+            { publicRoutes.map((route, index) => (
+              <Route key={ index } path={ route.path } exact={ route.exact }>
                 <route.component />
               </Route>
-            ))}
+            )) }
             <PrivateRoute path="/dashboard">
               <Dashboard />
             </PrivateRoute>

@@ -1,9 +1,9 @@
-import ch from './raw/chenese.js';
-import fr from './raw/fr.js';
-import ital from './raw/ital.js';
-import span from './raw/span.js';
-import arab from './raw/arab.js';
-import english from './raw/eng.js';
+import ch from 'src/config/translation/conversion/raw/chenese.js';
+import fr from 'src/config/translation/conversion/raw/fr.js';
+import ital from 'src/config/translation/conversion/raw/ital.js';
+import span from 'src/config/translation/conversion/raw/span.js';
+import arab from 'src/config/translation/conversion/raw/arab.js';
+import english from 'src/config/translation/conversion/raw/eng.js';
 
 export function getKeys(object) {
   let keys = [];

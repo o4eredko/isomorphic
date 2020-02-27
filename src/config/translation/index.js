@@ -1,9 +1,9 @@
-import Enlang from './entries/en-US';
-import Zhlang from './entries/zh-Hans-CN';
-import Salang from './entries/ar_SA';
-import Itlang from './entries/it_IT';
-import Eslang from './entries/es_ES';
-import Frlang from './entries/fr_FR';
+import Enlang from 'src/config/translation/entries/en-US';
+import Zhlang from 'src/config/translation/entries/zh-Hans-CN';
+import Salang from 'src/config/translation/entries/ar_SA';
+import Itlang from 'src/config/translation/entries/it_IT';
+import Eslang from 'src/config/translation/entries/es_ES';
+import Frlang from 'src/config/translation/entries/fr_FR';
 import { addLocaleData } from 'react-intl';
 
 const AppLocale = {
