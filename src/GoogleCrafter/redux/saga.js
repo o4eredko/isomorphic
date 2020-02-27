@@ -10,6 +10,8 @@ import config from "src/config/googleCrafter.config";
 
 
 const getSettings = (state) => state.googleCrafter.settings;
+const getSelectedSettingsItem = (state) => state.googleCrafter.selectedSettingsItem;
+
 
 export function* loadSettings() {
 
@@ -48,9 +50,37 @@ export function* deleteSettingsItem() {
   yield takeEvery(actions.DELETE_SETTINGS_ITEM, worker)
 }
 
+
+function* updateSettingsItem() {
+  function* worker({ payload }) {
+    let selectedSettingsItem = yield select(getSelectedSettingsItem);
+    selectedSettingsItem = {
+      ...selectedSettingsItem,
+      [payload.key]: payload.value
+    };
+
+    // try {
+    //   const response = yield call(superFetch.put, selectedSettingsItem);
+    // } catch (err) {
+    //   yield put({
+    //     type:actions.UPDATE_SELECTED_ITEM_FAILURE,
+    //     details: err,
+    //   });
+    // }
+
+    yield put({
+      type: actions.UPDATE_SELECTED_ITEM_SUCCESS,
+      payload: selectedSettingsItem,
+    });
+  }
+
+  yield takeEvery(actions.UPDATE_SELECTED_ITEM, worker);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(loadSettings),
+    fork(updateSettingsItem),
     fork(deleteSettingsItem),
   ]);
 }
