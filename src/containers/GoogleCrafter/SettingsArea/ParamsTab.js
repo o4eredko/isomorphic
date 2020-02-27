@@ -2,8 +2,8 @@ import React from "react";
 import TableWrapper from "./AntTables.styles";
 import Table from "src/components/uielements/table";
 import Input from "src/components/uielements/input";
-import {Icon} from "antd";
 import Form from "src/components/uielements/form";
+import Button from "../../../components/uielements/button";
 
 
 const readOnlyValues = [
@@ -53,15 +53,24 @@ const EditableCell = (props) => {
         <div className="isoEditDataWrapper">
           <Form onSubmit={save} style={ {width: "60%"} }>
             <Form.Item onBlur={discard}>
-              <Icon type="check" className="isoEditIcon" onMouseDown={save} />
-              {/*<Button icon="check" onClick={save} />*/}
+              <Button
+                className="isoDeleteBtn"
+                icon="save"
+                type="default"
+                onMouseDown={save}
+              />
               <Input value={changedValue} onChange={handleChangeInput} autoFocus/>
             </Form.Item>
           </Form>
         </div>
       ) : (
         <p className="isoDataWrapper">
-          <Icon type="edit" className="isoEditIcon" onClick={edit} />
+          <Button
+            className="isoEditBtn"
+            icon="edit"
+            type="default"
+            onClick={edit}
+          />
           {props.value || ' '}
         </p>
       )}
