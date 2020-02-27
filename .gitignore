@@ -22,7 +22,9 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
-*.lock
+yarn.lock
+.floo
+.flooignore
 
 packages/react-devtools-core/dist
 packages/react-devtools-extensions/chrome/build
