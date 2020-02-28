@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 
-import { Table } from "antd";
-import TableWrapper from "src/ui/Table";
+import Table from "src/ui/Table";
+import { message } from "antd";
 import Progress from "src/ui/Progress";
 import PlatformActions from "./PlatformActions";
 
 import Switch from "./Switch";
 
 
-const { Column } = Table;
-
-class PlatformTableWrapper extends Component {
+class PlatformTable extends Component {
 
   constructor(props) {
     super(props);
@@ -26,20 +24,15 @@ class PlatformTableWrapper extends Component {
 
   initPlatform = async () => {
     try {
-      // await this.handler.initUrlTableWrapper();
-      // const data = await this.handler.getDataList();
-      const data = [{
-        country: "ua",
-        key: 1,
-        loaded: 30,
-        active: true,
-      }];
+      await this.handler.initUrlTable();
+      const data = await this.handler.getDataList();
       this.setState({ data });
+      await this.getProgress(this.timeout);
+    } catch (err) {
+      message.error("Cannot fetch data from API");
     } finally {
       this.setState({ loading: false });
     }
-
-    // await this.getProgress(this.timeout);
   };
 
   componentDidMount() {
@@ -70,19 +63,19 @@ class PlatformTableWrapper extends Component {
   render() {
     const { loading, data } = this.state;
     return (
-      <TableWrapper
+      <Table
         pagination={ false }
         loading={ loading }
         dataSource={ data }
         className="isoSimpleTableWrapper"
       >
-        <Column
+        <Table.Column
           title="Country"
           dataIndex="country"
           key="country"
           render={ countryCode => countryCode.toUpperCase() }
         />
-        <Column
+        <Table.Column
           title="Status"
           dataIndex="loaded"
           key="loaded"
@@ -94,7 +87,7 @@ class PlatformTableWrapper extends Component {
             />
           ) }
         />
-        <Column
+        <Table.Column
           title="Active"
           dataIndex="active"
           key="active"
@@ -108,9 +101,9 @@ class PlatformTableWrapper extends Component {
             />
           ) }
         />
-      </TableWrapper>
+      </Table>
     )
   }
 }
 
-export default PlatformTableWrapper
+export default PlatformTable

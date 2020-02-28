@@ -10,11 +10,6 @@ const platforms = [
     apiUrl: 'http://localhost:8001/api/',
   },
   {
-    name: 'Bing Ads',
-    disabled: true,
-    apiUrl: 'http://localhost:8000/api/',
-  },
-  {
     name: 'Facebook Ads',
     disabled: false,
     apiUrl: 'http://localhost:8002/api/',

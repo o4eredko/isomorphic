@@ -34,10 +34,10 @@ const renderValueColumns = (value, record, index) => {
 
 
 const createDataSource = (params) => {
-  return [{ key: 1, value: 123 }]
-  // return Object.entries(params)
-  //   .filter(([param, value]) => (!ignoreParams.includes(param)))
-  //   .map(([param, value]) => ({ "key": param, "value": value }));
+  // return [{ key: 1, value: 123 }]
+  return Object.entries(params)
+    .filter(([param, value]) => (!ignoreParams.includes(param)))
+    .map(([param, value]) => ({ "key": param, "value": value }));
 };
 
 
@@ -48,7 +48,7 @@ export const SettingsParamsView = (props) => {
   return (
     <TableWrapper
       pagination={ false }
-      // scroll={ { y: "calc(100vh - 290px)" } }
+      scroll={ { y: "calc(100vh - 290px)" } }
       dataSource={ dataSource }
     >
       <Table.Column

@@ -12,10 +12,10 @@ const routes = [
     path: "feedmaker",
     component: lazy(() => import("src/FeedMaker/FeedMaker"))
   },
-  // {
-    // path: "google-crafter",
-    // component: lazy(() => import("src/GoogleCrafter/GoogleCrafter"))
-  // }
+  {
+    path: "google-crafter",
+    component: lazy(() => import("src/GoogleCrafter"))
+  }
 ];
 
 export default function AppRouter() {

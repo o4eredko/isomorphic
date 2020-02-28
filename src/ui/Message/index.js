@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { palette } from "styled-theme";
 import React from "react";
 
-const styledMessage = props => <message {...props} />;
+
+const styledMessage = props => <message { ...props } />;
 
 export default styled(styledMessage)`
   &.ant-message {

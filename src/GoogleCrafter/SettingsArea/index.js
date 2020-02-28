@@ -14,11 +14,7 @@ const SettingsArea = (
   { params, drawerVisibility, toggleDrawer }
 ) => {
   const addButton = (
-    <Button
-      type="primary"
-      icon="plus"
-      onClick={ () => toggleDrawer(true) }
-    >
+    <Button type="primary" icon="plus" onClick={ () => toggleDrawer(true) }>
       Add settings item
     </Button>
   );
@@ -53,7 +49,7 @@ const SettingsArea = (
 
 const mapStateToProps = (state) => {
   const { selectedSettingsItem } = state.googleCrafter;
-  console.log("selectedSettingsItem", selectedSettingsItem)
+  console.log("selectedSettingsItem", selectedSettingsItem);
 
   return {
     params: selectedSettingsItem,
