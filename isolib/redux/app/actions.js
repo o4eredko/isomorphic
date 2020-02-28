@@ -8,14 +8,14 @@ export function getView(width) {
   return newView;
 }
 const actions = {
-  COLLPSE_CHANGE: 'COLLPSE_CHANGE',
-  COLLPSE_OPEN_DRAWER: 'COLLPSE_OPEN_DRAWER',
+  COLLAPSE_CHANGE: 'COLLAPSE_CHANGE',
+  COLLAPSE_OPEN_DRAWER: 'COLLAPSE_OPEN_DRAWER',
   CHANGE_OPEN_KEYS: 'CHANGE_OPEN_KEYS',
   TOGGLE_ALL: 'TOGGLE_ALL',
   CHANGE_CURRENT: 'CHANGE_CURRENT',
   CLEAR_MENU: 'CLEAR_MENU',
   toggleCollapsed: () => ({
-    type: actions.COLLPSE_CHANGE,
+    type: actions.COLLAPSE_CHANGE,
   }),
   toggleAll: (width, height) => {
     const view = getView(width);
@@ -28,7 +28,7 @@ const actions = {
     };
   },
   toggleOpenDrawer: () => ({
-    type: actions.COLLPSE_OPEN_DRAWER,
+    type: actions.COLLAPSE_OPEN_DRAWER,
   }),
   changeOpenKeys: openKeys => ({
     type: actions.CHANGE_OPEN_KEYS,

@@ -21,7 +21,7 @@ const TableWrapper = styled(Table)`
 
     &.ant-table-column-sort {
       background: ${ palette("secondary", 1) };
-      margin: "0 0 0 4px";
+      margin: 0 0 0 4px;
     }
   }
 
@@ -29,7 +29,7 @@ const TableWrapper = styled(Table)`
   .ant-table-tbody > tr > td {
     padding: 16px 15px;
     white-space: nowrap;
-    text-align: "left";
+    text-align: left;
 
     p {
       margin-bottom: 0;
@@ -40,7 +40,7 @@ const TableWrapper = styled(Table)`
     font-size: 12px;
     color: ${ palette("text", 3) };
     border-bottom: 1px solid ${ palette("border", 0) };
-
+    
     a {
       color: ${ palette("primary", 0) };
       ${ transition() };
@@ -50,7 +50,7 @@ const TableWrapper = styled(Table)`
       }
     }
   }
-
+  
   .ant-table-thead > tr.ant-table-row-hover > td,
   .ant-table-tbody > tr.ant-table-row-hover > td,
   .ant-table-thead > tr:hover > td,
@@ -68,7 +68,7 @@ const TableWrapper = styled(Table)`
   }
 
   .ant-table-pagination {
-    float: "right";
+    float: right;
   }
 
   .ant-pagination-prev,
@@ -90,17 +90,17 @@ const TableWrapper = styled(Table)`
   .ant-pagination-next,
   .ant-pagination-jump-prev,
   .ant-pagination-jump-next {
-    transform: "rotate(0)";
+    transform: rotate(0);
   }
 
   .ant-pagination-prev,
   .ant-pagination-jump-prev,
   .ant-pagination-jump-next {
-    margin: "0 8px 0 0";
+    margin: 0 8px 0 0;
   }
 
   .ant-pagination-item {
-    margin: "0 8px 0 0";
+    margin: 0 8px 0 0;
 
     &:hover {
       border-color: ${ palette("primary", 0) };
@@ -173,7 +173,6 @@ const TableWrapper = styled(Table)`
   .ant-table-column-sorter-down.on .anticon-caret-down {
     color: ${ palette("primary", 0) };
   }
-
   &.isoSearchableTable {
     .isoTableSearchBox {
       padding: 20px;
@@ -234,7 +233,8 @@ const TableWrapper = styled(Table)`
         padding: 0 15px;
         margin-left: -1px;
         cursor: pointer;
-        border-radius: "0 3px 3px 0";
+        border-radius: ${ props =>
+  props["data-rtl"] === "rtl" ? "3px 0 0 3px" : "0 3px 3px 0" };
         ${ transition() };
 
         &:hover {
@@ -252,7 +252,8 @@ const TableWrapper = styled(Table)`
         align-items: center;
 
         i {
-          margin: "0 10px 0 0";
+          margin: ${ props =>
+  props["data-rtl"] === "rtl" ? "0 0 0 10px" : "0 10px 0 0" };
           order: -1;
         }
       }
@@ -277,7 +278,8 @@ const TableWrapper = styled(Table)`
       &:first-child {
         th {
           &:first-child {
-            border-left: "1px solid ${ palette("border", 0) };
+            border-left: ${ props => (props["data-rtl"] === "rtl" ? "0" : "1px") }
+              solid ${ palette("border", 0) };
           }
         }
       }
@@ -295,11 +297,13 @@ const TableWrapper = styled(Table)`
           border-right: 1px solid ${ palette("border", 0) };
 
           &:first-child {
-            border-left: "1px solid ${ palette("border", 0) };
+            border-left: ${ props => (props["data-rtl"] === "rtl" ? "0" : "1px") }
+              solid ${ palette("border", 0) };
           }
 
           &:last-child {
-            border-left: "0 solid ${ palette("border", 0) };
+            border-left: ${ props => (props["data-rtl"] === "rtl" ? "1px" : "0") }
+              solid ${ palette("border", 0) };
           }
 
           &.isoImageCell {
@@ -322,7 +326,8 @@ const TableWrapper = styled(Table)`
           color: ${ palette("text", 3) };
           line-height: inherit;
           padding: 7px 10px;
-          margin: "0 10px 0 0";
+          margin: ${ props =>
+  props["data-rtl"] === "rtl" ? "0 0 0 10px" : "0 10px 0 0" };
           border: 1px solid ${ palette("border", 0) };
           outline: 0 !important;
           overflow: hidden;
@@ -341,7 +346,8 @@ const TableWrapper = styled(Table)`
             color: ${ palette("grayscale", 0) };
           }
 
-          &:-moz-placeholder {
+Данил Бурковский, [27.02.20 18:52]
+&:-moz-placeholder {
             color: ${ palette("grayscale", 0) };
           }
 
@@ -363,7 +369,8 @@ const TableWrapper = styled(Table)`
         align-items: center;
 
         .isoEditIcon {
-          margin: "0 0 0 auto";
+          margin: ${ props =>
+  props["data-rtl"] === "rtl" ? "0 auto 0 0" : "0 0 0 auto" };
           cursor: pointer;
           flex-shrink: 0;
         }
@@ -372,30 +379,4 @@ const TableWrapper = styled(Table)`
   }
 `;
 
-const CustomizedTableWrapper = styled.div`
-  .isoCustomizedTableControlBar {
-    margin-bottom: 40px;
-
-    .ant-form-item {
-      margin: "0 16px 0 0";
-    }
-
-    .ant-form-item-label {
-      label {
-        color: ${ palette("secondary", 2) };
-
-        &:after {
-          margin: "0 8px 0 2px";
-        }
-      }
-    }
-
-    .ant-switch-checked {
-      border-color: ${ palette("primary", 0) };
-      background-color: ${ palette("primary", 0) };
-    }
-  }
-`;
-
-export { CustomizedTableWrapper };
 export default TableWrapper;

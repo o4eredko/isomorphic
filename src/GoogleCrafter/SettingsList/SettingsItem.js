@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "src/ui/Button/";
 import { Popconfirm } from "antd";
+import Button from "src/ui/Button/";
 
 
 const NOTE_COLORS = ["#511E78", "#ff9009"];

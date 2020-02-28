@@ -6,8 +6,6 @@ import "codemirror/mode/sql/sql";
 import "codemirror/theme/zenburn.css";
 import { Title } from "./Title.styles";
 
-import CodeMirror from "./CodeMirror.styles";
-
 
 const { Content } = Layout;
 const basicOptions = {
@@ -27,11 +25,11 @@ function QueryTab({ sql }) {
         Type in your SQL:
       </Title>
       <Content>
-        <CodeMirror
-          value={ code }
-          onChange={ value => updateCode(value) }
-          options={ basicOptions }
-        />
+        {/*<CodeMirror*/}
+        {/*  value={ code }*/}
+        {/*  onChange={ value => updateCode(value) }*/}
+        {/*  options={ basicOptions }*/}
+        {/*/>*/}
       </Content>
     </Layout>
   );

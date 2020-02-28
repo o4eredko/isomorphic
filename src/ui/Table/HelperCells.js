@@ -1,8 +1,8 @@
 import React from 'react';
-import ImageCellView from './ImageCell';
-import DeleteCell from './DeleteCell';
-import EditableCell from './EditableCell';
-import FilterDropdown from './FilterDropdown';
+import ImageCellView from 'src/ui/Table/ImageCell';
+import DeleteCell from 'src/ui/Table/DeleteCell';
+import EditableCell from 'src/ui/Table/EditableCell';
+import FilterDropdown from 'src/ui/Table/FilterDropdown';
 
 const DateCell = data => <p>{data.toLocaleString()}</p>;
 const ImageCell = src => <ImageCellView src={src} />;

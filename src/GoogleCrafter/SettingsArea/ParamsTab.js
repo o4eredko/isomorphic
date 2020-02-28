@@ -1,9 +1,9 @@
 import React from "react";
-import TableWrapper from "./AntTables.styles";
-import Table from "src/components/uielements/table";
-import Input from "src/components/uielements/input";
-import Form from "src/components/uielements/form";
-import Button from "../../../components/uielements/button";
+import Table from "src/ui/Table";
+import Input from "src/ui/Input";
+import { Form } from "antd";
+import Button from "src/ui/Button";
+
 
 
 const readOnlyValues = [
@@ -21,7 +21,7 @@ const ignoreParams = [
 
 const EditableCell = (props) => {
   const initialState = {
-    changedValue: props.value,
+    changedValue: "",
     editable: false,
   };
   const [state, setState] = React.useState(initialState);
@@ -36,6 +36,7 @@ const EditableCell = (props) => {
     if (props.onChange) {
       props.onChange(props.columnsKey, state.changedValue);
     }
+    discard();
   };
 
   const discard = () => {
@@ -43,14 +44,14 @@ const EditableCell = (props) => {
   };
 
   const edit = () => {
-    setState({ ...state, editable: true });
+    setState({ ...state, changedValue: props.value, editable: true });
   };
 
   const { changedValue, editable } = state;
   return (
-    <div className="isoEditData">
+    <div>
       {editable ? (
-        <div className="isoEditDataWrapper">
+        <div>
           <Form onSubmit={save} style={ {width: "60%"} }>
             <Form.Item onBlur={discard}>
               <Button
@@ -59,7 +60,7 @@ const EditableCell = (props) => {
                 type="default"
                 onMouseDown={save}
               />
-              <Input value={changedValue} onChange={handleChangeInput} autoFocus/>
+              <Input value={changedValue} onChange={handleChangeInput} onPressEnter={save} autoFocus/>
             </Form.Item>
           </Form>
         </div>
@@ -107,7 +108,7 @@ export const SettingsParamsView = (props) => {
   const dataSource = createDataSource(params);
 
   return (
-    <TableWrapper
+    <Table
       pagination={ false }
       scroll={ { y: "calc(100vh - 290px)" } }
       dataSource={ dataSource }
@@ -124,6 +125,6 @@ export const SettingsParamsView = (props) => {
         key="paramValues"
         render={(...args) => renderValueColumns(...args, onChange)}
       />
-    </TableWrapper>
+    </Table>
   );
 };

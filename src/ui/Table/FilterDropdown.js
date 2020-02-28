@@ -1,6 +1,6 @@
 import React from 'react';
-import Input from '../uielements/input';
-import Button from '../uielements/button';
+import Input from 'isolib/components/uielements/input';
+import Button from 'isolib/components/uielements/button';
 
 export default function({ searchText, onInputChange, onSearch }) {
   return (

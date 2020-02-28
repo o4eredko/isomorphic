@@ -5,7 +5,7 @@ import { isServer } from "src/lib/helpers/isServer";
 
 const preKeys = getDefaultPath();
 const initState = {
-  collapsed: !isServer && window.innerWidth > 1220 ? false : true,
+  collapsed: !(!isServer && window.innerWidth > 1220),
   view: !isServer && getView(window.innerWidth),
   height: !isServer && window.innerHeight,
   openDrawer: false,
@@ -15,16 +15,12 @@ const initState = {
 
 export default function appReducer(state = initState, action) {
   switch (action.type) {
-    case actions.COLLPSE_CHANGE:
-      return {
-        ...state,
-        collapsed: !state.collapsed,
-      };
-    case actions.COLLPSE_OPEN_DRAWER:
-      return {
-        ...state,
-        openDrawer: !state.openDrawer,
-      };
+    case actions.COLLAPSE_CHANGE:
+      return { ...state, collapsed: !state.collapsed };
+
+    case actions.COLLAPSE_OPEN_DRAWER:
+      return { ...state, openDrawer: !state.openDrawer };
+
     case actions.TOGGLE_ALL:
       if (state.view !== action.view || action.height !== state.height) {
         const height = action.height ? action.height : state.height;
@@ -36,22 +32,16 @@ export default function appReducer(state = initState, action) {
         };
       }
       break;
+
     case actions.CHANGE_OPEN_KEYS:
-      return {
-        ...state,
-        openKeys: action.openKeys,
-      };
+      return { ...state, openKeys: action.openKeys };
+
     case actions.CHANGE_CURRENT:
-      return {
-        ...state,
-        current: action.current,
-      };
+      return { ...state, current: action.current };
+
     case actions.CLEAR_MENU:
-      return {
-        ...state,
-        openKeys: [],
-        current: [],
-      };
+      return { ...state, openKeys: [], current: [] };
+
     default:
       return state;
   }

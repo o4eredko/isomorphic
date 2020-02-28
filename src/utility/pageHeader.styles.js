@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { palette } from "styled-theme";
-import React from "react";
 
 
-const PageHeaderWrapper = styled.h1`
+const ComponentTitleWrapper = styled.h1`
   font-size: 19px;
   font-weight: 500;
   color: ${ palette("secondary", 2) };
@@ -39,11 +38,4 @@ const PageHeaderWrapper = styled.h1`
   }
 `;
 
-export default props => {
-  let className = "isoPageHeader" + (props.className ? props.className : "");
-  return (
-    <PageHeaderWrapper className={ className }{ ...props }>
-      { props.children }
-    </PageHeaderWrapper>
-  )
-};
+export { ComponentTitleWrapper };
