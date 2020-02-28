@@ -34,11 +34,7 @@ export default function SettingsItem(
         cancelText="No"
         onConfirm={ onDelete }
       >
-        <Button
-          className="isoDeleteBtn"
-          icon="close"
-          type="default"
-        />
+        <Button className="isoDeleteBtn" icon="close" type="default" />
       </Popconfirm>
     </div>
   );

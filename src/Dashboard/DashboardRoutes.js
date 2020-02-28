@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: "google-crafter",
-    component: lazy(() => import("src/GoogleCrafter/GoogleCrafter"))
+    component: lazy(() => import("src/GoogleCrafter"))
   }
 ];
 

@@ -4,7 +4,7 @@ import { transition, borderRadius } from "src/lib/helpers/style_utils";
 import React from "react";
 
 
-const GoogleCrafterWrapper = styled.div`
+const GoogleCrafterStyles = styled.div`
   padding: 50px 35px;
   display: flex;
   height: 100%;
@@ -318,7 +318,6 @@ const SettingsListWrapper = styled.div`
         color: ${ palette("primary", 0) };
       }
     }
-    }
 
     .isoNotlistNotice {
       font-size: 14px;
@@ -339,9 +338,13 @@ const SettingsListWrapper = styled.div`
 `;
 
 export default props => (
-  <GoogleCrafterWrapper className="googleCrafter" style={ props.style }>
+  <GoogleCrafterStyles className="googleCrafter" style={ props.style }>
     { props.children }
-  </GoogleCrafterWrapper>
+  </GoogleCrafterStyles>
 );
 
-export { SettingsListWrapper };
+export const SettingsListStyles = props => (
+  <SettingsListWrapper className="isoNoteListSidebar" style={ props.style }>
+    { props.children }
+  </SettingsListWrapper>
+);

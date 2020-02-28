@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-import { Icon, Typography, Popconfirm, Table } from "antd";
+import { Icon, Typography, Popconfirm } from "antd";
+import Table from "src/ui/Table";
 import LayoutWrapper from "src/utility/layoutWrapper";
+import Box from "src/utility/box";
 import PageHeader from "src/utility/pageHeader";
 import Progress from "src/ui/Progress";
-import Box from "src/utility/box";
 import strCapitalize from "src/lib/helpers/stringCapitalize";
 import GenerationForm from "src/FeedMaker/GenerationForm";
-import socketConnect from "./socketio";
 
+import socketConnect from "./socketio";
 import Hamster from "src/assets/images/hamster.gif";
 import config from "src/FeedMaker/config";
-import TableWrapper from "src/ui/Table";
 
 
 const { Title } = Typography;
-const { Column } = Table;
 
 
 export default () => {
@@ -25,17 +24,21 @@ export default () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
     socketConnect(config.apiUrl).then(io => {
       io.on("connect", data => {
         if (!data) return;
         const { gen_types, generations } = data;
-        setGenTypes(gen_types);
-        setData(generations);
-        setLoading(false)
+        if (isMounted) {
+          setGenTypes(gen_types);
+          setData(generations);
+          setLoading(false)
+        }
       });
       io.on("update", generations => setData(generations));
       setIo(io);
     });
+    return () => isMounted = false;
   }, []);
 
   return (
@@ -43,19 +46,19 @@ export default () => {
       <PageHeader>Feed Maker</PageHeader>
       <Box title="Generate new feed">
         <GenerationForm genTypes={ genTypes } />
-        <TableWrapper
+        <Table
           pagination={ false }
           loading={ loading }
           dataSource={ data }
           className="isoSimpleTable"
         >
-          <Column
+          <Table.Column
             title="Generation Type"
             dataIndex="key"
             width={ 30 }
             render={ key => strCapitalize(key) }
           />
-          <Column
+          <Table.Column
             title="Generation Date"
             dataIndex="generation_date"
             width={ 40 }
@@ -63,7 +66,7 @@ export default () => {
               new Date(generation_date).toLocaleString().replace(",", "")
             }
           />
-          <Column
+          <Table.Column
             title="Fetching from DB"
             dataIndex="fetching"
             align="center"
@@ -72,7 +75,7 @@ export default () => {
               <Progress type="circle" percent={ 100 } width={ 40 } />
             }
           />
-          <Column
+          <Table.Column
             title="Processing records"
             dataIndex="processing"
             render={ processing =>
@@ -81,13 +84,13 @@ export default () => {
                 percent={ processing }
               /> }
           />
-          <Column
+          <Table.Column
             align="center"
             title="Files Amount"
             dataIndex="files_created"
             render={ files_created => <Title level={ 4 } code={ true }>{ files_created }</Title> }
           />
-          <Column
+          <Table.Column
             align="center"
             dataIndex="is_done"
             render={ (is_done, record) => is_done ? (
@@ -102,7 +105,7 @@ export default () => {
               </Popconfirm>
             ) : <img src={ Hamster } alt="#" width={ 40 } /> }
           />
-        </TableWrapper>
+        </Table>
       </Box>
     </LayoutWrapper>
   );

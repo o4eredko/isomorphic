@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import actions from "./redux/actions";
 
 import SettingsArea from "./SettingsArea";
-import SettingsList from "./SettingsList";
+import SettingsList from "src/GoogleCrafter/containers/SettingsList";
 
-import GoogleCrafterWrapper from "src/GoogleCrafter/GoogleCrafter.styles";
+import GoogleCrafterWrapper from "src/GoogleCrafter/css/GoogleCrafter.styles";
 import config from "src/config/googleCrafter.config";
 
 
-function GoogleCrafter(props) {
+function Index(props) {
   const { loadSettings } = props;
 
   useEffect(() => {
@@ -29,4 +29,4 @@ const mapDispatchToProps = dispatch => ({
   loadSettings: url => dispatch(actions.loadSettings(url))
 });
 
-export default connect(null, mapDispatchToProps)(GoogleCrafter);
+export default connect(null, mapDispatchToProps)(Index);
