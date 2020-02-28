@@ -72,6 +72,10 @@ function* updateSettingsItem() {
       type: actions.UPDATE_SELECTED_ITEM_SUCCESS,
       payload: selectedSettingsItem,
     });
+    yield put({
+      type: actions.SELECT_SETTINGS_ITEM,
+      payload: selectedSettingsItem,
+    })
   }
 
   yield takeEvery(actions.UPDATE_SELECTED_ITEM, worker);
