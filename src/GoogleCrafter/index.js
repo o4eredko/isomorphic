@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import actions from "./redux/actions";
 
-import SettingsArea from "./SettingsArea";
+import SettingsArea from "src/GoogleCrafter/containers/SettingsArea";
 import SettingsList from "src/GoogleCrafter/containers/SettingsList";
 
 import GoogleCrafterWrapper from "src/GoogleCrafter/css/GoogleCrafter.styles";

@@ -27,6 +27,7 @@ const TableWrapper = styled(Table)`
 
   .ant-table-thead > tr > th,
   .ant-table-tbody > tr > td {
+    position: relative;
     padding: 16px 15px;
     white-space: nowrap;
     text-align: left;
@@ -346,8 +347,7 @@ const TableWrapper = styled(Table)`
             color: ${ palette("grayscale", 0) };
           }
 
-Данил Бурковский, [27.02.20 18:52]
-&:-moz-placeholder {
+        &:-moz-placeholder {
             color: ${ palette("grayscale", 0) };
           }
 
