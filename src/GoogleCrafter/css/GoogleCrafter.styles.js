@@ -24,6 +24,46 @@ const GoogleCrafterStyles = styled.div`
   @media only screen and (min-width: 767px) and (max-width: 990px) {
     padding: 50px 20px;
   }
+  
+  .isoDeleteBtn {
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    flex-shrink: 0;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    left: inherit;
+    padding: 0;
+    border: 0;
+    font-size: 14px;
+    color: ${ palette("grayscale", 0) };
+    ${ transition() };
+
+    &:hover {
+      color: ${ palette("primary", 0) };
+    }
+  }
+        
+  .isoEditBtn {
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    flex-shrink: 0;
+    position: absolute;
+    top: 5px;
+    right: 30px;
+    left: inherit;
+    padding: 0;
+    border: 0;
+    font-size: 14px;
+    color: ${ palette("grayscale", 0) };
+    ${ transition() };
+
+    &:hover {
+      color: ${ palette("primary", 0) };
+    }
+  }
 
   .isoNoteListSidebar {
     display: flex;
@@ -278,46 +318,6 @@ const SettingsListWrapper = styled.div`
           color: ${ palette("grayscale", 0) };
         }
       }
-
-      .isoDeleteBtn {
-        width: 24px;
-        height: 24px;
-        background-color: transparent;
-        flex-shrink: 0;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        left: inherit;
-        padding: 0;
-        border: 0;
-        font-size: 14px;
-        color: ${ palette("grayscale", 0) };
-        ${ transition() };
-
-        &:hover {
-          color: ${ palette("primary", 0) };
-        }
-      }
-        
-    .isoEditBtn {
-      width: 24px;
-      height: 24px;
-      background-color: transparent;
-      flex-shrink: 0;
-      position: absolute;
-      top: 5px;
-      right: 30px;
-      left: inherit;
-      padding: 0;
-      border: 0;
-      font-size: 14px;
-      color: ${ palette("grayscale", 0) };
-      ${ transition() };
-
-      &:hover {
-        color: ${ palette("primary", 0) };
-      }
-    }
 
     .isoNotlistNotice {
       font-size: 14px;

@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import Tabs, { TabPane } from "src/ui/Tabs";
 import Button from "src/ui/Button";
 
-import { SettingsParamsView } from "./ParamsTab";
-import QueryTab from "./QueryTab";
+import ParamsEditor from "src/GoogleCrafter/containers/ParamsEditor";
+import QueryEditor from "src/GoogleCrafter/containers/QueryEditor";
 import drawerActions from "src/Drawer/redux/drawer/actions";
 import notesAction from "src/GoogleCrafter/redux/actions";
 import { Drawer } from "antd";
@@ -27,10 +27,10 @@ const SettingsArea = (
         tabBarExtraContent={ addButton }
       >
         <TabPane key="params" tab="Parameters">
-          { params ? <SettingsParamsView onChange={onChange} params={ params } /> : "Loading..."}
+          { params ? <ParamsEditor onChange={ onChange } params={ params } /> : "Loading..." }
         </TabPane>
         <TabPane key="query" tab="Query">
-          <QueryTab />
+          <QueryEditor />
         </TabPane>
       </Tabs>
       <Drawer
@@ -41,7 +41,7 @@ const SettingsArea = (
         width={ 700 }
         destroyOnClose={ true }
       >
-        Hello world
+
       </Drawer>
     </>
   );
