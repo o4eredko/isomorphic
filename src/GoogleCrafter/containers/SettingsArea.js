@@ -8,11 +8,10 @@ import ParamsEditor from "src/GoogleCrafter/containers/ParamsEditor";
 import QueryEditor from "src/GoogleCrafter/containers/QueryEditor";
 import drawerActions from "src/Drawer/redux/drawer/actions";
 import notesAction from "src/GoogleCrafter/redux/actions";
-import { Drawer } from "antd";
 
 
 const SettingsArea = (
-  { params, onChange, drawerVisibility, toggleDrawer }
+  { params, onChange, toggleDrawer }
 ) => {
   const addButton = (
     <Button type="primary" icon="plus" onClick={ () => toggleDrawer(true) }>
@@ -21,29 +20,17 @@ const SettingsArea = (
   );
 
   return (
-    <>
-      <Tabs
-        style={ { width: "100%", backgroundColor: "white", padding: "10px" } }
-        tabBarExtraContent={ addButton }
-      >
-        <TabPane key="params" tab="Parameters">
-          { params ? <ParamsEditor onChange={ onChange } params={ params } /> : "Loading..." }
-        </TabPane>
-        <TabPane key="query" tab="Query">
-          <QueryEditor />
-        </TabPane>
-      </Tabs>
-      <Drawer
-        placement="right"
-        closable={ true }
-        onClose={ () => toggleDrawer(false) }
-        visible={ drawerVisibility }
-        width={ 700 }
-        destroyOnClose={ true }
-      >
-
-      </Drawer>
-    </>
+    <Tabs
+      style={ { width: "100%", backgroundColor: "white", padding: "10px" } }
+      tabBarExtraContent={ addButton }
+    >
+      <TabPane key="params" tab="Parameters">
+        { params ? <ParamsEditor onChange={ onChange } params={ params } /> : "Loading..." }
+      </TabPane>
+      <TabPane key="query" tab="Query">
+        <QueryEditor />
+      </TabPane>
+    </Tabs>
   );
 };
 
@@ -53,7 +40,6 @@ const mapStateToProps = (state) => {
 
   return {
     params: selectedSettingsItem,
-    drawerVisibility: state.drawer.drawerVisibility,
   };
 };
 

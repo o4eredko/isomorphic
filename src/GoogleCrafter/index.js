@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 
 import actions from "./redux/actions";
 
-import SettingsArea from "src/GoogleCrafter/containers/SettingsArea";
-import SettingsList from "src/GoogleCrafter/containers/SettingsList";
+import SettingsArea from "./containers/SettingsArea";
+import SettingsList from "./containers/SettingsList";
+import AddSettingsItem from "./containers/AddSettingsItem";
 
-import GoogleCrafterWrapper from "src/GoogleCrafter/css/GoogleCrafter.styles";
-import config from "src/config/googleCrafter.config";
+import GoogleCrafterWrapper from "./css/GoogleCrafter.styles";
+import config from "./config/googleCrafter.config";
 
 
 function Index(props) {
@@ -21,6 +22,7 @@ function Index(props) {
     <GoogleCrafterWrapper className="googleCrafter">
       <SettingsList />
       <SettingsArea />
+      <AddSettingsItem />
     </GoogleCrafterWrapper>
   )
 }

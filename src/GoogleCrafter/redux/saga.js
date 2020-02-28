@@ -6,7 +6,7 @@ import { message } from "antd";
 import SuperFetch from "src/lib/helpers/superFetch";
 import isErrorStatus from "src/lib/helpers/isErrorStatus";
 
-import config from "src/config/googleCrafter.config";
+import config from "src/GoogleCrafter/config/googleCrafter.config";
 
 
 const getSettings = (state) => state.googleCrafter.settings;
