@@ -17,6 +17,9 @@ const notesAction = {
   selectSettingsItem: item => ({ type: notesAction.SELECT_SETTINGS_ITEM, payload: item }),
   deleteSettingsItem: id => ({ type: notesAction.DELETE_SETTINGS_ITEM, payload: id }),
 
-  updateSelectedItem: (key, value) => ({ type: notesAction.UPDATE_SELECTED_ITEM, payload: {key, value} })
+  updateSelectedItem: (key, value) => ({ type: notesAction.UPDATE_SELECTED_ITEM, payload: {key, value} }),
+  updateSelectedItemSuccess: (payload) => ({ type: notesAction.UPDATE_SELECTED_ITEM_SUCCESS, payload }),
+  updateSelectedItemFailure: (details) => ({ type: notesAction.UPDATE_SELECTED_ITEM_FAILURE, details }),
 };
+
 export default notesAction;

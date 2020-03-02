@@ -1,4 +1,5 @@
 import { all, takeEvery, takeLatest, fork, call, put, select } from "redux-saga/effects";
+import { preparedData, preparedSql } from "./data";
 
 import actions from "./actions";
 
@@ -14,6 +15,13 @@ const getSelectedSettingsItem = (state) => state.googleCrafter.selectedSettingsI
 
 
 export function* loadSettings() {
+  function* mockedWorker() {
+    const sqlData = {};
+    for (const { id, value } of preparedSql)
+      sqlData[id] = value;
+    yield put({ type: actions.LOAD_SETTINGS_SUCCESS, payload: preparedData });
+    yield put({ type: actions.LOAD_SQL_SUCCESS, payload: sqlData });
+  }
 
   function* worker() {
     const [settings, sql] = yield all([
@@ -33,7 +41,7 @@ export function* loadSettings() {
     }
   }
 
-  yield takeLatest(actions.LOAD_SETTINGS, worker);
+  yield takeLatest(actions.LOAD_SETTINGS, mockedWorker);
 }
 
 export function* deleteSettingsItem() {
@@ -53,29 +61,32 @@ export function* deleteSettingsItem() {
 
 function* updateSettingsItem() {
   function* worker({ payload }) {
-    let selectedSettingsItem = yield select(getSelectedSettingsItem);
-    selectedSettingsItem = {
+    const selectedSettingsItem = yield select(getSelectedSettingsItem);
+    const settings = yield select(getSettings);
+    const selectedIndex = settings.indexOf(selectedSettingsItem);
+
+    const settingsItemCopy = {
       ...selectedSettingsItem,
       [payload.key]: payload.value
     };
+    const settingsCopy = [...settings];
+    settingsCopy[selectedIndex] = settingsItemCopy;
 
-    // try {
-    //   const response = yield call(superFetch.put, selectedSettingsItem);
-    // } catch (err) {
-    //   yield put({
-    //     type:actions.UPDATE_SELECTED_ITEM_FAILURE,
-    //     details: err,
-    //   });
-    // }
+    settingsItemCopy["_method"] = "put";
+    try {
+      const requestUrl = `${config.settingsUrl}${selectedSettingsItem.id}`;
+      const response = yield call(SuperFetch.post, requestUrl, false, settingsItemCopy);
+    } catch (err) {
+      const errorDetails = `Update ${payload.key}=${payload.value} failed.`;
+      yield put(actions.updateSelectedItemFailure(errorDetails));
+      return;
+    }
+    delete settingsItemCopy["_method"];
 
-    yield put({
-      type: actions.UPDATE_SELECTED_ITEM_SUCCESS,
-      payload: selectedSettingsItem,
-    });
-    yield put({
-      type: actions.SELECT_SETTINGS_ITEM,
-      payload: selectedSettingsItem,
-    })
+    yield put(actions.updateSelectedItemSuccess({
+      selectedSettingsItem: settingsItemCopy,
+      settings: settingsCopy,
+    }));
   }
 
   yield takeEvery(actions.UPDATE_SELECTED_ITEM, worker);

@@ -27,7 +27,7 @@ export default function googleCrafterReducer(state = initState, action) {
       return { ...state, sql: action.payload };
 
     case actions.UPDATE_SELECTED_ITEM_SUCCESS:
-      return { ...state, selectedSettingsItem: action.payload};
+      return { ...state, settings: action.payload.settings, selectedSettingsItem: action.payload.selectedSettingsItem};
 
     default:
       return state;

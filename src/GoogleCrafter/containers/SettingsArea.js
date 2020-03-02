@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Tabs, { TabPane } from "src/ui/Tabs";
 import Button from "src/ui/Button";
 
-import ParamsEditor from "src/GoogleCrafter/containers/ParamsEditor";
+import ParamsEditor from "src/GoogleCrafter/components/ParamsEditor";
 import QueryEditor from "src/GoogleCrafter/containers/QueryEditor";
 import drawerActions from "src/Drawer/redux/drawer/actions";
 import notesAction from "src/GoogleCrafter/redux/actions";
@@ -12,7 +12,7 @@ import { Drawer } from "antd";
 
 
 const SettingsArea = (
-  { params, onChange, drawerVisibility, toggleDrawer }
+  { params, onChangeValueCell, drawerVisibility, toggleDrawer }
 ) => {
   const addButton = (
     <Button type="primary" icon="plus" onClick={ () => toggleDrawer(true) }>
@@ -27,7 +27,7 @@ const SettingsArea = (
         tabBarExtraContent={ addButton }
       >
         <TabPane key="params" tab="Parameters">
-          { params ? <ParamsEditor onChange={ onChange } params={ params } /> : "Loading..." }
+          { params ? <ParamsEditor onChangeValueCell={ onChangeValueCell } params={ params } /> : "Loading..." }
         </TabPane>
         <TabPane key="query" tab="Query">
           <QueryEditor />
@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch) => {
       ? drawerActions.openDrawer({ drawerType: DRAWER_TYPE })
       : drawerActions.closeDrawer()
     ),
-    onChange: (key, value) => {
+    onChangeValueCell: (key, value) => {
       dispatch(notesAction.updateSelectedItem(key, value))
     },
   };
