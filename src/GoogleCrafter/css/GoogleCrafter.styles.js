@@ -30,16 +30,18 @@ const GoogleCrafterStyles = styled.div`
     width: 40% !important;
   }
   
+  .crafterButtonCell {
+    padding: 0 !important;
+  }
+  
   .crafterEditableCellBtn {
-    width: 24px;
-    height: 24px;
+    width: 33px;
+    height: 33px;
     background-color: transparent;
     flex-shrink: 0;
-    position: absolute;
-    top: 13px;
     padding: 0;
     border: 0;
-    font-size: 14px;
+    font-size: 16px;
     color: ${ palette("grayscale", 0) };
     ${ transition() };
 

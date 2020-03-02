@@ -7,7 +7,7 @@ import Button from "src/ui/Button";
 import ParamsEditor from "src/GoogleCrafter/components/ParamsEditor";
 import QueryEditor from "src/GoogleCrafter/containers/QueryEditor";
 import drawerActions from "src/Drawer/redux/drawer/actions";
-import notesAction from "src/GoogleCrafter/redux/actions";
+import settingsActions from "src/GoogleCrafter/redux/actions";
 import { Drawer } from "antd";
 
 
@@ -27,7 +27,7 @@ const SettingsArea = (
         tabBarExtraContent={ addButton }
       >
         <TabPane key="params" tab="Parameters">
-          { params ? <ParamsEditor onChangeValueCell={ onChangeValueCell } params={ params } /> : "Loading..." }
+          { params && <ParamsEditor onChangeValueCell={ onChangeValueCell } params={ params } /> }
         </TabPane>
         <TabPane key="query" tab="Query">
           <QueryEditor />
@@ -52,7 +52,7 @@ const mapStateToProps = (state) => {
   const { selectedSettingsItem } = state.googleCrafter;
 
   return {
-    params: selectedSettingsItem,
+    params: selectedSettingsItem || {},
     drawerVisibility: state.drawer.drawerVisibility,
   };
 };
@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch) => {
       : drawerActions.closeDrawer()
     ),
     onChangeValueCell: (key, value) => {
-      dispatch(notesAction.updateSelectedItem(key, value))
+      dispatch(settingsActions.updateSelectedItem(key, value))
     },
   };
 };
