@@ -12,13 +12,14 @@ import {
 const ParamsEditor = (props) => {
   const { params, onChangeValueCell } = props;
   const dataSource = createDataSource(params);
-  const initialState = createInitialState(dataSource);
-  const [state, setState] = React.useState(initialState);
+  // const initialState = createInitialState(dataSource);
+  const [state, setState] = React.useState({ editableId: null });
 
 
   const toggleEditable = (key) => {
-    const rowState = state[key];
-    setState({ ...state, [key]: { ...rowState, editable: !rowState.editable } });
+    setState({ editableId:  });
+    // const rowState = state[key];
+    // setState({ ...state, [key]: { ...rowState, editable: !rowState.editable } });
   };
 
   const saveRow = (key) => {
