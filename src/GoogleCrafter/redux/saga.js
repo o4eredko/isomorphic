@@ -66,7 +66,7 @@ export function* loadSettings() {
     }
   }
 
-  yield takeLatest(actions.LOAD_SETTINGS, mockedWorker);
+  yield takeLatest(actions.LOAD_SETTINGS, worker);
 }
 
 
