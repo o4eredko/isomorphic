@@ -13,7 +13,7 @@ import config from "src/GoogleCrafter/config/googleCrafter.config";
 import { Spin } from "antd";
 
 
-function Index(props) {
+function Settings(props) {
   const { loadSettings, isLoading } = props;
 
   useEffect(() => {
@@ -45,4 +45,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Index);
+)(Settings);

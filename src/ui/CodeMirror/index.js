@@ -1,11 +1,21 @@
 import React from "react";
 import { Controlled as CodeMirrors } from "react-codemirror2";
 import "codemirror/mode/sql/sql";
-import "codemirror/theme/zenburn.css";
+import "codemirror/theme/material.css";
 import styled from "styled-components";
 
 
-const CodeMirrorEditor = props => <CodeMirrors { ...props } />;
+const basicOptions = {
+  lineNumbers: true,
+  readOnly: false,
+  tabSize: 4,
+  mode: "sql",
+  theme: "material",
+  autofocus: true,
+};
+
+
+const CodeMirrorEditor = props => <CodeMirrors options={ basicOptions } { ...props } />;
 
 const CodeMirror = styled(CodeMirrorEditor)`
   .CodeMirror {

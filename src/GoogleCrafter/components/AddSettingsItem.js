@@ -69,7 +69,7 @@ function AddSettingsItem(
           { !step && (<>
             <BoxTitle title="Type your SQL here:" />
             <CodeMirror
-              value={ sql } options={ codeMirrorOptions }
+              value={ sql }
               onBeforeChange={ (editor, data, value) => setSql(value) }
             />
           </>) }

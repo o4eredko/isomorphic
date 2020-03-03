@@ -14,11 +14,11 @@ const routes = [
   },
   {
     path: "google-crafter/settings",
-    component: lazy(() => import("src/GoogleCrafter"))
+    component: lazy(() => import("src/GoogleCrafter/settings"))
   },
   {
     path: "google-crafter/generations",
-    component: lazy(() => import("src/GoogleCrafter"))
+    component: lazy(() => import("src/GoogleCrafter/settings"))
   }
 ];
 
