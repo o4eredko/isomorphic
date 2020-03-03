@@ -1,5 +1,5 @@
 import React from "react";
-import CodeMirrors from "react-codemirror";
+import { Controlled as CodeMirrors } from "react-codemirror2";
 import "codemirror/mode/sql/sql";
 import "codemirror/theme/zenburn.css";
 import styled from "styled-components";

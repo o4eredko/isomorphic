@@ -23,12 +23,6 @@ class AddItemForm extends React.Component {
     this.state = { selectedKeys: {} }
   }
 
-  submitForm = () => {
-    const { validateFields } = this.props.form;
-    return validateFields((err, values) => values);
-  };
-
-
   addDynamicField = () => {
     const { getFieldValue, setFieldsValue } = this.props.form;
     const keys = getFieldValue("keys");
@@ -102,30 +96,23 @@ class AddItemForm extends React.Component {
   render = () => {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form layout="horizontal" { ...formItemLayout }>
-        <Item label="Name" hasFeedback>
+      <Form hidden={ this.props.hidden } layout="horizontal" { ...formItemLayout }>
+        <Item label="Name">
           { getFieldDecorator("name", { rules: requiredRules })(<Input placeholder="name" />) }
         </Item>
 
         <Item label="Account">
-          <Group compact>
-            <Item name="account_name" hasFeedback>
-              { getFieldDecorator("account_name", { rules: requiredRules })(
-                <Input placeholder="name" />
-              ) }
-            </Item>
-            <Item hasFeedback>
-              { getFieldDecorator("account_group")(<Input placeholder="account_group" />) }
-            </Item>
-          </Group>
+          { getFieldDecorator("account_name", { rules: requiredRules })(
+            <Input placeholder="name" />
+          ) }
         </Item>
 
-        <Item label="Campaign Name" hasFeedback>
+        <Item label="Campaign Name">
           { getFieldDecorator("campaign_name", { rules: requiredRules })(
             <Input placeholder="campaign name" />
           ) }
         </Item>
-        <Item label="Campaign Budget" hasFeedback>
+        <Item label="Campaign Budget">
           { getFieldDecorator("campaign_budget", { rules: requiredRules })(
             <NumberInput
               min={ 0 }
@@ -135,23 +122,23 @@ class AddItemForm extends React.Component {
           ) }
         </Item>
 
-        <Item label="Ad Group Name" hasFeedback>
-          { getFieldDecorator("ad_group_name", { rules: requiredRules })(
+        <Item label="Ad Group Name">
+          { getFieldDecorator("adGroup_name", { rules: requiredRules })(
             <Input placeholder="ad group name" />
           ) }
         </Item>
-        <Item label="Ad Group Keywords" hasFeedback>
-          { getFieldDecorator("ad_group_keywords", { rules: requiredRules })(
+        <Item label="Ad Group Keywords">
+          { getFieldDecorator("adGroup_keywords", { rules: requiredRules })(
             <Input placeholder="ad group keywords" />
           ) }
         </Item>
-        <Item label="Ad Group bid" hasFeedback>
-          { getFieldDecorator("ad_group_bid", { rules: requiredRules })(
+        <Item label="Ad Group bid">
+          { getFieldDecorator("adGroup_bid", { rules: requiredRules })(
             <NumberInput min={ 0 } placeholder="bid" />
           ) }
         </Item>
         <Item label="Ad Group bid Range">
-          { getFieldDecorator(["ad_group_bid_min", "ad_group_bid_max"], { initialValue: [0, 1] })(
+          { getFieldDecorator("adGroup_bid_range", { initialValue: [0, 1] })(
             <Slider range />
           ) }
         </Item>
@@ -171,12 +158,12 @@ class AddItemForm extends React.Component {
           </Group>
         </Item>
         <Item label="Ad Description Line 1">
-          { getFieldDecorator("ad_description_line", { rules: requiredRules })(
+          { getFieldDecorator("ad_DescriptionLine1", { rules: requiredRules })(
             <Input placeholder="ad description line" />
           ) }
         </Item>
         <Item label="Ad Final url">
-          { getFieldDecorator("ad_final_url", { rules: requiredRules })(
+          { getFieldDecorator("ad_finalUrl", { rules: requiredRules })(
             <Input placeholder="http://some_test_url" />
           ) }
         </Item>

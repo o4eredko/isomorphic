@@ -8,7 +8,8 @@ import StepsStyles from "src/GoogleCrafter/css/Steps.style";
 
 const { Step } = Steps;
 
-export default function AddItemSteps({ step, setUIStep, submitStep }) {
+export default function AddItemSteps({ step, setStep, submitStep }) {
+  const prevStep = () => setStep(step - 1);
   return (
     <StepsStyles>
       <Steps size="small" type="navigation" current={ step }>
@@ -17,19 +18,18 @@ export default function AddItemSteps({ step, setUIStep, submitStep }) {
         <Step title="Upload to server" />
       </Steps>
 
-      <ButtonGroup className="steps__buttons">
-        <Button
-          icon="left" disabled={ step === 0 }
-          onClick={ () => setUIStep(step - 1) }
-        >
-          Previous step
-        </Button>
-        <Button
-          icon="right" onClick={ submitStep[step] }
-          type={ step === 1 ? "primary" : "" }>
-          Next step
-        </Button>
-      </ButtonGroup>
+      { step < 2 && (
+        <ButtonGroup className="steps__buttons">
+          <Button icon="left" disabled={ !step } onClick={ prevStep }>
+            Previous step
+          </Button>
+          <Button
+            icon="right" onClick={ submitStep[step] }
+            type={ step === 1 ? "primary" : "" }>
+            { step === 1 ? "Upload to server" : "Set settings" }
+          </Button>
+        </ButtonGroup>
+      ) }
     </StepsStyles>
   )
 }

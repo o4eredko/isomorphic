@@ -45,6 +45,7 @@
     "react-big-calendar": "^0.22.1",
     "react-chartjs-2": "^2.7.6",
     "react-codemirror": "^1.0.0",
+    "react-codemirror2": "^6.0.0",
     "react-count-down": "^1.2.1",
     "react-credit-cards": "^0.8.0",
     "react-custom-scrollbars": "^4.2.1",

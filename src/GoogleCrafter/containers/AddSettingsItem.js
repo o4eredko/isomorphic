@@ -3,63 +3,48 @@ import React from "react";
 // Redux imports
 import { connect } from "react-redux";
 import drawerActions from "src/Drawer/redux/drawer/actions";
-import crafterActions from "src/GoogleCrafter/redux/settings/actions";
+import addItemActions from "src/GoogleCrafter/redux/addItem/actions";
 // UI components
-import { Drawer, Result } from "antd";
+import { Drawer } from "antd";
 import BoxTitle from "src/utility/boxTitle";
-import Button from "src/ui/Button";
 import CodeMirror from "src/ui/CodeMirror";
 import AddItemForm from "src/GoogleCrafter/containers/AddItemForm";
+import AddItemSteps from "src/GoogleCrafter/components/AddItemSteps";
+import AddItemResult from "src/GoogleCrafter/components/AddItemResult";
 // Assets
 import {
   Wrapper, TopBar, ContentWrapper, codeMirrorOptions
 } from "src/GoogleCrafter/css/AddSettingsItem.style";
 import { IconSvg } from "src/GoogleCrafter/IconSvg";
 import ArrowIcon from "src/assets/images/icon/04-icon.svg"
-import AddItemSteps from "src/GoogleCrafter/components/AddItemSteps";
-import SuperFetch from "src/lib/helpers/superFetch";
-import config from "src/GoogleCrafter/config/googleCrafter.config";
 
 
 function AddSettingsItem(
-  { drawerVisibility, toggleDrawer, submittedStep, uiStep, setSubmittedStep, setUIStep }
-) {
-  const [sql, updateSql] = React.useState("SELECT * FROM table;");
-  const addItemFormRef = React.createRef();
+  {
+    drawerVisibility, toggleDrawer,
+    step, setStep,
+    sql, setSql,
+    setFormData,
+    uploadToServer,
+    uploadStatus,
+    resetSteps
+  }) {
+  const formRef = React.createRef();
 
-  async function submitFirstStep() {
-    const data = { name: "new_sql", value: sql };
-    try {
-      const resp = await SuperFetch.post(config.tipsUrl, false, data);
-      console.dir(resp);
-    } catch (err) {
-      console.dir(err);
-      return;
-    }
-    setSubmittedStep(1);
-  }
+  const nextStep = () => setStep(step + 1);
 
   function submitSecondStep() {
-    addItemFormRef.current.submitForm();
-    setSubmittedStep(2);
+    formRef.current.validateFields((err, values) => {
+      if (err) return;
+      setFormData(values);
+      uploadToServer();
+      nextStep();
+    })
   }
 
-  function renderContent() {
-    return [
-      (<>
-        <BoxTitle title="Type your SQL here:" />
-        <CodeMirror
-          value={ sql } options={ codeMirrorOptions }
-          onChange={ value => updateSql(value) }
-        />
-      </>),
-      <AddItemForm wrappedComponentRef={ addItemFormRef } />,
-      (<Result
-        status="success" title="Successfully Uploaded to server"
-        subTitle="You can now create new generation from the following page"
-        extra={ [<Button type="primary" key="uploaded">Create new Generation</Button>] }
-      />)
-    ][uiStep];
+  function resetAll() {
+    resetSteps();
+    formRef.current.resetFields();
   }
 
   return (
@@ -84,12 +69,29 @@ function AddSettingsItem(
           Add Settings Item
         </TopBar>
         <ContentWrapper>
-          { renderContent() }
+
+          { !step && (<>
+            <BoxTitle title="Type your SQL here:" />
+            <CodeMirror
+              value={ sql } options={ codeMirrorOptions }
+              onBeforeChange={ (editor, data, value) => setSql(value) }
+            />
+          </>) }
+
+          <AddItemForm hidden={ step !== 1 } ref={ formRef } />
+
+          { step === 2 && (
+            <AddItemResult
+              status={ uploadStatus }
+              firstStep={ () => setStep(0) }
+              resetAll={ resetAll }
+            />
+          ) }
+
         </ContentWrapper>
         <AddItemSteps
-          step={ uiStep }
-          setUIStep={ setUIStep }
-          submitStep={ [submitFirstStep, submitSecondStep] }
+          step={ step } setStep={ setStep }
+          submitStep={ [nextStep, submitSecondStep] }
         />
       </Wrapper>
     </Drawer>
@@ -99,8 +101,9 @@ function AddSettingsItem(
 const mapStateToProps = ({ drawer, googleCrafter }) => (
   {
     drawerVisibility: drawer.drawerVisibility,
-    submittedStep: googleCrafter.addItemSubmittedStep,
-    uiStep: googleCrafter.addItemUIStep,
+    step: googleCrafter.addItem.step,
+    sql: googleCrafter.addItem.sql,
+    uploadStatus: googleCrafter.addItem.uploadStatus,
   }
 );
 
@@ -112,8 +115,12 @@ function mapDispatchToProps(dispatch) {
       ? drawerActions.openDrawer({ drawerType: DRAWER_TYPE })
       : drawerActions.closeDrawer()
     ),
-    setSubmittedStep: step => dispatch(crafterActions.setSubmittedStep(step)),
-    setUIStep: step => dispatch(crafterActions.setUIStep(step)),
+
+    setStep: step => dispatch(addItemActions.setStep(step)),
+    setSql: sql => dispatch(addItemActions.setSql(sql)),
+    setFormData: data => dispatch(addItemActions.setFormData(data)),
+    uploadToServer: () => dispatch(addItemActions.uploadToServer()),
+    resetSteps: () => dispatch(addItemActions.resetAll()),
   };
 }
 
