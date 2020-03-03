@@ -1,6 +1,10 @@
 import { put } from "redux-saga/effects";
 
-import settingsActions from "src/GoogleCrafter/redux/actions";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
+
+const getSettingsList = (state) => state.googleCrafter.settings.settingsList;
+const getSelectedSettingsItem = (state) => state.googleCrafter.settings.selectedSettingsItem;
+const getSqlMap = (state) => state.googleCrafter.settings.sqlMap;
 
 
 const workerDecorator = (errorMsg, successMsg) => (workerGenerator) => function* (action) {
@@ -14,4 +18,4 @@ const workerDecorator = (errorMsg, successMsg) => (workerGenerator) => function*
 };
 
 
-export default workerDecorator;
+export { workerDecorator, getSettingsList, getSelectedSettingsItem, getSqlMap };

@@ -1,18 +1,16 @@
 import { all, takeEvery, takeLatest, fork, call, put, select } from "redux-saga/effects";
 import { preparedData, preparedSql } from "./data";
-import workerDecorator from "../utils/sagaUtils";
+import {
+  workerDecorator, getSettingsList,
+  getSqlMap, getSelectedSettingsItem
+} from "src/GoogleCrafter/utils/sagaUtils";
 
-import settingsActions from "./actions";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 import { message } from "antd";
 import SuperFetch from "src/lib/helpers/superFetch";
 
 import config from "src/GoogleCrafter/config/googleCrafter.config";
-
-
-const getSettings = (state) => state.googleCrafter.settings;
-const getSelectedSettingsItem = (state) => state.googleCrafter.selectedSettingsItem;
-const getSqlMap = (state) => state.googleCrafter.sql;
 
 
 function* requestFailure() {
@@ -74,7 +72,7 @@ export function* deleteSettingsItem() {
     const requestBody = {"_method": "delete"};
     yield call(SuperFetch.post, requestUrl, false, requestBody);
 
-    let settings = yield select(getSettings);
+    let settings = yield select(getSettingsList);
     settings = settings.filter(settingsItem => settingsItem.id !== payload);
     yield put(settingsActions.deleteSettingsItemSuccess(settings));
   }
@@ -89,7 +87,7 @@ export function* deleteSettingsItem() {
 function* updateSettingsItem() {
   function* worker({ payload }) {
     const selectedSettingsItem = yield select(getSelectedSettingsItem);
-    const settings = yield select(getSettings);
+    const settings = yield select(getSettingsList);
     const selectedIndex = settings.indexOf(selectedSettingsItem);
 
     const settingsItemCopy = {

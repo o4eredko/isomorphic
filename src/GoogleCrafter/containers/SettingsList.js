@@ -10,9 +10,8 @@ import SettingsItem from "src/GoogleCrafter/components/SettingsItem";
 import { SettingsListStyles } from "src/GoogleCrafter/css/GoogleCrafter.styles";
 
 
-function SettingsList(
-  {
-    settings,
+function SettingsList({
+    settingsList,
     selectedSettingsItem,
     selectSettingsItem,
     deleteSettingsItem,
@@ -29,7 +28,7 @@ function SettingsList(
       />
       <div className="isoNoteList">
         <Scrollbars style={ { height: "calc(100vh - 70px)" } }>
-          { settings.map(item =>
+          { settingsList.map(item =>
             <SettingsItem
               key={ item.id }
               hidden={ search && !item.name.toLowerCase().includes(search) }
@@ -46,8 +45,8 @@ function SettingsList(
 }
 
 const mapStateToProps = state => {
-  const { settings, selectedSettingsItem } = state.googleCrafter.settings;
-  return { settings, selectedSettingsItem };
+  const { settingsList, selectedSettingsItem } = state.googleCrafter.settings;
+  return { settingsList, selectedSettingsItem };
 };
 
 const mapDispatchToProps = dispatch => ({

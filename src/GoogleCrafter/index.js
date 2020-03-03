@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { connect } from "react-redux";
-import actions from "src/GoogleCrafter/redux/settings/actions";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 import SettingsArea from "src/GoogleCrafter/containers/SettingsArea";
 import SettingsList from "src/GoogleCrafter/containers/SettingsList";
@@ -33,7 +33,7 @@ function Index(props) {
 
 
 const mapDispatchToProps = dispatch => ({
-  loadSettings: url => dispatch(actions.loadSettings(url))
+  loadSettings: url => dispatch(settingsActions.loadSettings(url))
 });
 
 
