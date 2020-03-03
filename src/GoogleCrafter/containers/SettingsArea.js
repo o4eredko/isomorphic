@@ -1,14 +1,15 @@
 import React from "react";
+
 import { connect } from "react-redux";
+import drawerActions from "src/Drawer/redux/drawer/actions";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 import Tabs, { TabPane } from "src/ui/Tabs";
-import Button from "src/ui/Button";
 
+import Button from "src/ui/Button";
+import { Drawer } from "antd";
 import ParamsEditor from "src/GoogleCrafter/components/ParamsEditor";
 import QueryEditor from "src/GoogleCrafter/containers/QueryEditor";
-import drawerActions from "src/Drawer/redux/drawer/actions";
-import settingsActions from "src/GoogleCrafter/redux/actions";
-import { Drawer } from "antd";
 
 
 const SettingsArea = (
@@ -49,7 +50,7 @@ const SettingsArea = (
 
 
 const mapStateToProps = (state) => {
-  const { selectedSettingsItem } = state.googleCrafter;
+  const { selectedSettingsItem } = state.googleCrafter.settings;
 
   return {
     params: selectedSettingsItem || {},

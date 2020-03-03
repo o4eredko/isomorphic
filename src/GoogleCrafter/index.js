@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
 
-import actions from "./redux/actions";
+import { connect } from "react-redux";
+import actions from "src/GoogleCrafter/redux/settings/actions";
 
 import SettingsArea from "src/GoogleCrafter/containers/SettingsArea";
 import SettingsList from "src/GoogleCrafter/containers/SettingsList";
@@ -9,7 +9,7 @@ import AddSettingsItem from "./containers/AddSettingsItem";
 
 
 import GoogleCrafterWrapper from "src/GoogleCrafter/css/GoogleCrafter.styles";
-import config from "src/config/googleCrafter.config";
+import config from "src/GoogleCrafter/config/googleCrafter.config";
 import { Spin } from "antd";
 
 
@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
-  isLoading: state.googleCrafter.isLoading,
+  isLoading: state.googleCrafter.settings.isLoading,
 });
 
 

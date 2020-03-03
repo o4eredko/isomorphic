@@ -24,16 +24,16 @@ function* requestFailure() {
 }
 
 
-function* requestSuccess() {
-  function worker({ payload }) {
-    if (payload) {
-      console.log(payload);
-      message.success(payload);
-    }
-  }
-
-  yield takeEvery(actions.REQUEST_SUCCESS, worker);
-}
+// function* requestSuccess() {
+//   function worker({ payload }) {
+//     if (payload) {
+//       console.log(payload);
+//       message.success(payload);
+//     }
+//   }
+//
+  // yield takeEvery(actions.REQUEST_SUCCESS, worker);
+// }
 
 
 export function* loadSettings() {
@@ -41,8 +41,9 @@ export function* loadSettings() {
     const sqlData = {};
     for (const { id, value } of preparedSql)
       sqlData[id] = value;
-    yield put({ type: actions.LOAD_SETTINGS_SUCCESS, payload: preparedData });
-    yield put({ type: actions.LOAD_SQL_SUCCESS, payload: sqlData });
+    yield put(actions.requestSuccess());
+    yield put(actions.loadSettingsSuccess(preparedData));
+    yield put(actions.loadSqlSuccess(sqlData));
   }
 
   function* worker() {
@@ -66,15 +67,15 @@ export function* loadSettings() {
     }
   }
 
-  yield takeLatest(actions.LOAD_SETTINGS, worker);
+  yield takeLatest(actions.LOAD_SETTINGS, mockedWorker);
 }
 
 
 export function* deleteSettingsItem() {
 
   function* worker({ payload }) {
-    const requestUrl = `${config.settingsUrl}${payload}`;
-    const requestBody = {"_method": "delete"};
+    const requestUrl = `${ config.settingsUrl }${ payload }`;
+    const requestBody = { "_method": "delete" };
 
     try {
       yield put(actions.sendRequest());
@@ -85,7 +86,7 @@ export function* deleteSettingsItem() {
       settings = settings.filter(settingsItem => settingsItem.id !== payload);
       yield put(actions.deleteSettingsItemSuccess(settings));
     } catch (e) {
-      const errorMsg = `Delete settings with id=${payload} failed.`;
+      const errorMsg = `Delete settings with id=${ payload } failed.`;
       yield put(actions.requestFailure(errorMsg, e));
     }
   }
@@ -109,7 +110,7 @@ function* updateSettingsItem() {
 
     try {
       settingsItemCopy["_method"] = "put";
-      const requestUrl = `${config.settingsUrl}${selectedSettingsItem.id}`;
+      const requestUrl = `${ config.settingsUrl }${ selectedSettingsItem.id }`;
       yield put(actions.sendRequest());
       yield call(SuperFetch.post, requestUrl, false, settingsItemCopy);
       yield put(actions.requestSuccess("Item updated successfully."));
@@ -117,7 +118,7 @@ function* updateSettingsItem() {
 
       yield put(actions.updateSelectedItemSuccess(settingsCopy, settingsItemCopy));
     } catch (e) {
-      const errorDetails = `Update ${payload.key}=${payload.value} failed.`;
+      const errorDetails = `Update ${ payload.key }=${ payload.value } failed.`;
       yield put(actions.requestFailure(errorDetails, e));
     }
   }
@@ -132,18 +133,18 @@ function* updateSql() {
     const selectedSettingsItem = yield select(getSelectedSettingsItem);
     const sqlId = selectedSettingsItem["sql_id"];
 
-    const sqlMapCopy = {...SqlMap, [sqlId]: payload};
+    const sqlMapCopy = { ...SqlMap, [sqlId]: payload };
 
     try {
-      const requestUrl = `${config.tipsUrl}${sqlId}`;
-      const requestBody = {"value": payload};
+      const requestUrl = `${ config.tipsUrl }${ sqlId }`;
+      const requestBody = { "value": payload };
       yield put(actions.sendRequest());
       yield call(SuperFetch.put, requestUrl, false, requestBody);
       yield put(actions.requestSuccess("SQL updated successfully."));
 
       yield put(actions.updateSqlSuccess(sqlMapCopy));
     } catch (e) {
-      const errorMsg = `Updating SQL id=${sqlId} failed.`;
+      const errorMsg = `Updating SQL id=${ sqlId } failed.`;
       yield put(actions.requestFailure(errorMsg, e));
     }
   }
@@ -154,7 +155,7 @@ function* updateSql() {
 
 export default function* rootSaga() {
   yield all([
-    fork(requestSuccess),
+    // fork(requestSuccess),
     fork(requestFailure),
     fork(loadSettings),
     fork(updateSettingsItem),

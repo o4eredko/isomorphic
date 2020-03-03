@@ -1,12 +1,12 @@
 import React from "react";
+
 import { connect } from "react-redux";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 import { Layout } from "antd";
 import CodeMirror from "src/ui/CodeMirror";
 import BoxTitle from "src/utility/boxTitle";
 import Button from "src/ui/Button";
-
-import settingsActions from "src/GoogleCrafter/redux/actions";
 
 
 const basicOptions = {
@@ -26,6 +26,7 @@ const headerStyles = {
 
 function QueryEditor({ sql, onSqlSave }) {
   const [code, updateCode] = React.useState(sql);
+  React.useEffect(() => updateCode(sql), [sql]);
 
   return (
     <Layout style={ { backgroundColor: "white", padding: "0 15px" } }>

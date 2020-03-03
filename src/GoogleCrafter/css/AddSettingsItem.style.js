@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { palette } from "styled-theme";
 
 
 export const Heading = styled.h2`
@@ -9,10 +10,12 @@ export const Heading = styled.h2`
   margin-bottom: 51px;
 `;
 
-export const FormWrapper = styled.div`
-  max-width: 400px;
+export const ContentWrapper = styled.div`
+  max-height: calc(100vh - 250px);
+  overflow-y: scroll;
   width: 100%;
-  margin: 35px 0 81px;
+  padding: 20px;
+  margin-bottom: 81px;
   .field-container {
     .ant-form-item {
       &.switch-form-item {
@@ -83,6 +86,30 @@ export const Wrapper = styled.div`
   @media (min-width: 768px) {
     padding: 0;
   }
+  
+  .deleteIcon {
+    font-size: 18px;
+    cursor: pointer;
+    color: ${ palette("error", 0) };
+  
+    &:hover {
+      color: ${ palette("error", 2) };
+    }
+  }
+  
+  .ant-input-group {
+    .ant-form-item {
+      width: 49.5%
+    }
+    .ant-form-item:first-child {
+      margin-right: 1%;
+    }
+  }
+  
+  .ant-input {
+    padding: 1px 10px;
+    height: 30px;
+  }
 `;
 export const TopBar = styled.div`
   display: flex;
@@ -92,3 +119,29 @@ export const TopBar = styled.div`
   padding: 20px;
   font-size: 24px;
 `;
+
+export const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 6 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 18 },
+  },
+};
+
+export const formItemLayoutWithOutLabel = {
+  wrapperCol: {
+    xs: { span: 24, offset: 0 },
+    sm: { span: 18, offset: 6 },
+  },
+};
+
+export const codeMirrorOptions = {
+  lineNumbers: true,
+  readOnly: false,
+  tabSize: 4,
+  mode: "sql",
+  theme: "zenburn",
+};

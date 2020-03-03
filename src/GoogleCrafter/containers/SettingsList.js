@@ -1,7 +1,7 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import crafterActions from "src/GoogleCrafter/redux/actions";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 import Scrollbars from "src/utility/customScrollBar";
 import { InputSearch } from "src/ui/Input";
@@ -46,13 +46,13 @@ function SettingsList(
 }
 
 const mapStateToProps = state => {
-  const { settings, selectedSettingsItem } = state.googleCrafter;
+  const { settings, selectedSettingsItem } = state.googleCrafter.settings;
   return { settings, selectedSettingsItem };
 };
 
 const mapDispatchToProps = dispatch => ({
-  selectSettingsItem: item => dispatch(crafterActions.selectSettingsItem(item)),
-  deleteSettingsItem: id => dispatch(crafterActions.deleteSettingsItem(id)),
+  selectSettingsItem: item => dispatch(settingsActions.selectSettingsItem(item)),
+  deleteSettingsItem: id => dispatch(settingsActions.deleteSettingsItem(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsList);

@@ -1,9 +1,10 @@
-import { Input } from "antd";
+import { Input, InputNumber } from "antd";
 import {
   InputWrapper,
   InputGroupWrapper,
   InputSearchWrapper,
   TextAreaWrapper,
+  InputNumberWrapper,
 } from "./Input.style";
 
 
@@ -14,5 +15,7 @@ const InputGroup = InputGroupWrapper(Group);
 const InputSearch = InputSearchWrapper(Search);
 const Textarea = TextAreaWrapper(TextArea);
 
+const NumberInput = InputNumberWrapper(InputNumber);
+
 export default StyledInput;
-export { InputSearch, InputGroup, Textarea };
+export { InputSearch, InputGroup, Textarea, NumberInput };

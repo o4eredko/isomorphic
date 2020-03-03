@@ -6,9 +6,12 @@ const initState = {
   settings: [],
   sql: [],
   selectedSettingsItem: null,
+
+  addItemSubmittedStep: 0,
+  addItemUIStep: 0,
 };
 
-export default function googleCrafterReducer(state = initState, action) {
+export default function settingsReducer(state = initState, action) {
   switch (action.type) {
     case actions.SEND_REQUEST:
       return { ...state, isLoading: true };
@@ -24,7 +27,7 @@ export default function googleCrafterReducer(state = initState, action) {
     //   return { ...state };
 
     case actions.SELECT_SETTINGS_ITEM:
-      return {...state, selectedSettingsItem: action.payload};
+      return { ...state, selectedSettingsItem: action.payload };
 
     case actions.LOAD_SETTINGS_SUCCESS:
     case actions.DELETE_SETTINGS_ITEM_SUCCESS:

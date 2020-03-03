@@ -1,5 +1,5 @@
 import React from 'react';
-import InputNumber from '../uielements/InputNumber';
+import InputNumber from 'src/ui/Input/InputNumber';
 import { notification } from '../index';
 
 export default function({
