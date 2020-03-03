@@ -8,7 +8,7 @@ import addItemActions from "src/GoogleCrafter/redux/addItem/actions";
 import { Drawer } from "antd";
 import BoxTitle from "src/utility/boxTitle";
 import CodeMirror from "src/ui/CodeMirror";
-import AddItemForm from "src/GoogleCrafter/containers/AddItemForm";
+import AddItemForm from "src/GoogleCrafter/components/AddItemForm";
 import AddItemSteps from "src/GoogleCrafter/components/AddItemSteps";
 import AddItemResult from "src/GoogleCrafter/components/AddItemResult";
 // Assets

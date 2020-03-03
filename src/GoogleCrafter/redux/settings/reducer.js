@@ -23,6 +23,14 @@ export default function settingsReducer(state = initState, action) {
         isLoading: false
       };
 
+    case settingsActions.ADD_SETTINGS_ITEM:
+      return {
+        ...state,
+        settingsList: [action.settingsItem, ...state.settingsList],
+        selectedSettingsItem: action.settingsItem,
+        sqlMap: { ...state.sqlMap, [action.sqlId]: action.sqlValue }
+      };
+
     case settingsActions.SELECT_SETTINGS_ITEM:
       return {
         ...state,
