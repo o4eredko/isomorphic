@@ -6,13 +6,6 @@ import BoxTitle from "src/utility/boxTitle";
 import Button from "src/ui/Button";
 
 
-const basicOptions = {
-  lineNumbers: true,
-  readOnly: false,
-  tabSize: 4,
-  mode: "sql",
-  theme: "zenburn",
-};
 const headerStyles = {
   padding: 0,
   backgroundColor: "white",
@@ -34,7 +27,6 @@ const QueryEditor = ({ sql, onSave }) => {
       </Layout.Header>
       <CodeMirror
         value={ code }
-        options={ basicOptions }
         onBeforeChange={(editor, data, value) => updateCode(value) }
       />
     </Layout>
