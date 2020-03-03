@@ -7,7 +7,7 @@ import settingsActions from "./actions";
 import { message } from "antd";
 import SuperFetch from "src/lib/helpers/superFetch";
 
-import config from "src/config/googleCrafter.config";
+import config from "src/GoogleCrafter/config/googleCrafter.config";
 
 
 const getSettings = (state) => state.googleCrafter.settings;
