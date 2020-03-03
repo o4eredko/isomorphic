@@ -6,6 +6,7 @@ import { message } from "antd";
 import SuperFetch from "src/lib/helpers/superFetch";
 
 import config from "src/GoogleCrafter/config/googleCrafter.config";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 
 function getSettingsData(formData, sql_id) {
@@ -42,17 +43,17 @@ function* uploadToServer() {
       let response = yield call(SuperFetch.post, config.tipsUrl, false, sqlData);
       if (response.status !== 201)
         throw Error("Cannot upload sql");
+      const sqlId = response.data.id;
 
       /* Upload settings */
-      const settingsData = getSettingsData(formData, response.data.id);
-      console.dir(settingsData);
+      const settingsData = getSettingsData(formData, sqlId);
       response = yield call(SuperFetch.post, config.settingsUrl, false, settingsData);
       if (response.status !== 201)
         throw Error("Cannot upload settings");
       yield put(actions.setUploadStatus("success"));
+      yield put(settingsActions.addSettingsItem(response.data, sqlId, sql));
       // yield put(actions.setUploadStatus("error"));
     } catch (e) {
-      console.error(e);
       yield put(actions.setUploadStatus("error"));
       message.error(e.toString());
     }

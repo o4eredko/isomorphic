@@ -13,7 +13,11 @@ const routes = [
     component: lazy(() => import("src/FeedMaker/FeedMaker"))
   },
   {
-    path: "google-crafter",
+    path: "google-crafter/settings",
+    component: lazy(() => import("src/GoogleCrafter"))
+  },
+  {
+    path: "google-crafter/generations",
     component: lazy(() => import("src/GoogleCrafter"))
   }
 ];

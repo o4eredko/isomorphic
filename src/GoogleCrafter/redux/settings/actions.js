@@ -7,6 +7,8 @@ const settingsActions = {
   LOAD_SETTINGS_SUCCESS: "LOAD_SETTINGS_SUCCESS",
   LOAD_SQL_SUCCESS: "LOAD_SQL_SUCCESS",
 
+  ADD_SETTINGS_ITEM: "ADD_SETTINGS_ITEM",
+
   DELETE_SETTINGS_ITEM: "DELETE_SETTINGS_ITEM",
   DELETE_SETTINGS_ITEM_SUCCESS: "DELETE_SETTINGS_ITEM_SUCCESS",
 
@@ -21,7 +23,7 @@ const settingsActions = {
   sendRequest: () => ({
     type: settingsActions.SEND_REQUEST,
   }),
-  requestSuccess: (prompt="") => ({
+  requestSuccess: (prompt = "") => ({
     type: settingsActions.REQUEST_SUCCESS,
     payload: prompt,
   }),
@@ -47,12 +49,19 @@ const settingsActions = {
     payload: item,
   }),
 
+  addSettingsItem: (settingsItem, sqlId, sqlValue) => ({
+    type: settingsActions.ADD_SETTINGS_ITEM,
+    settingsItem,
+    sqlId,
+    sqlValue
+  }),
+
   deleteSettingsItem: id => ({
     type: settingsActions.DELETE_SETTINGS_ITEM,
     payload: id,
   }),
   deleteSettingsItemSuccess: payload => ({
-    type:settingsActions.DELETE_SETTINGS_ITEM_SUCCESS,
+    type: settingsActions.DELETE_SETTINGS_ITEM_SUCCESS,
     payload,
   }),
 
