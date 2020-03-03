@@ -22,11 +22,6 @@ export default function SettingsItem(
       <div className="isoNoteText" onClick={ onClick }>
         <h3>{ name }</h3>
       </div>
-      <Button
-        className="isoEditBtn"
-        icon="edit"
-        type="default"
-      />
       <Popconfirm
         placement="right"
         title="Are you sure?"

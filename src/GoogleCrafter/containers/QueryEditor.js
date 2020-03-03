@@ -6,6 +6,8 @@ import CodeMirror from "src/ui/CodeMirror";
 import BoxTitle from "src/utility/boxTitle";
 import Button from "src/ui/Button";
 
+import settingsActions from "src/GoogleCrafter/redux/actions";
+
 
 const basicOptions = {
   lineNumbers: true,
@@ -22,14 +24,14 @@ const headerStyles = {
   alignItems: "center",
 };
 
-function QueryEditor({ sql }) {
+function QueryEditor({ sql, onSqlSave }) {
   const [code, updateCode] = React.useState(sql);
 
   return (
     <Layout style={ { backgroundColor: "white", padding: "0 15px" } }>
       <Layout.Header style={ headerStyles }>
         <BoxTitle title="Type in your SQL:" />
-        <Button type="danger" icon="accept">Apply Changes</Button>
+        <Button type="danger" icon="accept" onClick={ () => onSqlSave(code) }>Apply Changes</Button>
       </Layout.Header>
       <CodeMirror
         value={ code }
@@ -49,7 +51,9 @@ function mapStateToProps({ googleCrafter }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {}
+  return {
+    onSqlSave: (sql) => dispatch(settingsActions.updateSql(sql)),
+  }
 }
 
 export default connect(

@@ -3,32 +3,46 @@ import { connect } from "react-redux";
 
 import actions from "./redux/actions";
 
-import SettingsArea from "./containers/SettingsArea";
-import SettingsList from "./containers/SettingsList";
+import SettingsArea from "src/GoogleCrafter/containers/SettingsArea";
+import SettingsList from "src/GoogleCrafter/containers/SettingsList";
 import AddSettingsItem from "./containers/AddSettingsItem";
 
-import GoogleCrafterWrapper from "./css/GoogleCrafter.styles";
-import config from "./config/googleCrafter.config";
+
+import GoogleCrafterWrapper from "src/GoogleCrafter/css/GoogleCrafter.styles";
+import config from "src/config/googleCrafter.config";
+import { Spin } from "antd";
 
 
 function Index(props) {
-  const { loadSettings } = props;
+  const { loadSettings, isLoading } = props;
 
   useEffect(() => {
     loadSettings(config.settingsUrl);
   }, [loadSettings]);
 
   return (
-    <GoogleCrafterWrapper className="googleCrafter">
-      <SettingsList />
-      <SettingsArea />
-      <AddSettingsItem />
-    </GoogleCrafterWrapper>
+    <Spin spinning={ isLoading }>
+      <GoogleCrafterWrapper className="googleCrafter">
+        <SettingsList />
+        <SettingsArea />
+        <AddSettingsItem />
+      </GoogleCrafterWrapper>
+    </Spin>
   )
 }
+
 
 const mapDispatchToProps = dispatch => ({
   loadSettings: url => dispatch(actions.loadSettings(url))
 });
 
-export default connect(null, mapDispatchToProps)(Index);
+
+const mapStateToProps = state => ({
+  isLoading: state.googleCrafter.isLoading,
+});
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Index);

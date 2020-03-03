@@ -4,14 +4,15 @@ import { connect } from "react-redux";
 import Tabs, { TabPane } from "src/ui/Tabs";
 import Button from "src/ui/Button";
 
-import ParamsEditor from "src/GoogleCrafter/containers/ParamsEditor";
+import ParamsEditor from "src/GoogleCrafter/components/ParamsEditor";
 import QueryEditor from "src/GoogleCrafter/containers/QueryEditor";
 import drawerActions from "src/Drawer/redux/drawer/actions";
-import notesAction from "src/GoogleCrafter/redux/actions";
+import settingsActions from "src/GoogleCrafter/redux/actions";
+import { Drawer } from "antd";
 
 
 const SettingsArea = (
-  { params, onChange, toggleDrawer }
+  { params, onChangeValueCell, drawerVisibility, toggleDrawer }
 ) => {
   const addButton = (
     <Button type="primary" icon="plus" onClick={ () => toggleDrawer(true) }>
@@ -20,17 +21,29 @@ const SettingsArea = (
   );
 
   return (
-    <Tabs
-      style={ { width: "100%", backgroundColor: "white", padding: "10px" } }
-      tabBarExtraContent={ addButton }
-    >
-      <TabPane key="params" tab="Parameters">
-        { params ? <ParamsEditor onChange={ onChange } params={ params } /> : "Loading..." }
-      </TabPane>
-      <TabPane key="query" tab="Query">
-        <QueryEditor />
-      </TabPane>
-    </Tabs>
+    <>
+      <Tabs
+        style={ { width: "100%", backgroundColor: "white", padding: "10px" } }
+        tabBarExtraContent={ addButton }
+      >
+        <TabPane key="params" tab="Parameters">
+          { params && <ParamsEditor onChangeValueCell={ onChangeValueCell } params={ params } /> }
+        </TabPane>
+        <TabPane key="query" tab="Query">
+          <QueryEditor />
+        </TabPane>
+      </Tabs>
+      <Drawer
+        placement="right"
+        closable={ true }
+        onClose={ () => toggleDrawer(false) }
+        visible={ drawerVisibility }
+        width={ 700 }
+        destroyOnClose={ true }
+      >
+
+      </Drawer>
+    </>
   );
 };
 
@@ -39,7 +52,8 @@ const mapStateToProps = (state) => {
   const { selectedSettingsItem } = state.googleCrafter;
 
   return {
-    params: selectedSettingsItem,
+    params: selectedSettingsItem || {},
+    drawerVisibility: state.drawer.drawerVisibility,
   };
 };
 
@@ -52,8 +66,8 @@ const mapDispatchToProps = (dispatch) => {
       ? drawerActions.openDrawer({ drawerType: DRAWER_TYPE })
       : drawerActions.closeDrawer()
     ),
-    onChange: (key, value) => {
-      dispatch(notesAction.updateSelectedItem(key, value))
+    onChangeValueCell: (key, value) => {
+      dispatch(settingsActions.updateSelectedItem(key, value))
     },
   };
 };

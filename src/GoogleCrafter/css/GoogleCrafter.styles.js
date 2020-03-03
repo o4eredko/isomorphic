@@ -25,6 +25,31 @@ const GoogleCrafterStyles = styled.div`
     padding: 50px 20px;
   }
   
+  .crafterEditableCell {
+    padding: 0 !important;
+    width: 40% !important;
+  }
+  
+  .crafterButtonCell {
+    padding: 0 !important;
+  }
+  
+  .crafterEditableCellBtn {
+    width: 33px;
+    height: 33px;
+    background-color: transparent;
+    flex-shrink: 0;
+    padding: 0;
+    border: 0;
+    font-size: 16px;
+    color: ${ palette("grayscale", 0) };
+    ${ transition() };
+
+    &:hover {
+      color: ${ palette("primary", 0) };
+    }
+  }
+  
   .isoDeleteBtn {
     width: 24px;
     height: 24px;

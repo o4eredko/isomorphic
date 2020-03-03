@@ -28,20 +28,18 @@ function SettingsList(
         onChange={ event => setSearch(event.target.value.toLowerCase()) }
       />
       <div className="isoNoteList">
-        { settings.length ? (
-          <Scrollbars style={ { height: "calc(100vh - 70px)" } }>
-            { settings.map(item =>
-              <SettingsItem
-                key={ item.id }
-                hidden={ search && !item.name.toLowerCase().includes(search) }
-                { ...item }
-                isActiveItem={ selectedSettingsItem === item }
-                onClick={ () => selectSettingsItem(item) }
-                onDelete={ () => deleteSettingsItem(item.id) }
-              />
-            ) }
-          </Scrollbars>
-        ) : <span className="isoNoResultMsg">No settings found</span> }
+        <Scrollbars style={ { height: "calc(100vh - 70px)" } }>
+          { settings.map(item =>
+            <SettingsItem
+              key={ item.id }
+              hidden={ search && !item.name.toLowerCase().includes(search) }
+              { ...item }
+              isActiveItem={ selectedSettingsItem === item }
+              onClick={ () => selectSettingsItem(item) }
+              onDelete={ () => deleteSettingsItem(item.id) }
+            />
+          ) }
+        </Scrollbars>
       </div>
     </SettingsListStyles>
   )
