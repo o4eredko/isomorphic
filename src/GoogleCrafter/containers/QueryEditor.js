@@ -24,36 +24,37 @@ const headerStyles = {
   alignItems: "center",
 };
 
-function QueryEditor({ sql, onSqlSave }) {
-  const [code, updateCode] = React.useState(sql);
+
+function QueryEditor({ sql, onSave }) {
+  const [code, updateCode] = React.useState("");
   React.useEffect(() => updateCode(sql), [sql]);
 
   return (
     <Layout style={ { backgroundColor: "white", padding: "0 15px" } }>
       <Layout.Header style={ headerStyles }>
         <BoxTitle title="Type in your SQL:" />
-        <Button type="danger" icon="accept" onClick={ () => onSqlSave(code) }>Apply Changes</Button>
+        <Button type="danger" icon="accept" onClick={ onSave.bind(null, code) }>Apply Changes</Button>
       </Layout.Header>
       <CodeMirror
         value={ code }
-        onChange={ value => updateCode(value) }
         options={ basicOptions }
+        onBeforeChange={(editor, data, value) => updateCode(value) }
       />
     </Layout>
   );
 }
 
 function mapStateToProps({ googleCrafter }) {
-  const { selectedSettingsItem, sql } = googleCrafter;
+  const { selectedSettingsItem, sqlMap } = googleCrafter.settings;
   const sqlId = selectedSettingsItem && selectedSettingsItem["sql_id"];
-  const selectedSql = sqlId ? sql[sqlId] : "";
+  const selectedSql = sqlId ? sqlMap[sqlId] : "";
 
   return { sql: selectedSql };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSqlSave: (sql) => dispatch(settingsActions.updateSql(sql)),
+    onSave: (sql) => dispatch(settingsActions.updateSql(sql)),
   }
 }
 
