@@ -21,7 +21,7 @@ function Index(props) {
   }, [loadSettings]);
 
   return (
-    <Spin spinning={ isLoading }>
+    <Spin style={ { maxHeight: "100%" } } spinning={ isLoading }>
       <GoogleCrafterWrapper className="googleCrafter">
         <SettingsList />
         <SettingsArea />
