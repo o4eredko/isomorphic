@@ -50,7 +50,7 @@ function* toggleProcessing() {
     const requestBody = {isPaused: !generationToToggle.isPaused};
     console.log("request", requestUrl, requestBody);
 
-    yield call(SuperFetch, requestUrl, false, requestBody);
+    yield call(SuperFetch.put, requestUrl, false, requestBody);
 
     const generationListCopy = [ ...generationList ];
     generationListCopy[toggleIndex].isPaused = !generationListCopy[toggleIndex].isPaused;
