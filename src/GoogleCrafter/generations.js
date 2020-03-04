@@ -28,55 +28,74 @@ function Generations(
     generationList,
     loadGenerations,
     startGeneration,
-    onPauseResumeClick,
+    onToggleClick,
   }) {
   React.useEffect(() => {
     loadGenerations();
     loadSettings();
   }, [loadGenerations, loadSettings]);
 
-  const renderProgress = (processing, record, index) => {
+  const renderProgress = (processing, record) => {
     const percent = Number(processing);
-    const isDone = Number(record.isDone);
-    const status = record.status && !isDone ? "exception" : (percent === 100 ? "success" : "active");
+    let status = getStatus(record);
+    if (status === "paused") {
+      status = "active";
+    }
 
     return (
       <Progress
-        key={ index }
         percent={ percent }
         status={ status }
       />
     );
   };
 
+  const getStatus = (record) => {
+    const statuses = {0: "active", 1: "paused", 4: "exception", 6: "success"};
+    const predicateList = [record.status, record.isDone, record.isPaused];
+    const convertedBitmap = predicateList.map(p => Number(Boolean(p)));
+    const sum = convertedBitmap.reduce((accumulator = 0, currentValue) => (accumulator << 1 | currentValue));
+    return statuses[sum];
+  };
+
   const renderStatus = (record) => {
-    const isDone = Number(record.isDone);
-    const status = !record.status && !Number(isDone) ? "pending" : (record.status === "OK" ? "success" : "exception");
-    let iconType, tooltipTitle;
+    const status = getStatus(record);
+    let className, title, onClick = null;
+    const style = {
+      fontSize: 24,
+      color: "rgb(247, 93, 129)",
+      cursor: "pointer"
+    };
 
     switch (status) {
-      case "pending":
-        iconType = "loading";
-        tooltipTitle = "Processing";
+      case "active":
+        className = "ion-ios-pause";
+        title = "Pause generation";
+        onClick = onToggleClick.bind(null, record.id);
         break;
-      case "success":
-        iconType = "check-circle";
-        tooltipTitle = "Done";
+      case "paused":
+        className = "ion-ios-play";
+        title = "Resume generation";
+        onClick = onToggleClick.bind(null, record.id);
         break;
       case "exception":
-        iconType = "info-circle";
-        tooltipTitle = record.status;
+        className = "ion-alert";
+        title = record.status;
+        break;
+      case "success":
+        className = "ion-ios-checkmark";
+        title = "Generation done";
         break;
     }
 
     return (
-      <Tooltip placement="left" title={ tooltipTitle }>
-        <Icon type={ iconType } />
+      <Tooltip placement="left" title={ title }>
+        <i className={ className } style={ style } onClick={ onClick } />
       </Tooltip>
     );
   };
 
-  const renderTimelineButtons = (value, record, index) => {
+  const renderTimelineButtons = (value, record) => {
     const eventPending = {
       dot: <Icon type="loading" />,
       color: "red"
@@ -121,15 +140,6 @@ function Generations(
     );
   };
 
-  const renderPauseResumeButtons = (record) => {
-    return (
-      <Icon
-        type={ record.isPaused ? "caret-right" : "pause" }
-        onClick={ onPauseResumeClick.bind(null, record.id) }
-      />
-    );
-  };
-
   function onSubmit(value) {
     const settingsItem = settingsList.find(item => item.id == value);
     const data = {
@@ -155,27 +165,29 @@ function Generations(
           dataSource={ generationList }
           pagination={ { pageSize: 15 } }
         >
-          <Column dataIndex="name" title="Generation name" />
           <Column
+            width={ "30%" }
+            dataIndex="name"
+            title="Generation name"
+          />
+          <Column
+            width={ "30%" }
             title="Generation progress"
             dataIndex="generation_complete"
             render={ renderProgress }
           />
           <Column
+            width={ "20%" }
             key="timeline"
             title="Generation timeline"
             align="center"
             render={ renderTimelineButtons }
           />
           <Column
-            key="pauseResume"
-            title="Pause/Resume generation"
-            align="center"
-            render={ renderPauseResumeButtons }
-          />
-          <Column
+            width={ "20%" }
             key="status"
-            title="Status"
+            title="Generation status"
+            align="center"
             render={ renderStatus }
           />
         </Table>
@@ -186,7 +198,7 @@ function Generations(
 
 function mapStateToProps({ googleCrafter }) {
   return {
-    isLoading: googleCrafter.loading.isLoading,
+    isLoading: !!googleCrafter.loading.isLoading,
     generationList: googleCrafter.generations.generationList,
     settingsList: googleCrafter.settings.settingsList,
     sqlMap: googleCrafter.settings.sqlMap,
@@ -198,7 +210,7 @@ function mapDispatchToProps(dispatch) {
     loadGenerations: () => dispatch(generationActions.loadGenerations()),
     loadSettings: () => dispatch(settingsActions.loadSettings()),
     startGeneration: (payload) => dispatch(generationActions.startGeneration(payload)),
-    onPauseResumeClick: (id) => dispatch(generationActions.toggleProcessing(id)),
+    onToggleClick: (id) => dispatch(generationActions.toggleProcessing(id)),
   }
 }
 

@@ -66,15 +66,17 @@ function* updateSettingsItem() {
     const settings = yield select(getSettingsList);
     const selectedIndex = settings.indexOf(selectedSettingsItem);
 
+    const requestUrl = `${config.settingsUrl}${selectedSettingsItem.id}`;
+    const requestBody = {[payload.key]: payload.value};
+    yield call(SuperFetch.put, requestUrl, false, requestBody);
+
     const settingsItemCopy = {
       ...selectedSettingsItem,
       [payload.key]: payload.value
     };
     const settingsCopy = [...settings];
-    settingsCopy[selectedIndex] = settingsItemCopy;
 
-    const requestUrl = `${config.settingsUrl}${selectedSettingsItem.id}`;
-    yield call(SuperFetch.put, requestUrl, false, settingsItemCopy);
+    settingsCopy[selectedIndex] = settingsItemCopy;
 
     yield put(settingsActions.updateSelectedItemSuccess(settingsCopy, settingsItemCopy));
   }

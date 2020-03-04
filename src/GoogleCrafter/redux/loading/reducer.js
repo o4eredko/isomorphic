@@ -1,7 +1,7 @@
 import actions from "./actions";
 
 const initialState = {
-  isLoading: false,
+  isLoading: 0,
 };
 
 
@@ -10,14 +10,14 @@ export default function loading(state=initialState, action) {
     case actions.SEND_REQUEST:
       return {
         ...state,
-        isLoading: true
+        isLoading: state.isLoading + 1
       };
 
     case actions.REQUEST_FAILURE:
     case actions.REQUEST_SUCCESS:
       return {
         ...state,
-        isLoading: false
+        isLoading: state.isLoading - 1
       };
 
     default:
