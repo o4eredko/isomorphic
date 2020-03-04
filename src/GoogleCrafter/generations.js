@@ -8,12 +8,7 @@ import LayoutWrapper from "src/utility/layoutWrapper";
 import Box from "src/utility/box";
 import PageHeader from "src/utility/pageHeader";
 import Progress from "src/ui/Progress";
-import Button from "src/ui/Button";
 import GenerationForm from "src/ui/Form/GenerationForm";
-import config from "src/FeedMaker/config";
-import SuperFetch from "src/lib/helpers/superFetch";
-import isErrorStatus from "src/lib/helpers/isErrorStatus";
-import { message } from "antd";
 import Table from "src/ui/Table";
 import { Popover, Typography, Icon, Tooltip } from "antd";
 import { StyledTimeline } from "src/GoogleCrafter/css/Generations.style";
@@ -47,11 +42,11 @@ function Generations(
 
     return (
       <Progress
-        key={index}
-        percent={percent}
-        status={status}
+        key={ index }
+        percent={ percent }
+        status={ status }
       />
-    ) ;
+    );
   };
 
   const renderStatus = (record) => {
@@ -118,7 +113,10 @@ function Generations(
 
     return (
       <Popover content={ popoverContent }>
-        <i className="ion-ios-more-outline" style={ { fontSize: 36, cursor: "pointer" } } />
+        <i
+          className="ion-ios-more-outline"
+          style={ { fontSize: 36, cursor: "pointer", lineHeight: "20px" } }
+        />
       </Popover>
     );
   };
@@ -151,8 +149,9 @@ function Generations(
           genTypes={ Object.fromEntries(settingsList.map(item => [item.id, item.name])) }
         />
         <Table
-          loading={ isLoading }
           rowKey="id"
+          size="middle"
+          loading={ isLoading }
           dataSource={ generationList }
           pagination={ { pageSize: 15 } }
         >
