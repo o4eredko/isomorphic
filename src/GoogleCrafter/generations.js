@@ -9,6 +9,7 @@ import PageHeader from "src/utility/pageHeader";
 import Table from "src/ui/Table";
 import Progress from "src/ui/Progress";
 import Button from "src/ui/Button";
+import { Icon, Tooltip } from "antd";
 
 
 const { Column } = Table;
@@ -19,25 +20,51 @@ function Generations({ isLoading, generationList, loadGenerations }) {
     loadGenerations();
   }, []);
 
-  const renderTimelineButtons = (value, record, index) => {
+  const renderProgress = (processing, record, index) => {
+    const percent = Number(processing);
+    const isDone = Number(record.isDone);
+    const status = record.status && !isDone ? "exception" : (percent === 100 ? "success" : "active");
+
     return (
-      <Button
-        key={ index }
-        style={ { width: 40 } }
-        type="default"
-        icon="dashboard"
+      <Progress
+        key={index}
+        percent={percent}
+        status={status}
+      />
+    ) ;
+  };
+
+  const renderStatus = (record) => {
+    const isDone = Number(record.isDone);
+    const status = !record.status && !Number(isDone) ? "pending" : (record.status === "OK" ? "success" : "exception");
+
+    switch (status) {
+      case "pending":
+        return <Icon type="loading"/>;
+      case "success":
+        return <Icon type="check-circle"/>;
+      case "exception":
+        return (
+          <Tooltip placement="leftTop" title={ record.status }>
+            <Icon type="info-circle"/>
+          </Tooltip>
+        );
+    }
+  };
+
+  const renderTimelineButtons = (value, record) => {
+    return (
+      <Icon
+        type="dashboard"
         onClick={ console.log.bind(null, `Timeline click:`, value, record) }
       />
     );
   };
 
-  const renderPauseResumeButtons = (value, record, index) => {
+  const renderPauseResumeButtons = (value, record) => {
     return (
-      <Button
-        key={ index }
-        style={ { width: 40 } }
-        type="default"
-        icon={ record.isPaused ? "caret-right" : "pause" }
+      <Icon
+        type={ record.isPaused ? "caret-right" : "pause" }
         onClick={ console.log.bind(null, "Pause click:", value, record) }
       />
     );
@@ -49,9 +76,10 @@ function Generations({ isLoading, generationList, loadGenerations }) {
       <Box title="Crafter generations">
         {/*<GenerationForm genTypes={ genTypes } />*/}
         <Table
-          loading={isLoading}
+          rowKey="id"
+          loading={ isLoading }
           dataSource={ generationList }
-          pagination={ { pageSize: 15 } }
+          pagination={ { pageSize: 15, current: 24 } }
         >
           <Column
             key="name"
@@ -62,13 +90,7 @@ function Generations({ isLoading, generationList, loadGenerations }) {
             key="progress"
             title="Generation progress"
             dataIndex="generation_complete"
-            render={ (processing, row, index) =>
-              <Progress
-                key={ index }
-                status={ processing !== 100 && !row.isDone ? "exception" : processing === 100 ? "success" : "active" }
-                percent={ Number(processing) }
-                showInfo={ false }
-              /> }
+            render={ renderProgress }
           />
           <Column
             key="timeline"
@@ -79,6 +101,11 @@ function Generations({ isLoading, generationList, loadGenerations }) {
             key="pauseResume"
             title="Pause/Resume generation"
             render={ renderPauseResumeButtons }
+          />
+          <Column
+            key="status"
+            title="Status"
+            render={ renderStatus }
           />
         </Table>
       </Box>
