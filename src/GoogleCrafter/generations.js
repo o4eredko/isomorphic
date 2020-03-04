@@ -1,15 +1,22 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import actions from "src/GoogleCrafter/redux/generations/actions";
+import generationActions from "src/GoogleCrafter/redux/generations/actions";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 import LayoutWrapper from "src/utility/layoutWrapper";
 import Box from "src/utility/box";
 import PageHeader from "src/utility/pageHeader";
 import Progress from "src/ui/Progress";
 import Button from "src/ui/Button";
+import GenerationForm from "src/ui/Form/GenerationForm";
+import config from "src/FeedMaker/config";
+import SuperFetch from "src/lib/helpers/superFetch";
+import isErrorStatus from "src/lib/helpers/isErrorStatus";
+import { message } from "antd";
+import Table from "src/ui/Table";
 import { Popover, Typography, Icon, Tooltip } from "antd";
-import { StyledTimeline, StyledTable as Table } from "src/GoogleCrafter/css/Generations.style";
+import { StyledTimeline } from "src/GoogleCrafter/css/Generations.style";
 
 
 const { Column } = Table;
@@ -17,10 +24,21 @@ const { Item } = StyledTimeline;
 const { Text } = Typography;
 
 
-function Generations({ isLoading, generationList, loadGenerations, onPauseResumeClick }) {
+function Generations(
+  {
+    isLoading,
+    sqlMap,
+    settingsList,
+    loadSettings,
+    generationList,
+    loadGenerations,
+    startGeneration,
+    onPauseResumeClick,
+  }) {
   React.useEffect(() => {
     loadGenerations();
-  }, []);
+    loadSettings();
+  }, [loadGenerations, loadSettings]);
 
   const renderProgress = (processing, record, index) => {
     const percent = Number(processing);
@@ -114,23 +132,32 @@ function Generations({ isLoading, generationList, loadGenerations, onPauseResume
     );
   };
 
+  function onSubmit(value) {
+    const settingsItem = settingsList.find(item => item.id == value);
+    const data = {
+      name: settingsItem.name,
+      settings: settingsItem,
+      sql: sqlMap[settingsItem.sql_id],
+    };
+    startGeneration(data);
+  }
+
   return (
     <LayoutWrapper>
       <PageHeader>Google Crafter</PageHeader>
-      <Box title="Crafter generations">
+      <Box>
+        <GenerationForm
+          onSubmit={ onSubmit }
+          genTypes={ Object.fromEntries(settingsList.map(item => [item.id, item.name])) }
+        />
         <Table
           loading={ isLoading }
-          dataSource={ generationList }
           rowKey="id"
-          pagination={ { pageSize: 15, current: 24 } }
+          dataSource={ generationList }
+          pagination={ { pageSize: 15 } }
         >
+          <Column dataIndex="name" title="Generation name" />
           <Column
-            key="name"
-            title="Generation name"
-            dataIndex="name"
-          />
-          <Column
-            key="progress"
             title="Generation progress"
             dataIndex="generation_complete"
             render={ renderProgress }
@@ -144,6 +171,7 @@ function Generations({ isLoading, generationList, loadGenerations, onPauseResume
           <Column
             key="pauseResume"
             title="Pause/Resume generation"
+            align="center"
             render={ renderPauseResumeButtons }
           />
           <Column
@@ -159,15 +187,19 @@ function Generations({ isLoading, generationList, loadGenerations, onPauseResume
 
 function mapStateToProps({ googleCrafter }) {
   return {
-    isLoading: googleCrafter.generations.isLoading,
+    isLoading: googleCrafter.loading.isLoading,
     generationList: googleCrafter.generations.generationList,
+    settingsList: googleCrafter.settings.settingsList,
+    sqlMap: googleCrafter.settings.sqlMap,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadGenerations: () => dispatch(actions.loadGenerations()),
-    onPauseResumeClick: (id) => dispatch(actions.toggleProcessing(id)),
+    loadGenerations: () => dispatch(generationActions.loadGenerations()),
+    loadSettings: () => dispatch(settingsActions.loadSettings()),
+    startGeneration: (payload) => dispatch(generationActions.startGeneration(payload)),
+    onPauseResumeClick: (id) => dispatch(generationActions.toggleProcessing(id)),
   }
 }
 

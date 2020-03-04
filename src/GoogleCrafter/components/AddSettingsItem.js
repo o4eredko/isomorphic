@@ -8,9 +8,7 @@ import AddItemForm from "src/GoogleCrafter/components/AddItemForm";
 import AddItemSteps from "src/GoogleCrafter/components/AddItemSteps";
 import AddItemResult from "src/GoogleCrafter/components/AddItemResult";
 // Assets
-import {
-  Wrapper, TopBar, ContentWrapper, codeMirrorOptions
-} from "src/GoogleCrafter/css/AddSettingsItem.style";
+import { Wrapper, TopBar, ContentWrapper } from "src/GoogleCrafter/css/AddSettingsItem.style";
 import { IconSvg } from "src/GoogleCrafter/IconSvg";
 import ArrowIcon from "src/assets/images/icon/04-icon.svg"
 
