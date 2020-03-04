@@ -13,10 +13,15 @@ export default function GenerationForm({ genTypes, onSubmit }) {
     onSubmit(generationType);
   };
 
+  const filterOption = (input, option) =>
+    option.props.children.toLowerCase().includes(input.toLowerCase());
+
+
   return (
     <Form onSubmit={ handleSubmit } style={ { marginBottom: 30 } }>
       <Select
         showSearch
+        filterOption={ filterOption }
         style={ { width: 320 } }
         placeholder="Select generation type"
         onChange={ value => setGenerationType(value) }

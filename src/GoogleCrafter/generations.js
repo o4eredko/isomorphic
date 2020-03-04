@@ -27,18 +27,25 @@ function Generations(
     loadSettings,
     generationList,
     loadGenerations,
+    pollGenerations,
     startGeneration,
     onPauseResumeClick,
   }) {
   React.useEffect(() => {
     loadGenerations();
     loadSettings();
+    setInterval(pollGenerations, 5000)
   }, [loadGenerations, loadSettings]);
 
   const renderProgress = (processing, record, index) => {
     const percent = Number(processing);
     const isDone = Number(record.isDone);
-    const status = record.status && !isDone ? "exception" : (percent === 100 ? "success" : "active");
+
+    const statuses = ["success", "active", "exception"];
+
+    let status = statuses[statuses.length - 1];
+    if (!record.status || isDone)
+      status = statuses[percent === 100];
 
     return (
       <Progress
@@ -196,6 +203,7 @@ function mapStateToProps({ googleCrafter }) {
 function mapDispatchToProps(dispatch) {
   return {
     loadGenerations: () => dispatch(generationActions.loadGenerations()),
+    pollGenerations: () => dispatch(generationActions.pollGenerations()),
     loadSettings: () => dispatch(settingsActions.loadSettings()),
     startGeneration: (payload) => dispatch(generationActions.startGeneration(payload)),
     onPauseResumeClick: (id) => dispatch(generationActions.toggleProcessing(id)),
