@@ -18,6 +18,7 @@ function* loadGenerations() {
   yield takeEvery(
     actions.LOAD_GENERATIONS,
     workerDecorator("Loading Generation List failed.")(worker));
+  yield takeEvery(actions.POLL_GENERATIONS, worker);
 }
 
 

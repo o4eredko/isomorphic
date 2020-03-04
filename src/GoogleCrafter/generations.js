@@ -21,6 +21,7 @@ function mapDispatchToProps(dispatch) {
     loadGenerations: () => dispatch(generationActions.loadGenerations()),
     loadSettings: () => dispatch(settingsActions.loadSettings()),
     startGeneration: (payload) => dispatch(generationActions.startGeneration(payload)),
+    pollGenerations: () => dispatch(generationActions.pollGenerations()),
     onToggleClick: (id) => dispatch(generationActions.toggleProcessing(id)),
   }
 }
