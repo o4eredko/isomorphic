@@ -7,32 +7,9 @@ import {
 
 import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
-import { message } from "antd";
 import SuperFetch from "src/lib/helpers/superFetch";
 
 import config from "src/GoogleCrafter/config/googleCrafter.config";
-
-
-function* requestFailure() {
-  function worker({ payload }) {
-    message.error(payload.reason);
-    console.error(payload.reason, payload.details);
-  }
-
-  yield takeEvery(settingsActions.REQUEST_FAILURE, worker);
-}
-
-
-function* requestSuccess() {
-  function worker({ payload }) {
-    if (payload) {
-      console.log(payload);
-      message.success(payload);
-    }
-  }
-
-  yield takeEvery(settingsActions.REQUEST_SUCCESS, worker);
-}
 
 
 export function* loadSettings() {
@@ -136,8 +113,6 @@ function* updateSql() {
 
 export default function* rootSaga() {
   yield all([
-    fork(requestSuccess),
-    fork(requestFailure),
     fork(loadSettings),
     fork(updateSettingsItem),
     fork(deleteSettingsItem),

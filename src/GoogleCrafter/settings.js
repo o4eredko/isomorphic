@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
-  isLoading: state.googleCrafter.settings.isLoading,
+  isLoading: state.googleCrafter.loading.isLoading,
 });
 
 

@@ -20,18 +20,6 @@ const settingsActions = {
   UPDATE_SQL: "UPDATE_SQL",
   UPDATE_SQL_SUCCESS: "UPDATE_SQL_SUCCESS",
 
-  sendRequest: () => ({
-    type: settingsActions.SEND_REQUEST,
-  }),
-  requestSuccess: (prompt = "") => ({
-    type: settingsActions.REQUEST_SUCCESS,
-    payload: prompt,
-  }),
-  requestFailure: (reason, details) => ({
-    type: settingsActions.REQUEST_FAILURE,
-    payload: { reason, details },
-  }),
-
   loadSettings: () => ({
     type: settingsActions.LOAD_SETTINGS
   }),

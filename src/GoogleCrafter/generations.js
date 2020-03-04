@@ -1,21 +1,23 @@
 import React from "react";
 
 import { connect } from "react-redux";
-
 import actions from "src/GoogleCrafter/redux/generations/actions";
+
 import LayoutWrapper from "src/utility/layoutWrapper";
 import Box from "src/utility/box";
 import PageHeader from "src/utility/pageHeader";
-import Table from "src/ui/Table";
 import Progress from "src/ui/Progress";
 import Button from "src/ui/Button";
-import { Icon, Tooltip } from "antd";
+import { Popover, Typography, Icon, Tooltip } from "antd";
+import { StyledTimeline, StyledTable as Table } from "src/GoogleCrafter/css/Generations.style";
 
 
 const { Column } = Table;
+const { Item } = StyledTimeline;
+const { Text } = Typography;
 
 
-function Generations({ isLoading, generationList, loadGenerations }) {
+function Generations({ isLoading, generationList, loadGenerations, onPauseResumeClick }) {
   React.useEffect(() => {
     loadGenerations();
   }, []);
@@ -37,35 +39,77 @@ function Generations({ isLoading, generationList, loadGenerations }) {
   const renderStatus = (record) => {
     const isDone = Number(record.isDone);
     const status = !record.status && !Number(isDone) ? "pending" : (record.status === "OK" ? "success" : "exception");
+    let iconType, tooltipTitle;
 
     switch (status) {
       case "pending":
-        return <Icon type="loading"/>;
+        iconType = "loading";
+        tooltipTitle = "Processing";
+        break;
       case "success":
-        return <Icon type="check-circle"/>;
+        iconType = "check-circle";
+        tooltipTitle = "Done";
+        break;
       case "exception":
-        return (
-          <Tooltip placement="leftTop" title={ record.status }>
-            <Icon type="info-circle"/>
-          </Tooltip>
-        );
+        iconType = "info-circle";
+        tooltipTitle = record.status;
+        break;
     }
-  };
 
-  const renderTimelineButtons = (value, record) => {
     return (
-      <Icon
-        type="dashboard"
-        onClick={ console.log.bind(null, `Timeline click:`, value, record) }
-      />
+      <Tooltip placement="left" title={ tooltipTitle }>
+        <Icon type={ iconType } />
+      </Tooltip>
     );
   };
 
-  const renderPauseResumeButtons = (value, record) => {
+  const renderTimelineButtons = (value, record, index) => {
+    const eventPending = {
+      dot: <Icon type="loading" />,
+      color: "red"
+    };
+
+    const popoverContent = (
+      <StyledTimeline mode="right">
+        <Item { ...(!record["sql_start"] && eventPending) }>
+          Sql start
+          <Text strong> { record["sql_start"] }</Text>
+        </Item>
+
+        <Item { ...(!record["sql_end"] && eventPending) }>
+          Sql end
+          <Text strong> { record["sql_end"] }</Text>
+        </Item>
+
+        <Item { ...(!record["generation_start"] && eventPending) }>
+          Generation start
+          <Text strong> { record["generation_start"] }</Text>
+        </Item>
+
+        <Item { ...(!record["generation_start"] && eventPending) }>
+          Generation end
+          <Text strong> { record["generation_end"] }</Text>
+        </Item>
+
+        <Item { ...(!record["export_start"] && eventPending) }>
+          Export start
+          <Text strong> { record["export_start"] }</Text>
+        </Item>
+      </StyledTimeline>
+    );
+
+    return (
+      <Popover content={ popoverContent }>
+        <i className="ion-ios-more-outline" style={ { fontSize: 36, cursor: "pointer" } } />
+      </Popover>
+    );
+  };
+
+  const renderPauseResumeButtons = (record) => {
     return (
       <Icon
         type={ record.isPaused ? "caret-right" : "pause" }
-        onClick={ console.log.bind(null, "Pause click:", value, record) }
+        onClick={ onPauseResumeClick.bind(null, record.id) }
       />
     );
   };
@@ -74,11 +118,10 @@ function Generations({ isLoading, generationList, loadGenerations }) {
     <LayoutWrapper>
       <PageHeader>Google Crafter</PageHeader>
       <Box title="Crafter generations">
-        {/*<GenerationForm genTypes={ genTypes } />*/}
         <Table
-          rowKey="id"
           loading={ isLoading }
           dataSource={ generationList }
+          rowKey="id"
           pagination={ { pageSize: 15, current: 24 } }
         >
           <Column
@@ -95,6 +138,7 @@ function Generations({ isLoading, generationList, loadGenerations }) {
           <Column
             key="timeline"
             title="Generation timeline"
+            align="center"
             render={ renderTimelineButtons }
           />
           <Column
@@ -123,6 +167,7 @@ function mapStateToProps({ googleCrafter }) {
 function mapDispatchToProps(dispatch) {
   return {
     loadGenerations: () => dispatch(actions.loadGenerations()),
+    onPauseResumeClick: (id) => dispatch(actions.toggleProcessing(id)),
   }
 }
 
