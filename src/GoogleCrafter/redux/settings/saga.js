@@ -46,8 +46,7 @@ export function* deleteSettingsItem() {
 
   function* worker({ payload }) {
     const requestUrl = `${config.settingsUrl}${payload}`;
-    const requestBody = {"_method": "delete"};
-    yield call(SuperFetch.post, requestUrl, false, requestBody);
+    yield call(SuperFetch.delete, requestUrl, false);
 
     let settings = yield select(getSettingsList);
     settings = settings.filter(settingsItem => settingsItem.id !== payload);
@@ -74,10 +73,8 @@ function* updateSettingsItem() {
     const settingsCopy = [...settings];
     settingsCopy[selectedIndex] = settingsItemCopy;
 
-    settingsItemCopy["_method"] = "put";
     const requestUrl = `${config.settingsUrl}${selectedSettingsItem.id}`;
-    yield call(SuperFetch.post, requestUrl, false, settingsItemCopy);
-    delete settingsItemCopy["_method"];
+    yield call(SuperFetch.put, requestUrl, false, settingsItemCopy);
 
     yield put(settingsActions.updateSelectedItemSuccess(settingsCopy, settingsItemCopy));
   }
