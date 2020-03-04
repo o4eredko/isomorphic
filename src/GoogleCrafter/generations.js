@@ -1,7 +1,8 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import actions from "src/GoogleCrafter/redux/generations/actions";
+import generationActions from "src/GoogleCrafter/redux/generations/actions";
+import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 
 import LayoutWrapper from "src/utility/layoutWrapper";
 import Box from "src/utility/box";
@@ -11,6 +12,11 @@ import Progress from "src/ui/Progress";
 import Button from "src/ui/Button";
 import { Popover, Typography, Icon } from "antd";
 import { StyledTimeline } from "src/GoogleCrafter/css/Generations.style";
+import GenerationForm from "src/ui/Form/GenerationForm";
+import config from "src/FeedMaker/config";
+import SuperFetch from "src/lib/helpers/superFetch";
+import isErrorStatus from "src/lib/helpers/isErrorStatus";
+import { message } from "antd";
 
 
 const { Column } = Table;
@@ -18,10 +24,20 @@ const { Item } = StyledTimeline;
 const { Text } = Typography;
 
 
-function Generations({ isLoading, generationList, loadGenerations }) {
+function Generations(
+  {
+    isLoading,
+    sqlMap,
+    settingsList,
+    loadSettings,
+    generationList,
+    loadGenerations,
+    startGeneration,
+  }) {
   React.useEffect(() => {
     loadGenerations();
-  }, []);
+    loadSettings();
+  }, [loadGenerations, loadSettings]);
 
   const renderTimelineButtons = (value, record, index) => {
     const eventPending = {
@@ -66,33 +82,36 @@ function Generations({ isLoading, generationList, loadGenerations }) {
   };
 
   const renderPauseResumeButtons = (value, record, index) => {
-    return (
-      <Button
-        key={ index }
-        style={ { width: 40 } }
-        type="default"
-        icon={ record.isPaused ? "caret-right" : "pause" }
-        onClick={ console.log.bind(null, "Pause click:", value, record) }
-      />
-    );
+    return (<>
+      <Icon type="pause" />
+    </>);
   };
+
+  function onSubmit(value) {
+    const settingsItem = settingsList.find(item => item.id == value);
+    const data = {
+      name: settingsItem.name,
+      settings: settingsItem,
+      sql: sqlMap[settingsItem.sql_id],
+    };
+    startGeneration(data);
+  }
 
   return (
     <LayoutWrapper>
       <PageHeader>Google Crafter</PageHeader>
-      <Box title="Crafter generations">
-        {/*<GenerationForm genTypes={ genTypes } />*/ }
+      <Box>
+        <GenerationForm
+          onSubmit={ onSubmit }
+          genTypes={ Object.fromEntries(settingsList.map(item => [item.id, item.name])) }
+        />
         <Table
           rowKey="id"
           loading={ isLoading }
-          dataSource={ generationList }
+          dataSource={ generationList.reverse() }
           pagination={ { pageSize: 15 } }
         >
-          <Column
-            key="name"
-            title="Generation name"
-            dataIndex="name"
-          />
+          <Column dataIndex="name" title="Generation name" />
           <Column
             key="progress"
             title="Generation progress"
@@ -114,6 +133,7 @@ function Generations({ isLoading, generationList, loadGenerations }) {
           <Column
             key="pauseResume"
             title="Pause/Resume generation"
+            align="center"
             render={ renderPauseResumeButtons }
           />
         </Table>
@@ -126,12 +146,16 @@ function mapStateToProps({ googleCrafter }) {
   return {
     isLoading: googleCrafter.generations.isLoading,
     generationList: googleCrafter.generations.generationList,
+    settingsList: googleCrafter.settings.settingsList,
+    sqlMap: googleCrafter.settings.sqlMap,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadGenerations: () => dispatch(actions.loadGenerations()),
+    loadGenerations: () => dispatch(generationActions.loadGenerations()),
+    loadSettings: () => dispatch(settingsActions.loadSettings()),
+    startGeneration: (payload) => dispatch(generationActions.startGeneration(payload)),
   }
 }
 

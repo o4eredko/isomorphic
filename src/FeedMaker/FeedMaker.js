@@ -7,11 +7,14 @@ import Box from "src/utility/box";
 import PageHeader from "src/utility/pageHeader";
 import Progress from "src/ui/Progress";
 import strCapitalize from "src/lib/helpers/stringCapitalize";
-import GenerationForm from "src/FeedMaker/GenerationForm";
+import GenerationForm from "src/ui/Form/GenerationForm";
 
 import socketConnect from "./socketio";
 import Hamster from "src/assets/images/hamster.gif";
 import config from "src/FeedMaker/config";
+import SuperFetch from "src/lib/helpers/superFetch";
+import isErrorStatus from "src/lib/helpers/isErrorStatus";
+import { message } from "antd";
 
 
 const { Title } = Typography;
@@ -22,6 +25,13 @@ export default () => {
   const [loading, setLoading] = useState(true);
   const [genTypes, setGenTypes] = useState([]);
   const [data, setData] = useState([]);
+
+  async function onSubmit(value) {
+    const url = `${ config.apiUrl }/${ genTypes[value] }`;
+    const { data, status } = await SuperFetch.post(url, true);
+    if (isErrorStatus(status))
+      message.error(data.detail || "Something went wrong.");
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -45,7 +55,7 @@ export default () => {
     <LayoutWrapper>
       <PageHeader>Feed Maker</PageHeader>
       <Box title="Generate new feed">
-        <GenerationForm genTypes={ genTypes } />
+        <GenerationForm onSubmit={ onSubmit } genTypes={ genTypes } />
         <Table
           pagination={ false }
           loading={ loading }
