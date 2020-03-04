@@ -1,17 +1,21 @@
 import React from "react";
 
 import { connect } from "react-redux";
-
 import actions from "src/GoogleCrafter/redux/generations/actions";
+
 import LayoutWrapper from "src/utility/layoutWrapper";
 import Box from "src/utility/box";
 import PageHeader from "src/utility/pageHeader";
 import Table from "src/ui/Table";
 import Progress from "src/ui/Progress";
 import Button from "src/ui/Button";
+import { Popover, Typography, Icon } from "antd";
+import { StyledTimeline } from "src/GoogleCrafter/css/Generations.style";
 
 
 const { Column } = Table;
+const { Item } = StyledTimeline;
+const { Text } = Typography;
 
 
 function Generations({ isLoading, generationList, loadGenerations }) {
@@ -20,14 +24,44 @@ function Generations({ isLoading, generationList, loadGenerations }) {
   }, []);
 
   const renderTimelineButtons = (value, record, index) => {
+    const eventPending = {
+      dot: <Icon type="loading" />,
+      color: "red"
+    };
+
+    const popoverContent = (
+      <StyledTimeline mode="right">
+        <Item { ...(!record["sql_start"] && eventPending) }>
+          Sql start
+          <Text strong> { record["sql_start"] }</Text>
+        </Item>
+
+        <Item { ...(!record["sql_end"] && eventPending) }>
+          Sql end
+          <Text strong> { record["sql_end"] }</Text>
+        </Item>
+
+        <Item { ...(!record["generation_start"] && eventPending) }>
+          Generation start
+          <Text strong> { record["generation_start"] }</Text>
+        </Item>
+
+        <Item { ...(!record["generation_start"] && eventPending) }>
+          Generation end
+          <Text strong> { record["generation_end"] }</Text>
+        </Item>
+
+        <Item { ...(!record["export_start"] && eventPending) }>
+          Export start
+          <Text strong> { record["export_start"] }</Text>
+        </Item>
+      </StyledTimeline>
+    );
+
     return (
-      <Button
-        key={ index }
-        style={ { width: 40 } }
-        type="default"
-        icon="dashboard"
-        onClick={ console.log.bind(null, `Timeline click:`, value, record) }
-      />
+      <Popover content={ popoverContent }>
+        <i className="ion-ios-more-outline" style={ { fontSize: 36, cursor: "pointer" } } />
+      </Popover>
     );
   };
 
@@ -47,9 +81,10 @@ function Generations({ isLoading, generationList, loadGenerations }) {
     <LayoutWrapper>
       <PageHeader>Google Crafter</PageHeader>
       <Box title="Crafter generations">
-        {/*<GenerationForm genTypes={ genTypes } />*/}
+        {/*<GenerationForm genTypes={ genTypes } />*/ }
         <Table
-          loading={isLoading}
+          rowKey="id"
+          loading={ isLoading }
           dataSource={ generationList }
           pagination={ { pageSize: 15 } }
         >
@@ -73,6 +108,7 @@ function Generations({ isLoading, generationList, loadGenerations }) {
           <Column
             key="timeline"
             title="Generation timeline"
+            align="center"
             render={ renderTimelineButtons }
           />
           <Column
