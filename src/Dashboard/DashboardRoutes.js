@@ -19,6 +19,10 @@ const routes = [
   {
     path: "google-crafter/generations",
     component: lazy(() => import("src/GoogleCrafter/generations"))
+  },
+  {
+    path: "facebook-crafter",
+    component: lazy(() => import("src/FacebookCrafter/"))
   }
 ];
 
