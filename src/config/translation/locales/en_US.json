@@ -1,5 +1,9 @@
 {
+  "sidebar.googleCrafter": "Google Crafter",
+  "sidebar.googleCrafter.settings": "Settings",
+  "sidebar.googleCrafter.generations": "Generations",
   "sidebar.redButton": "Red Button",
+  "sidebar.feedMaker": "Feed Maker",
   "sidebar.email": "Email",
   "sidebar.chat": "Chat",
   "sidebar.ecommerce": "Ecommerce",
