@@ -83,29 +83,28 @@ const SUBSCRIPTION = gql`
 `;
 
 function Wrapped() {
-  const [loading, setLoading] = React.useState(false);
-  // const { data, loading } = useSubscription(SUBSCRIPTION);
-  // const [craftAd, resp] = useMutation(MUTATION, {
-  //   variables: {
-  //     craft_name: "Helloy worald",
-  //     source_ad_set_id: "23843323691730359",
-  //     country_code: "GB",
-  //     csv_data: "adset_name,city,ad_title,ad_url\nTest AdSet Name 1,London,Test Ad Name 1, https://github.com/burkovski\nTest AdSet Name 2,Manchester,Test Ad Name 2, https://github.com/burkovski",
-  //     target_account_id: "act_410182513146595",
-  //     target_campaign_id: "23843323562960359",
-  //   }
-  // });
+  const { data, loading } = useSubscription(SUBSCRIPTION);
+  const [craftAd, resp] = useMutation(MUTATION, {
+    variables: {
+      craft_name: "Helloy worald",
+      source_ad_set_id: "23843323691730359",
+      country_code: "GB",
+      csv_data: "adset_name,city,ad_title,ad_url\nTest AdSet Name 1,London,Test Ad Name 1, https://github.com/burkovski\nTest AdSet Name 2,Manchester,Test Ad Name 2, https://github.com/burkovski",
+      target_account_id: "act_410182513146595",
+      target_campaign_id: "23843323562960359",
+    }
+  });
   // const { loading, error, data } = useQuery(REQUEST);
 
-  // if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
   // if (error) return <pre>Error :( { JSON.stringify(error, null, 4) }</pre>;
-  // console.log(data);
-  // return (
-  //   <div onClick={ craftAd }>
-  //     Hello world
-  //     <pre>{ JSON.stringify(data, null, 4) }</pre>
-  //   </div>
-  // )
+  console.log(data);
+  return (
+    <div style={{cursor: "pointer"}} onClick={ craftAd }>
+      Hello world
+      <pre>{ JSON.stringify(data, null, 4) }</pre>
+    </div>
+  )
 }
 
 export default function FacebookCrafter(props) {
@@ -115,7 +114,7 @@ export default function FacebookCrafter(props) {
       <LayoutWrapper>
         <PageHeader>Facebook Crafter</PageHeader>
         <Box title="A?">
-          <UploadForm />
+          <Wrapped />
         </Box>
       </LayoutWrapper>
     </ApolloProvider>
