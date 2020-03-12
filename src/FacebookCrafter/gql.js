@@ -58,10 +58,12 @@ export const CRAFT_ADS = gql`
 `;
 
 export const PROGRESS_SUBSCRIPTION = gql`
-    subscription {
+    subscription progress {
         progress {
             name
             percents
+            started
+            finished
         }
     }
 `;

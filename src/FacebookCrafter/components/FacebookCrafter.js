@@ -31,7 +31,8 @@ export default function FacebookCrafter({ drawerVisibility, toggleDrawer }) {
         <Table
           pagination={ false }
           loading={ loading }
-          dataSource={ data }
+          dataSource={ data.progress }
+          rowKey="name"
           className="isoSimpleTable"
         >
           <Table.Column
@@ -39,25 +40,26 @@ export default function FacebookCrafter({ drawerVisibility, toggleDrawer }) {
             dataIndex="name"
           />
           <Table.Column
+            title="Progress"
+            dataIndex="percents"
+            align="center"
+            render={ (value) =>
+              <Progress status={ value === 100 ? "success" : "active" } percent={ value } />
+            }
+          />
+          <Table.Column
             title="Crafting Started"
             dataIndex="started"
             render={ generation_date =>
-              new Date(generation_date).toLocaleString().replace(",", "")
+              new Date(generation_date * 1000).toLocaleString().replace(",", "")
             }
           />
           <Table.Column
             title="Crafting Finished"
             dataIndex="finished"
             render={ generation_date =>
-              new Date(generation_date).toLocaleString().replace(",", "")
-            }
-          />
-          <Table.Column
-            title="Progress"
-            dataIndex="progress"
-            align="center"
-            render={ (value) =>
-              <Progress status={ value === 100 ? "success" : "active" } percent={ value } />
+              generation_date ?
+              new Date(generation_date * 1000).toLocaleString().replace(",", "") : "Pending..."
             }
           />
         </Table>
