@@ -69,7 +69,7 @@ export default ({ handleSubmit, values, submitCount }) => (
           fontSize: '16px',
           fontWeight: 500,
         }}
-        className={'field-container'}
+        className={'field-containers'}
       >
         <img
           src={ThumbIcon}

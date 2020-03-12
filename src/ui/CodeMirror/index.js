@@ -1,6 +1,7 @@
 import React from "react";
 import { Controlled as CodeMirrors } from "react-codemirror2";
 import "codemirror/mode/sql/sql";
+import "codemirror/mode/textile/textile";
 import "codemirror/theme/material.css";
 import styled from "styled-components";
 
@@ -18,6 +19,10 @@ const basicOptions = {
 const CodeMirrorEditor = props => <CodeMirrors options={ basicOptions } { ...props } />;
 
 const CodeMirror = styled(CodeMirrorEditor)`
+  &.small .CodeMirror {
+    height: 300px;
+  }
+  
   .CodeMirror {
     font-family: monospace;
     height: calc(100vh - 290px);

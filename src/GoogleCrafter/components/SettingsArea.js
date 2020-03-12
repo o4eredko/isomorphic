@@ -2,7 +2,6 @@ import React from "react";
 
 import Tabs, { TabPane } from "src/ui/Tabs";
 import Button from "src/ui/Button";
-import { Drawer } from "antd";
 import ParamsEditor from "src/GoogleCrafter/components/ParamsEditor";
 import QueryEditor from "src/GoogleCrafter/containers/QueryEditor";
 
@@ -29,16 +28,6 @@ const SettingsArea = (
           <QueryEditor />
         </TabPane>
       </Tabs>
-      <Drawer
-        placement="right"
-        closable={ true }
-        onClose={ () => toggleDrawer(false) }
-        visible={ drawerVisibility }
-        width={ 700 }
-        destroyOnClose={ true }
-      >
-
-      </Drawer>
     </>
   );
 };
