@@ -1,8 +1,5 @@
-import React from "react";
-
 import { connect } from "react-redux";
 
-import settingsActions from "src/GoogleCrafter/redux/settings/actions";
 import QueryEditor from "src/GoogleCrafter/components/QueryEditor";
 
 
@@ -14,13 +11,4 @@ function mapStateToProps({ googleCrafter }) {
   return { sql: selectedSql };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSave: (sql) => dispatch(settingsActions.updateSql(sql)),
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(QueryEditor);
+export default connect(mapStateToProps)(QueryEditor);

@@ -1,4 +1,4 @@
-import { all, takeEvery, takeLatest, fork, call, put, select } from "redux-saga/effects";
+import { all, takeEvery, fork } from "redux-saga/effects";
 import { message } from "antd";
 
 import actions from "./actions";

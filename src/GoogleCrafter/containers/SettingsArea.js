@@ -1,5 +1,3 @@
-import React from "react";
-
 import { connect } from "react-redux";
 import drawerActions from "src/Drawer/redux/drawer/actions";
 import settingsActions from "src/GoogleCrafter/redux/settings/actions";

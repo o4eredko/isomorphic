@@ -1,5 +1,5 @@
 import { all, takeEvery, takeLatest, fork, call, put, select } from "redux-saga/effects";
-import { preparedData, preparedSql } from "./data";
+// import { preparedData, preparedSql } from "./data";
 import {
   workerDecorator, getSettingsList,
   getSqlMap, getSelectedSettingsItem
@@ -13,13 +13,13 @@ import config from "src/GoogleCrafter/config/googleCrafter.config";
 
 
 export function* loadSettings() {
-  function* mockedWorker() {
-    const sqlData = {};
-    for (const { id, value } of preparedSql)
-      sqlData[id] = value;
-    yield put({ type: settingsActions.LOAD_SETTINGS_SUCCESS, payload: preparedData });
-    yield put({ type: settingsActions.LOAD_SQL_SUCCESS, payload: sqlData });
-  }
+  // function* mockedWorker() {
+  //   const sqlData = {};
+  //   for (const { id, value } of preparedSql)
+  //     sqlData[id] = value;
+  //   yield put({ type: settingsActions.LOAD_SETTINGS_SUCCESS, payload: preparedData });
+  //   yield put({ type: settingsActions.LOAD_SQL_SUCCESS, payload: sqlData });
+  // }
 
   function* worker() {
     const [settings, sql] = yield all([
