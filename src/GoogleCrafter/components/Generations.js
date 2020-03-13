@@ -43,8 +43,8 @@ function Generations(
     return (
       <Progress
         strokeColor={{
-          "0%"  : "#de8096",
-          "100%": "#f75d81",
+          from: "#108ee9",
+          to: "#87d068"
         }}
         percent={ percent }
         status={ status }
@@ -64,8 +64,8 @@ function Generations(
     const status = getStatus(record);
     let className, title, onClick = null;
     const style = {
-      fontSize: 24,
-      color: "rgb(247, 93, 129)",
+      fontSize: 20,
+      color: "rgba(5,17,51,0.65)",
       cursor: "pointer"
     };
 
@@ -82,10 +82,12 @@ function Generations(
         break;
       case "exception":
         className = "ion-alert";
+        style.color = "#f5222d";
         title = record.status;
         break;
       case "success":
         className = "ion-ios-checkmark";
+        style.color = "#87d068";
         title = "Generation done";
         break;
     }
