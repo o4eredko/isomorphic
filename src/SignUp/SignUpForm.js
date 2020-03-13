@@ -7,12 +7,13 @@ import IntlMessages from "src/utility/intlMessages";
 import Notification from "src/ui/Notification";
 import SuperFetch from "src/lib/helpers/superFetch";
 
+import { PUBLIC_ROUTE } from "src/route.constants"
 import jwtConfig from "src/Authorization/jwt.config";
 
 
 class SignUpForm extends Component {
   successfulRegistration = () => {
-    this.props.history.push("/signin");
+    this.props.history.push(PUBLIC_ROUTE.SIGN_IN);
     Notification("success",
       "Registration is almost completed",
       "You have to wait until admins confirm your registration.")

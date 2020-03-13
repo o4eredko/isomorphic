@@ -17,7 +17,7 @@ const filterOption = (input, option) =>
 
 
 function CraftForm(
-  { submitCallback, form: { validateFields, getFieldDecorator, setFieldsValue } }
+  { submitCallback, form: { resetFields, validateFields, getFieldDecorator, setFieldsValue } }
 ) {
   const {
     loading: accountsLoading,
@@ -49,14 +49,18 @@ function CraftForm(
     data: { countries } = [],
   } = useQuery(GET_COUNTRIES);
 
-  for (const error of [accountsError, sourceCampaignsError, targetCampaignsError, adSetsError, countriesError]) {
-    if (error) message.error(JSON.stringify(error, null, 2));
-  }
+  for (const error of [
+    accountsError, sourceCampaignsError,
+    targetCampaignsError, adSetsError, countriesError
+  ]) if (error) message.error(JSON.stringify(error, null, 2));
 
   const handleSubmit = (event) => {
     event.preventDefault();
     validateFields((err, values) => {
-      if (!err) submitCallback(values);
+      if (!err) {
+        submitCallback(values);
+        resetFields();
+      }
     })
   };
 

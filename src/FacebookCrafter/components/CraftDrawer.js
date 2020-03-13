@@ -5,7 +5,7 @@ import { CRAFT_ADS } from "src/FacebookCrafter/gql";
 
 import { message, Drawer } from "antd";
 import CodeMirror from "src/ui/CodeMirror";
-import SourceForm from "src/FacebookCrafter/components/CraftForm";
+import CraftForm from "src/FacebookCrafter/components/CraftForm";
 
 import BoxTitle from "src/utility/boxTitle";
 import { Wrapper } from "src/GoogleCrafter/css/AddSettingsItem.style";
@@ -17,17 +17,18 @@ import { ContentWrapper } from "src/GoogleCrafter/css/AddSettingsItem.style";
 
 export default function CraftAds({ drawerVisibility, toggleDrawer }) {
   const [csv, setCsv] = React.useState("");
-
   const [craftAds] = useMutation(CRAFT_ADS);
 
   async function handleSubmit(formData) {
     formData.csvData = csv;
     console.dir(formData);
-    const { data, error } = await craftAds({ variables: formData });
+    const { error } = await craftAds({ variables: formData });
     if (error)
       message.error(JSON.stringify(error, null, 2));
-    else
-      message.info(JSON.stringify(data, null, 2));
+    else {
+      message.success("New Craft successfully started");
+      toggleDrawer(false);
+    }
   }
 
   return (
@@ -59,7 +60,7 @@ export default function CraftAds({ drawerVisibility, toggleDrawer }) {
             value={ csv }
             onBeforeChange={ (editor, data, value) => setCsv(value) }
           />
-          <SourceForm submitCallback={ handleSubmit } />
+          <CraftForm submitCallback={ handleSubmit } />
 
         </ContentWrapper>
       </Wrapper>
