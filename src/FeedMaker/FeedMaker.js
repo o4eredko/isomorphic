@@ -90,6 +90,10 @@ export default () => {
             dataIndex="processing"
             render={ processing =>
               <Progress
+                strokeColor={{
+                  from: "#108ee9",
+                  to: "#87d068"
+                }}
                 status={ processing === 100 ? "success" : "active" }
                 percent={ processing }
               /> }
