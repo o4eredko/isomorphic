@@ -1,36 +1,26 @@
 import React from "react";
-import { useAuth0 } from "./auth0-spa";
+import { useLocation } from "react-router";
 
-
-const Profile = () => {
-  const { loading, user } = useAuth0();
-
-  if (loading || !user) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <>
-      <img src={ user.picture } alt="Profile" />
-
-      <h2>{ user.name }</h2>
-      <p>{ user.email }</p>
-      <code>{ JSON.stringify(user, null, 2) }</code>
-    </>
-  );
-};
 
 export default function BingTable() {
-  const { isAuthenticated, loginWithRedirect, logout, getTokenSilently } = useAuth0();
+  const location = useLocation();
+  const url =
+    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?" +
+    "client_id=6a18e453-8652-442b-9733-913913cc6a6a&" +
+    "scope=https://ads.microsoft.com/ads.manage offline_access&" +
+    "response_type=code&" +
+    "redirect_uri=http://localhost:3000/dashboard/red-button";
 
-  if (isAuthenticated)
-    getTokenSilently().then(r => console.dir(r));
+  // https://login.microsoftonline.com/common/oauth2/v2.0/authorize?
+  // client_id=6a18e453-8652-442b-9733-913913cc6a6a&
+  // scope=https%3A%2F%2Fads.microsoft.com%2Fads.manage%20offline_access&
+  // response_type=code&
+  // redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdashboard%2Fcallback
 
   return (
     <>
-      { !isAuthenticated && <button onClick={ () => loginWithRedirect({}) }>Log in</button> }
-      { isAuthenticated && <button onClick={ () => logout() }>Log out</button> }
-      <Profile />
+      <a href={ url }>Click</a>
+      {/*<iframe title="microsoft" src={ url2 } />*/ }
     </>
   )
 }
