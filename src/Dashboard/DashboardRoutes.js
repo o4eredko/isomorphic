@@ -9,6 +9,10 @@ const routes = [
     component: lazy(() => import("src/RedButton/RedButton")),
   },
   {
+    path: "red-button/callback",
+    component: lazy(() => import("src/RedButton/Callback")),
+  },
+  {
     path: "feedmaker",
     component: lazy(() => import("src/FeedMaker/FeedMaker"))
   },

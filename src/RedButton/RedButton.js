@@ -9,17 +9,24 @@ import platforms from "./config";
 
 
 export default function RedButton() {
-  let firstActiveTab = platforms.findIndex(platform => !platform.disabled);
+  let firstActiveTab = platforms.findIndex(platform => !Boolean(platform["disabled"]));
   const [activeTab, setActiveTab] = useState(firstActiveTab);
   return (
     <LayoutContentWrapper>
       <LayoutContent>
         <Tabs onChange={ key => setActiveTab(parseInt(key)) }>
-          { platforms.map((platform, index) =>
-            <TabPane key={ index } tab={ platform.name } disabled={ platform.disabled }>
-              <PlatformTable isActive={ activeTab === index } apiUrl={ platform.apiUrl } />
-            </TabPane>
-          ) }
+          { platforms.map((platform, index) => {
+            const PlatformTableClass = platform.handler;
+            return (
+              <TabPane
+                key={ index }
+                tab={ platform.name }
+                disabled={ Boolean(platform["disabled"]) }
+              >
+                <PlatformTableClass isActive={ activeTab === index } apiUrl={ platform.apiUrl } />
+              </TabPane>
+            )
+          }) }
         </Tabs>
       </LayoutContent>
     </LayoutContentWrapper>

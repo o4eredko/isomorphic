@@ -1,18 +1,27 @@
+import PlatformTable from "src/RedButton/PlatformTable";
+import BingTable from "src/RedButton/BingTable";
+
+
 const platforms = [
   {
-    name: 'Google Ads',
-    disabled: false,
-    apiUrl: 'http://localhost:8000/api/',
+    name: "Bing Ads",
+    apiUrl: "http://localhost:8003/api/",
+    handler: BingTable,
   },
   {
-    name: 'Yandex Direct',
-    disabled: false,
-    apiUrl: 'http://localhost:8001/api/',
+    name: "Google Ads",
+    apiUrl: "http://localhost:8000/api/",
+    handler: PlatformTable,
   },
   {
-    name: 'Facebook Ads',
-    disabled: false,
-    apiUrl: 'http://localhost:8002/api/',
+    name: "Yandex Direct",
+    apiUrl: "http://localhost:8001/api/",
+    handler: PlatformTable,
+  },
+  {
+    name: "Facebook Ads",
+    apiUrl: "http://localhost:8002/api/",
+    handler: PlatformTable,
   },
 ];
 
