@@ -7,6 +7,8 @@ const platforms = [
     name: "Bing Ads",
     apiUrl: "http://localhost:8003/api/",
     handler: BingTable,
+    clientId: "6a18e453-8652-442b-9733-913913cc6a6a",
+    redirectUrl: "http://localhost:3000/dashboard/red-button"
   },
   {
     name: "Google Ads",

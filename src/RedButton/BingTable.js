@@ -1,26 +1,53 @@
-import React from "react";
-import { useLocation } from "react-router";
+import React from "react"
+
+import Button from "src/ui/Button"
+import PlatformActions from "src/RedButton/PlatformActions"
+import SuperFetch from "src/lib/helpers/superFetch"
+import PlatformTable from "src/RedButton/PlatformTable"
+import isErrorStatus from "src/lib/helpers/isErrorStatus"
+import { useHistory } from "react-router"
 
 
-export default function BingTable() {
-  const location = useLocation();
-  const url =
-    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?" +
-    "client_id=6a18e453-8652-442b-9733-913913cc6a6a&" +
-    "scope=https://ads.microsoft.com/ads.manage offline_access&" +
-    "response_type=code&" +
-    "redirect_uri=http://localhost:3000/dashboard/red-button";
+export default function BingTable(props) {
+  const history = useHistory()
+  const authCode = new URLSearchParams(window.location.search).get("code")
+  const [oauthUrl, setOauthUrl] = React.useState()
+  const [authenticated, setAuthenticated] = React.useState(false)
 
-  // https://login.microsoftonline.com/common/oauth2/v2.0/authorize?
-  // client_id=6a18e453-8652-442b-9733-913913cc6a6a&
-  // scope=https%3A%2F%2Fads.microsoft.com%2Fads.manage%20offline_access&
-  // response_type=code&
-  // redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdashboard%2Fcallback
+  React.useEffect(() => {
+    const handler = new PlatformActions(props.apiUrl)
 
-  return (
-    <>
-      <a href={ url }>Click</a>
-      {/*<iframe title="microsoft" src={ url2 } />*/ }
-    </>
+    async function initBingOauth() {
+      await handler.initUrlTable()
+      const { data } = await SuperFetch.get(handler.urlTable["authenticate"], false)
+      data.shouldUpdate ? setOauthUrl(data["oauthUrl"]) : setAuthenticated(true)
+    }
+
+    async function authenticate() {
+      await handler.initUrlTable()
+      const url = handler.urlTable["authenticate"]
+      const data = { code: authCode }
+      const { status } = await SuperFetch.post(url, false, data)
+      history.push(window.location.pathname)
+      if (!isErrorStatus(status))
+        setAuthenticated(true)
+    }
+
+    authCode ? authenticate() : initBingOauth()
+  }, [props.apiUrl, authCode])
+
+  return authenticated ? <PlatformTable apiUrl={ props.apiUrl } /> : (
+    <div style={ { display: "flex", flexDirection: "column", alignItems: "flex-start" } }>
+      To access Bing Ads API you need to log in to your account.
+      <Button
+        icon="windows"
+        loading={ !oauthUrl }
+        href={ oauthUrl }
+        type="primary"
+        style={ { lineHeight: "35px", marginTop: 10 } }
+      >
+        Log in with Microsoft
+      </Button>
+    </div>
   )
 }
