@@ -1,5 +1,6 @@
 import React from "react"
 
+import { message } from "antd"
 import Button from "src/ui/Button"
 import PlatformActions from "src/RedButton/PlatformActions"
 import SuperFetch from "src/lib/helpers/superFetch"
@@ -26,15 +27,17 @@ export default function BingTable(props) {
     async function authenticate() {
       await handler.initUrlTable()
       const url = handler.urlTable["authenticate"]
-      const data = { code: authCode }
-      const { status } = await SuperFetch.post(url, false, data)
+      const body = { code: authCode }
+      const { data, status } = await SuperFetch.post(url, false, body)
       history.push(window.location.pathname)
       if (!isErrorStatus(status))
         setAuthenticated(true)
+      else
+        message.error(data.detail)
     }
 
     authCode ? authenticate() : initBingOauth()
-  }, [props.apiUrl, authCode])
+  }, [])
 
   return authenticated ? <PlatformTable apiUrl={ props.apiUrl } /> : (
     <div style={ { display: "flex", flexDirection: "column", alignItems: "flex-start" } }>
