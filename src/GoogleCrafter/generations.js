@@ -1,5 +1,3 @@
-import React from "react";
-
 import { connect } from "react-redux";
 
 import generationActions from "src/GoogleCrafter/redux/generations/actions";

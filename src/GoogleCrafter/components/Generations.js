@@ -56,7 +56,8 @@ function Generations(
     const statuses = {0: "active", 1: "paused", 4: "exception", 6: "success"};
     const predicateList = [record.status, record.isDone, record.isPaused];
     const convertedBitmap = predicateList.map(p => Number(Boolean(p)));
-    const sum = convertedBitmap.reduce((accumulator = 0, currentValue) => (accumulator << 1 | currentValue));
+    const sum = convertedBitmap.reduce((accumulator = 0, currentValue) =>
+      ((accumulator << 1) | currentValue));
     return statuses[sum];
   };
 
