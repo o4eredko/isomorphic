@@ -1,4 +1,4 @@
-import { all, takeEvery, takeLatest, fork, call, put, select } from "redux-saga/effects";
+import { all, takeEvery, fork, call, put, select } from "redux-saga/effects";
 
 import actions from "src/GoogleCrafter/redux/generations/actions";
 import { workerDecorator, getGenerationList } from "src/GoogleCrafter/utils/sagaUtils";

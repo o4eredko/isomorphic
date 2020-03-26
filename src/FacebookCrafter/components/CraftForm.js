@@ -52,7 +52,10 @@ function CraftForm(
   for (const error of [
     accountsError, sourceCampaignsError,
     targetCampaignsError, adSetsError, countriesError
-  ]) if (error) message.error(JSON.stringify(error, null, 2));
+  ]) if (error && error.graphQLErrors) {
+    message.error(error.graphQLErrors[0].message);
+    break;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
