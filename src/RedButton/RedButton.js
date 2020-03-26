@@ -4,22 +4,30 @@ import LayoutContentWrapper from "src/utility/layoutWrapper";
 import LayoutContent from "src/utility/layoutContent";
 import Tabs, { TabPane } from "src/ui/Tabs";
 
-import PlatformTable from "./PlatformTable";
 import platforms from "./config";
+import PlatformTable from "src/RedButton/PlatformTable"
 
 
 export default function RedButton() {
-  let firstActiveTab = platforms.findIndex(platform => !platform.disabled);
+  let firstActiveTab = platforms.findIndex(platform => !Boolean(platform["disabled"]));
   const [activeTab, setActiveTab] = useState(firstActiveTab);
+
   return (
     <LayoutContentWrapper>
       <LayoutContent>
         <Tabs onChange={ key => setActiveTab(parseInt(key)) }>
-          { platforms.map((platform, index) =>
-            <TabPane key={ index } tab={ platform.name } disabled={ platform.disabled }>
-              <PlatformTable isActive={ activeTab === index } apiUrl={ platform.apiUrl } />
-            </TabPane>
-          ) }
+          { platforms.map((platform, index) => {
+            const PlatformTableClass = platform.handler || PlatformTable;
+            return (
+              <TabPane
+                key={ index }
+                tab={ platform.name }
+                disabled={ Boolean(platform["disabled"]) }
+              >
+                <PlatformTableClass isActive={ activeTab === index } { ...platform } />
+              </TabPane>
+            )
+          }) }
         </Tabs>
       </LayoutContent>
     </LayoutContentWrapper>

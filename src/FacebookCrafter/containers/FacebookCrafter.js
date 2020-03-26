@@ -10,10 +10,12 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { split } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
 import { WebSocketLink } from "apollo-link-ws";
+import { setContext } from "apollo-link-context";
 import { getMainDefinition } from "apollo-utilities";
 
 import FacebookCrafter from "src/FacebookCrafter/components/FacebookCrafter";
 import config from "src/FacebookCrafter/config/index.config";
+import authHelper from "src/lib/helpers/authHelper";
 
 
 const httpLink = new HttpLink({ uri: config.httpUrl });
@@ -23,6 +25,19 @@ const wsLink = new WebSocketLink({
     reconnect: true
   }
 });
+
+const authLink = setContext(async (_, { headers }) => {
+  try {
+    authHelper.checkExpiration(localStorage.getItem("access_token"));
+  } catch {
+    await authHelper.refreshToken();
+  }
+  const token = localStorage.getItem("access_token");
+  return {
+    headers: { ...headers, Authorization: `Bearer ${ token }` }
+  };
+});
+
 const link = split(
   // split based on operation type
   ({ query }) => {
@@ -32,16 +47,12 @@ const link = split(
       definition.operation === "subscription"
     );
   },
-  wsLink,
-  httpLink,
+  authLink.concat(wsLink),
+  authLink.concat(httpLink)
 );
 
-const createApolloClient = () => {
-  return new ApolloClient({
-    link: link,
-    cache: new InMemoryCache(),
-  });
-};
+const createApolloClient = () =>
+  new ApolloClient({ link: link, cache: new InMemoryCache() });
 
 const FacebookCrafterWrapper = (props) => {
   const client = createApolloClient();
@@ -52,7 +63,7 @@ const FacebookCrafterWrapper = (props) => {
   )
 };
 
-function mapStateToProps({ drawer, facebookCrafter }) {
+function mapStateToProps({ drawer }) {
   return { drawerVisibility: drawer.drawerVisibility }
 }
 
