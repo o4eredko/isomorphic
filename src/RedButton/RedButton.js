@@ -5,6 +5,7 @@ import LayoutContent from "src/utility/layoutContent";
 import Tabs, { TabPane } from "src/ui/Tabs";
 
 import platforms from "./config";
+import PlatformTable from "src/RedButton/PlatformTable"
 
 
 export default function RedButton() {
@@ -16,7 +17,7 @@ export default function RedButton() {
       <LayoutContent>
         <Tabs onChange={ key => setActiveTab(parseInt(key)) }>
           { platforms.map((platform, index) => {
-            const PlatformTableClass = platform.handler;
+            const PlatformTableClass = platform.handler || PlatformTable;
             return (
               <TabPane
                 key={ index }

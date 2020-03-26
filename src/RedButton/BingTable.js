@@ -39,7 +39,7 @@ export default function BingTable(props) {
     authCode ? authenticate() : initBingOauth()
   }, [])
 
-  return authenticated ? <PlatformTable apiUrl={ props.apiUrl } /> : (
+  return authenticated ? <PlatformTable { ...props } /> : (
     <div style={ { display: "flex", flexDirection: "column", alignItems: "flex-start" } }>
       To access Bing Ads API you need to log in to your account.
       <Button

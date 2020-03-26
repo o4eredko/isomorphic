@@ -13,17 +13,14 @@ const platforms = [
   {
     name: "Google Ads",
     apiUrl: "http://localhost:8000/api/",
-    handler: PlatformTable,
   },
   {
     name: "Yandex Direct",
     apiUrl: "http://localhost:8001/api/",
-    handler: PlatformTable,
   },
   {
     name: "Facebook Ads",
     apiUrl: "http://localhost:8002/api/",
-    handler: PlatformTable,
   },
 ];
 
