@@ -51,7 +51,7 @@ const {
 // }
 
 const devServerConfig = () => config => {
-  const fs = require("fs")
+  const fs = require("fs");
   return {
     ...config,
     https: {
@@ -59,7 +59,7 @@ const devServerConfig = () => config => {
       cert: fs.readFileSync(process.env.REACT_HTTPS_CERT, "utf8"),
     }
   }
-}
+};
 
 module.exports = {
   webpack: override(
@@ -68,16 +68,4 @@ module.exports = {
     }),
     addWebpackAlias({ "src": path.resolve(__dirname, "src") })
   ),
-  devServer: function (configFunction) {
-    return function (proxy, allowedHost) {
-      const config = configFunction(proxy, allowedHost);
-      const fs = require("fs");
-      config.https = {
-        key: fs.readFileSync(process.env.SSL_KEY_FILE, "utf8"),
-        cert: fs.readFileSync(process.env.SSL_CRT_FILE, "utf8"),
-      };
-
-      return config;
-    };
-  },
 };

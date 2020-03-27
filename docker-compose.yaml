@@ -3,14 +3,31 @@ version: '3.7'
 services:
   isomorhic:
     container_name: isomorphic
-    env_file:
-      - .env
     restart: unless-stopped
     build:
       context: .
-    tty: true
-    ports:
-    - 80:3000
+    networks:
+      - isomorphic
     volumes:
       - ./:/app
       - /app/node_modules
+
+  isomorphic_nginx:
+    container_name: isomorphic_nginx
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/ssl/certs/skyline-jo.crt:/etc/ssl/certs/skyline-jo.crt:ro
+      - /etc/ssl/certs/skyline-jo-privateKey.key:/etc/ssl/certs/skyline-jo-privateKey.key:ro
+    networks:
+      - isomorphic
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - isomorhic
+
+networks:
+  isomorphic:
+    name: isomorphic
+    driver: bridge
