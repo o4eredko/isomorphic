@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Table from "src/ui/Table";
 import { message } from "antd";
 import Progress from "src/ui/Progress";
-import Spin from "src/ui/Spin";
 import PlatformActions from "./PlatformActions";
 
 import Switch from "./Switch";
