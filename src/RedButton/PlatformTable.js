@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Table from "src/ui/Table";
 import { message } from "antd";
 import Progress from "src/ui/Progress";
+import Spin from "src/ui/Spin";
 import PlatformActions from "./PlatformActions";
 
 import Switch from "./Switch";
@@ -65,7 +66,10 @@ class PlatformTable extends Component {
     return (
       <Table
         pagination={ false }
-        loading={ loading }
+        loading={{
+          spinning: loading,
+          tip: "Synchronizing campaigns. This may take some time."
+        }}
         dataSource={ data }
         className="isoSimpleTableWrapper"
       >
