@@ -12,13 +12,4 @@ function mapStateToProps({ googleCrafter }) {
   return { sql: selectedSql };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSave: (sql) => dispatch(settingsActions.updateSql(sql)),
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(QueryEditor);
+export default connect(mapStateToProps)(QueryEditor);
