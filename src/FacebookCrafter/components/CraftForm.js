@@ -67,18 +67,6 @@ function CraftForm(
     })
   };
 
-  React.useEffect(() => {
-    setFieldsValue({
-      sourceAccountId: "act_410182513146595",
-      sourceCampaignId: "23843323562960359",
-      sourceAdSetId: "23843323691730359",
-      targetAccountId: "act_410182513146595",
-      targetCampaignId: "23843323562960359",
-      countryCode: "de"
-    })
-  }, [])
-
-
   return (
     <Form layout="horizontal">
       <Item label="Generation Name">

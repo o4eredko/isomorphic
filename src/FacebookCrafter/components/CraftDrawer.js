@@ -3,7 +3,7 @@ import React from "react"
 import { useMutation } from "@apollo/react-hooks"
 import { CRAFT_ADS } from "src/FacebookCrafter/gql"
 
-import { message, Drawer, Icon, Tooltip, Row, Col } from "antd"
+import { message, Drawer, Icon, Popover, Row, Col } from "antd"
 import CodeMirror from "src/ui/CodeMirror"
 import CraftForm from "src/FacebookCrafter/components/CraftForm"
 import DragAndDropUploader from "src/FacebookCrafter/components/DragAndDropUploader"
@@ -25,7 +25,14 @@ const InfoIcon = styled(Icon)`
   color: ${ colors.PRIMARY_BUTTON_COLOR }
 `
 
-const { rowStyle, colStyle, gutter } = basicStyle
+const { rowStyle, colStyle } = basicStyle
+
+const popoverContent = (
+  <div>
+    <p>Required: <b>{ config.csvFields.required.join(", ") }</b></p>
+    <p>Non-required: <b>{ config.csvFields.nonRequired.join(", ") }</b></p>
+  </div>
+)
 
 export default function CraftAds({ drawerVisibility, toggleDrawer }) {
   const [csv, setCsv] = React.useState("")
@@ -68,12 +75,9 @@ export default function CraftAds({ drawerVisibility, toggleDrawer }) {
 
           <Row style={ rowStyle } gutters={ 24 }>
             <Col style={ colStyle } xs={ 1 }>
-              <Tooltip
-                placement="top"
-                title={ `Required fields: ${ config.requiredCsvFields.join(", ") }` }
-              >
+              <Popover content={ popoverContent } title="Csv fields">
                 <InfoIcon type="info-circle" />
-              </Tooltip>
+              </Popover>
             </Col>
             <Col style={ colStyle } xs={ 23 }>
               <BoxTitle title="Put your csv data here:" />
