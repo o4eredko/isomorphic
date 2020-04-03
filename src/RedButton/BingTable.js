@@ -10,34 +10,34 @@ import { useHistory } from "react-router"
 
 
 export default function BingTable(props) {
-  const history = useHistory()
-  const authCode = new URLSearchParams(window.location.search).get("code")
-  const [oauthUrl, setOauthUrl] = React.useState()
-  const [authenticated, setAuthenticated] = React.useState(false)
+  const history = useHistory();
+  const authCode = new URLSearchParams(window.location.search).get("code");
+  const [oauthUrl, setOauthUrl] = React.useState();
+  const [authenticated, setAuthenticated] = React.useState(false);
 
   React.useEffect(() => {
-    const handler = new PlatformActions(props.apiUrl)
+    const handler = new PlatformActions(props.apiUrl);
 
     async function initBingOauth() {
-      await handler.initUrlTable()
-      const { data } = await SuperFetch.get(handler.urlTable["authenticate"], false)
+      await handler.initUrlTable();
+      const { data } = await SuperFetch.get(handler.urlTable["authenticate"], false);
       data.shouldUpdate ? setOauthUrl(data["oauthUrl"]) : setAuthenticated(true)
     }
 
     async function authenticate() {
-      await handler.initUrlTable()
-      const url = handler.urlTable["authenticate"]
-      const body = { code: authCode }
-      const { data, status } = await SuperFetch.post(url, false, body)
-      history.push(window.location.pathname)
+      await handler.initUrlTable();
+      const url = handler.urlTable["authenticate"];
+      const body = { code: authCode };
+      const { data, status } = await SuperFetch.post(url, false, body);
+      history.push(window.location.pathname);
       if (!isErrorStatus(status))
-        setAuthenticated(true)
+        setAuthenticated(true);
       else
         message.error(data.detail)
     }
 
     authCode ? authenticate() : initBingOauth()
-  }, [])
+  }, []);
 
   return authenticated ? <PlatformTable { ...props } /> : (
     <div style={ { display: "flex", flexDirection: "column", alignItems: "flex-start" } }>

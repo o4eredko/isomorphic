@@ -65,7 +65,10 @@ class PlatformTable extends Component {
     return (
       <Table
         pagination={ false }
-        loading={ loading }
+        loading={{
+          spinning: loading,
+          tip: "Synchronizing campaigns. This may take some time."
+        }}
         dataSource={ data }
         className="isoSimpleTableWrapper"
       >
