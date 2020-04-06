@@ -3,7 +3,7 @@ export const variables = {
   LIGHT_GRAY_COLOR: '#efefef',
   PRIMARY_COLOR: '#1f2431',
   SECONDARY_COLOR: '#9aa1b0',
-  HEARDER_COLOR: '#788195',
+  HEADER_COLOR: '#788195',
   PRIMARY_BG_COLOR: '#f8f9fe',
   SECONDARY_BG_COLOR: '',
   BORDER_COLOR: '',

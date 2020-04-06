@@ -9,14 +9,15 @@ import PlatformTable from "src/RedButton/PlatformTable"
 
 
 export default function RedButton() {
-  let firstActiveTab = platforms.findIndex(platform => !Boolean(platform["disabled"]));
+  const platformList = Object.values(platforms)
+  let firstActiveTab = platformList.findIndex(platform => !Boolean(platform["disabled"]));
   const [activeTab, setActiveTab] = useState(firstActiveTab);
 
   return (
     <LayoutContentWrapper>
       <LayoutContent>
         <Tabs onChange={ key => setActiveTab(parseInt(key)) }>
-          { platforms.map((platform, index) => {
+          { platformList.map((platform, index) => {
             const PlatformTableClass = platform.handler || PlatformTable;
             return (
               <TabPane
