@@ -39,7 +39,7 @@ const StyledCard = styled(Card)`
 `
 
 const enabledTag = { extra: [<Tag color="#87d068" key="1">enabled</Tag>] }
-const disabledTag = { extra: [<Tag color="#f50" key="1">disabled</Tag>] }
+const disabledTag = { extra: [<Tag color="rgba(0, 0, 0, 0.65)" key="1">disabled</Tag>] }
 
 const pingUrls = {
   googleRedButton: redButtonConfig.google.apiUrl,

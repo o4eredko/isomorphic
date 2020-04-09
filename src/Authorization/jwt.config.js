@@ -1,3 +1,3 @@
 export default {
-  fetchUrl: 'http://skyline.jo:9000/api',
+  fetchUrl: 'https://yochered.pythonanywhere.com/api',
 };

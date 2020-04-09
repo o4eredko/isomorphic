@@ -28,6 +28,10 @@ export const routes = {
   facebook_crafter: {
     path: "facebook-crafter",
     component: lazy(() => import("src/FacebookCrafter/"))
+  },
+  rabbit_ws: {
+    path: "rabbit-ws",
+    component: lazy(() => import("src/RabbitWs/"))
   }
 };
 

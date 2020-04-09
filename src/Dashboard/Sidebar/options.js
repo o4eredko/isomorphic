@@ -22,6 +22,11 @@ const options = [
     key: "facebook-crafter",
     label: "sidebar.facebookCrafter",
     leftIcon: "ion-arrow-graph-up-right",
+  },
+  {
+    key: "rabbit-ws",
+    label: "Rabbit Ws",
+    leftIcon: "ion-ios-paper",
   }
 ];
 export default options;
